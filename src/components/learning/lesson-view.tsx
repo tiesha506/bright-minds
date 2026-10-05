@@ -124,6 +124,9 @@ export function LessonView({
             <StrategyLab lab={lesson.strategyLab} isMath={subjectId === "math"} />
           )}
 
+          {/* Challenge Zone: a stretch problem with hint → steps → answer */}
+          {lesson.challenge && <ChallengeZone challenge={lesson.challenge} />}
+
           {/* Fun fact */}
           <Card className={cn("border-amber-200 bg-amber-50/70", style.cardRadius)}>
             <CardContent className="p-4 flex items-start gap-3">
@@ -285,6 +288,125 @@ function StrategyLab({ lab, isMath }: { lab: MethodExample[]; isMath: boolean })
 
 const styleSafeRadius = "rounded-2xl";
 
+const METHOD_KIND_LABEL: Record<string, string> = {
+  standard: "📘 Standard",
+  visual: "👀 Visual",
+  "number-line": "📏 Number line",
+  mental: "⚡ Mental math",
+  story: "📖 Story",
+};
+
+function ChallengeZone({
+  challenge,
+}: {
+  challenge: NonNullable<import("@/lib/content/types").Lesson["challenge"]>;
+}) {
+  const [input, setInput] = useState("");
+  const [checked, setChecked] = useState<"none" | "right" | "wrong">("none");
+  const [showHint, setShowHint] = useState(false);
+  const [stepsShown, setStepsShown] = useState(0);
+  const norm = (s: string) => s.trim().toLowerCase().replace(/\s+/g, " ").replace(/[.,!?]+$/g, "");
+  const done = stepsShown >= challenge.steps.length;
+
+  return (
+    <Card className={cn(styleSafeRadius, "border-2 border-amber-300 bg-gradient-to-br from-amber-50 to-orange-50")}>
+      <CardContent className="p-4 sm:p-5 space-y-3">
+        <div className="flex items-center gap-2">
+          <span className="text-2xl" aria-hidden>
+            🌟
+          </span>
+          <div>
+            <h2 className="text-lg font-bold">Challenge Zone</h2>
+            <p className="text-xs text-muted-foreground">A stretch problem — try it solo first!</p>
+          </div>
+        </div>
+        <p className="font-semibold leading-snug">{challenge.prompt}</p>
+        <div className="flex flex-wrap gap-2 no-print">
+          <Input
+            value={input}
+            onChange={(e) => {
+              setInput(e.target.value);
+              setChecked("none");
+            }}
+            placeholder="Your answer…"
+            aria-label="Challenge answer"
+            className={cn(
+              "max-w-xs rounded-xl bg-background",
+              checked === "right" && "border-emerald-500",
+              checked === "wrong" && "border-amber-400"
+            )}
+          />
+          <Button
+            size="sm"
+            className="rounded-full"
+            onClick={() => setChecked(norm(input) === norm(challenge.answer) ? "right" : input.trim() ? "wrong" : "none")}
+          >
+            Check
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            className="rounded-full"
+            onClick={() => setShowHint((v) => !v)}
+            aria-expanded={showHint}
+          >
+            💡 {showHint ? "Hide" : "Hint"}
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            className="rounded-full"
+            onClick={() => setStepsShown((n) => (done ? 0 : n + 1))}
+            aria-label="Reveal the next solution step"
+          >
+            {stepsShown === 0
+              ? "Step-by-step solution"
+              : done
+                ? "Hide solution"
+                : `Next step (${stepsShown}/${challenge.steps.length})`}
+          </Button>
+        </div>
+        {showHint && (
+          <p className="text-sm rounded-xl bg-amber-100 text-amber-900 px-3 py-2" role="status">
+            {challenge.hint}
+          </p>
+        )}
+        {checked === "right" && (
+          <p className="text-sm font-semibold text-emerald-700" role="status">
+            Correct! You crushed the challenge 🎉
+          </p>
+        )}
+        {checked === "wrong" && (
+          <p className="text-sm text-amber-800" role="status">
+            Not yet — mistakes are practice in disguise! Peek at a hint or the steps. 🌱
+          </p>
+        )}
+        {stepsShown > 0 && (
+          <ol className="space-y-1.5" aria-live="polite">
+            {challenge.steps.slice(0, stepsShown).map((s, i) => (
+              <li key={i} className="flex gap-2 text-sm">
+                <span
+                  className="w-5 h-5 rounded-full bg-amber-500 text-white text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5"
+                  aria-hidden
+                >
+                  {i + 1}
+                </span>
+                <span>{s}</span>
+              </li>
+            ))}
+          </ol>
+        )}
+        {done && (
+          <div className="rounded-xl border-2 border-emerald-300 bg-emerald-50 p-3 text-sm" aria-live="polite">
+            <p className="font-bold text-emerald-900">Answer: {challenge.answer}</p>
+            <p className="text-emerald-800">Why it works: {challenge.answerWhy}</p>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
 function MethodCard({ method, defaultOpen }: { method: SolveMethod; defaultOpen?: boolean }) {
   const [open, setOpen] = useState(!!defaultOpen);
   return (
@@ -315,6 +437,14 @@ function MethodCard({ method, defaultOpen }: { method: SolveMethod; defaultOpen?
             />
           </div>
           <p className="text-xs text-muted-foreground mt-1">
+            {method.kind && (
+              <Badge
+                variant="secondary"
+                className="mr-1.5 text-[10px] py-0 h-5 bg-primary/10 text-primary border-primary/20"
+              >
+                {METHOD_KIND_LABEL[method.kind] ?? method.kind}
+              </Badge>
+            )}
             <span className="font-semibold">Works great when…</span> {method.whenToUse}
           </p>
           {open && (

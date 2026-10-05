@@ -17,6 +17,12 @@ export interface QuizQuestion {
   answerIndex: number;
   /** Friendly explanation shown after answering. */
   explanation: string;
+  /**
+   * Optional, parallel to `options`: a short, kind explanation of WHY that
+   * option is tempting and what the mix-up usually is. Shown when the student
+   * picks it, so mistakes become learning instead of just "wrong".
+   */
+  misconceptions?: string[];
 }
 
 export type WorksheetItem =
@@ -29,7 +35,13 @@ export type WorksheetItem =
   /** Matching game: for left[i] the correct index into `right` is answer[i]. */
   | { kind: "match"; prompt: string; left: string[]; right: string[]; answer: number[] }
   /** Drawing / hands-on prompt with a doodle pad. */
-  | { kind: "draw"; prompt: string };
+  | { kind: "draw"; prompt: string }
+  /** Fix-the-mistake sentence: student retypes it correctly — auto-gradable. */
+  | { kind: "correct-sentence"; prompt: string; sentence: string; answer: string; why?: string }
+  /** Build a sentence by tapping words in the right order — auto-gradable. */
+  | { kind: "build-sentence"; prompt: string; words: string[]; answer: string }
+  /** Writing prompt with room for ideas — self-checked against a sample. */
+  | { kind: "writing"; prompt: string; sampleAnswer: string; minWords?: number };
 
 export interface LessonSection {
   heading: string;
@@ -55,6 +67,8 @@ export interface SolveMethod {
   whenToUse: string;
   /** 2-4 numbered steps that solve the example using THIS method. */
   steps: string[];
+  /** Optional presentation kind so the UI can badge the method. */
+  kind?: "standard" | "visual" | "number-line" | "mental" | "story";
 }
 
 export interface MethodExample {
@@ -87,6 +101,17 @@ export interface Lesson {
    * simply hand over the answer, always show the different ways of thinking.
    */
   strategyLab?: MethodExample[];
+  /**
+   * Optional stretch problem for fast finishers: hint first, then
+   * step-by-step solution, then the answer with a why-it-works check.
+   */
+  challenge?: {
+    prompt: string;
+    hint: string;
+    steps: string[];
+    answer: string;
+    answerWhy: string;
+  };
   /** early/primary: 4 questions; intermediate/teen: 5 questions. */
   quiz: QuizQuestion[];
   /** 5-6 varied worksheet items. */

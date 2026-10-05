@@ -6,11 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, CheckCircle2, RotateCcw, Trophy, XCircle } from "lucide-react";
+import { ArrowRight, Brain, CheckCircle2, RotateCcw, Trophy, XCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { celebrate } from "@/lib/confetti";
 import { groupStyle } from "@/lib/learning-config";
-import type { AgeGroup, Lesson } from "@/lib/content/types";
+import type { AgeGroup, Lesson, SolveMethod } from "@/lib/content/types";
 
 interface QuizPanelProps {
   lesson: Lesson;
@@ -27,6 +27,7 @@ export function QuizPanel({ lesson, ageGroup, bestScore, onScore, onBackToLearn 
   const [answers, setAnswers] = useState<boolean[]>([]);
   const [finished, setFinished] = useState(false);
   const [runId, setRunId] = useState(0);
+  const [altMethod, setAltMethod] = useState<SolveMethod | null>(null);
 
   const questions = lesson.quiz;
   const q = questions[index];
@@ -36,11 +37,18 @@ export function QuizPanel({ lesson, ageGroup, bestScore, onScore, onBackToLearn 
     [correctCount, questions.length]
   );
 
+  // All methods across the lesson's Strategy Lab, used for "Try another method".
+  const allMethods = useMemo(
+    () => lesson.strategyLab?.flatMap((ex) => ex.methods) ?? [],
+    [lesson]
+  );
+
   const isLast = index === questions.length - 1;
 
   const answer = (optionIndex: number) => {
     if (selected !== null) return;
     setSelected(optionIndex);
+    setAltMethod(null);
     const ok = optionIndex === q.answerIndex;
     setAnswers((a) => [...a, ok]);
     if (ok && ageGroup === "early") {
@@ -212,10 +220,66 @@ export function QuizPanel({ lesson, ageGroup, bestScore, onScore, onBackToLearn 
                       role="status"
                     >
                       <p className="font-bold mb-0.5">
-                        {isCorrect ? "Correct! 🎉" : "Not quite… 💡"}
+                        {isCorrect ? "Correct! 🎉" : "Not quite — let's learn from it 💡"}
                       </p>
+                      {!isCorrect && q.misconceptions && q.misconceptions[selected] && (
+                        <p className="mb-1.5">
+                          <span className="font-semibold">
+                            Why “{q.options[selected]}” is tempting: 
+                          </span>
+                          {q.misconceptions[selected]}
+                        </p>
+                      )}
+                      {!isCorrect && !q.misconceptions?.[selected] && (
+                        <p className="mb-1.5">
+                          Mistakes grow your brain — here&apos;s what to look at:
+                        </p>
+                      )}
                       <p>{q.explanation}</p>
                     </div>
+
+                    {/* "Try Another Method" — show a different strategy after success */}
+                    {isCorrect && allMethods.length > 0 && (
+                      <div className="mt-3">
+                        {altMethod ? (
+                          <motion.div
+                            initial={{ opacity: 0, y: 6 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="rounded-2xl border-2 border-primary/25 bg-card p-4"
+                          >
+                            <p className="font-bold flex items-center gap-2">
+                              <Brain className="w-4 h-4 text-primary" aria-hidden />
+                              Another way: {altMethod.emoji} {altMethod.name}
+                            </p>
+                            <p className="text-xs text-muted-foreground mt-0.5 mb-2">
+                              Works great when… {altMethod.whenToUse}
+                            </p>
+                            <ol className="space-y-1.5">
+                              {altMethod.steps.map((s, si) => (
+                                <li key={si} className="flex gap-2 text-sm">
+                                  <span className="w-5 h-5 rounded-full bg-primary text-primary-foreground text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5" aria-hidden>
+                                    {si + 1}
+                                  </span>
+                                  <span>{s}</span>
+                                </li>
+                              ))}
+                            </ol>
+                          </motion.div>
+                        ) : (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="rounded-full"
+                            onClick={() =>
+                              setAltMethod(allMethods[index % allMethods.length])
+                            }
+                          >
+                            <Brain className="w-4 h-4 mr-1.5" />
+                            Great job! Want to see another way to solve this?
+                          </Button>
+                        )}
+                      </div>
+                    )}
                     <div className="mt-4 flex justify-end">
                       <Button onClick={next} className="rounded-full font-bold">
                         {isLast ? "See my score" : "Next question"}{" "}

@@ -50,8 +50,8 @@ export function Onboarding({ onDone }: OnboardingProps) {
       <main className="w-full max-w-lg relative">
         {/* Logo + name */}
         <div className="flex flex-col items-center mb-6">
-          <div className="rounded-2xl bg-black shadow-lg border-2 border-primary/20 overflow-hidden px-4 py-2.5">
-            <img src="/logo.png" alt="BrightMinds logo" className="h-20 sm:h-24 w-auto" />
+          <div className="rounded-full bg-white shadow-lg border-2 border-primary/20 overflow-hidden p-1.5">
+            <img src="/logo.png" alt="BrightMinds logo" className="h-24 sm:h-28 w-auto" />
           </div>
           <p className="mt-3 text-muted-foreground text-center">
             Learning made just for you — ages 6 to 15!

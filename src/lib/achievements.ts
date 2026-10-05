@@ -1,4 +1,3 @@
-import type { AgeGroup } from "@/lib/content/types";
 import type { LessonProgress } from "@/lib/student-store";
 
 export interface Achievement {
@@ -16,7 +15,15 @@ export interface AchievementContext {
   bestScore: number;
   quizCount: number;
   completedCount: number;
+  /** Consecutive-day learning streak. */
+  streak: number;
+  /** Number of completed worksheet sets. */
+  worksheetsDone: number;
+  /** Lessons completed within one subject. */
+  countForSubject: (subjectId: string) => number;
 }
+
+const LESSONS_PER_SUBJECT_BADGE = 5;
 
 export const ACHIEVEMENTS: Achievement[] = [
   {
@@ -36,7 +43,7 @@ export const ACHIEVEMENTS: Achievement[] = [
   {
     id: "explorer",
     title: "Explorer",
-    description: "Try a lesson in every subject",
+    description: "Try a lesson in all four core subjects",
     emoji: "🧭",
     check: (c) => c.subjectsTouched.size >= 4,
   },
@@ -53,6 +60,55 @@ export const ACHIEVEMENTS: Achievement[] = [
     description: "Get 100% on any quiz",
     emoji: "💯",
     check: (c) => c.bestScore >= 100,
+  },
+  {
+    id: "math-master",
+    title: "Math Master",
+    description: `Complete ${LESSONS_PER_SUBJECT_BADGE} Mathematics lessons`,
+    emoji: "🏆",
+    check: (c) => c.countForSubject("math") >= LESSONS_PER_SUBJECT_BADGE,
+  },
+  {
+    id: "english-expert",
+    title: "English Expert",
+    description: `Complete ${LESSONS_PER_SUBJECT_BADGE} English lessons`,
+    emoji: "✍️",
+    check: (c) => c.countForSubject("english") >= LESSONS_PER_SUBJECT_BADGE,
+  },
+  {
+    id: "science-explorer",
+    title: "Science Explorer",
+    description: `Complete ${LESSONS_PER_SUBJECT_BADGE} Science lessons`,
+    emoji: "🔬",
+    check: (c) => c.countForSubject("science") >= LESSONS_PER_SUBJECT_BADGE,
+  },
+  {
+    id: "reading-champion",
+    title: "Reading Champion",
+    description: `Complete ${LESSONS_PER_SUBJECT_BADGE} Reading lessons`,
+    emoji: "📖",
+    check: (c) => c.countForSubject("reading") >= LESSONS_PER_SUBJECT_BADGE,
+  },
+  {
+    id: "worksheet-wizard",
+    title: "Worksheet Wizard",
+    description: "Finish 5 worksheets",
+    emoji: "📝",
+    check: (c) => c.worksheetsDone >= 5,
+  },
+  {
+    id: "streak-3",
+    title: "On Fire",
+    description: "Learn 3 days in a row",
+    emoji: "🔥",
+    check: (c) => c.streak >= 3,
+  },
+  {
+    id: "streak-7",
+    title: "Unstoppable",
+    description: "Learn 7 days in a row",
+    emoji: "⚡",
+    check: (c) => c.streak >= 7,
   },
   {
     id: "xp-collector",
@@ -79,7 +135,8 @@ export const ACHIEVEMENTS: Achievement[] = [
 
 export function evaluateAchievements(
   progress: Record<string, LessonProgress>,
-  xp: number
+  xp: number,
+  extra?: { streak?: number; worksheetsDone?: number }
 ): { earned: Achievement[]; ctx: AchievementContext } {
   const entries = Object.values(progress);
   const subjectsTouched = new Set(entries.map((e) => e.subjectId));
@@ -93,6 +150,10 @@ export function evaluateAchievements(
     bestScore: scores.length ? Math.max(...scores) : 0,
     quizCount: scores.length,
     completedCount: entries.length,
+    streak: extra?.streak ?? 0,
+    worksheetsDone: extra?.worksheetsDone ?? 0,
+    countForSubject: (subjectId) =>
+      entries.filter((e) => e.subjectId === subjectId).length,
   };
   return { earned: ACHIEVEMENTS.filter((a) => a.check(ctx)), ctx };
 }

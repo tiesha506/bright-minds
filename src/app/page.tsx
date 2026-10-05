@@ -54,8 +54,8 @@ export default function Home() {
   if (!mounted) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="rounded-2xl overflow-hidden bg-black shadow-lg animate-pulse">
-          <img src="/logo.png" alt="BrightMinds" className="h-20 sm:h-24 w-auto" />
+        <div className="rounded-full overflow-hidden bg-white shadow-lg animate-pulse">
+          <img src="/logo.png" alt="BrightMinds" className="h-24 sm:h-28 w-auto" />
         </div>
       </div>
     );

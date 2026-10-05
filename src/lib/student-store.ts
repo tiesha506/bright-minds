@@ -12,6 +12,23 @@ export interface StudentProfile {
   age: number;
   theme: ThemePref;
   ageGroup: AgeGroup;
+  /** Accessibility: preferred base text size. */
+  textSize?: TextSize;
+}
+
+export type TextSize = "small" | "medium" | "large";
+
+export const TEXT_SIZE_PX: Record<TextSize, string> = {
+  small: "14.5px",
+  medium: "16px",
+  large: "18.5px",
+};
+
+/** Local (not UTC) YYYY-MM-DD — streaks should follow the student's day. */
+export function localDate(d = new Date()): string {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(
+    d.getDate()
+  ).padStart(2, "0")}`;
 }
 
 export interface LessonProgress {
@@ -32,11 +49,25 @@ interface StudentState {
   xp: number;
   progress: Record<string, LessonProgress>;
   dailyChallenge: DailyChallengeState | null;
+  /** Consecutive-day learning streak (local days). */
+  streak: number;
+  /** Last local day the student was active (YYYY-MM-DD). */
+  lastActiveDate: string | null;
+  /** Recent active days, newest last, capped at 30. */
+  activeDates: string[];
+  /** Worksheet sets completed (lesson ids or generated sheet keys). */
+  worksheetsDone: string[];
   setProfile: (p: StudentProfile) => void;
   updateProfile: (p: Partial<Omit<StudentProfile, "id">>) => void;
   markLessonRead: (subjectId: string, lessonId: string) => void;
   saveQuizScore: (subjectId: string, lessonId: string, score: number) => void;
   claimDailyChallenge: () => void;
+  /** Called on app activity: keeps the daily streak alive. */
+  touchStreak: () => void;
+  markWorksheetDone: (key: string) => void;
+  setTextSize: (t: TextSize) => void;
+  /** Award XP outside lessons (mixed challenges, practice zone...). */
+  addXp: (n: number) => void;
   startFresh: () => void;
 }
 
@@ -83,6 +114,44 @@ export const useStudentStore = create<StudentState>()(
       xp: 0,
       progress: {},
       dailyChallenge: null,
+      streak: 0,
+      lastActiveDate: null,
+      activeDates: [],
+      worksheetsDone: [],
+
+      touchStreak: () => {
+        const state = get();
+        const today = localDate();
+        if (state.lastActiveDate === today) return;
+        const yesterday = localDate(new Date(Date.now() - 86400000));
+        const streak =
+          state.lastActiveDate === yesterday ? state.streak + 1 : 1;
+        const activeDates = [...state.activeDates.filter((d) => d !== today), today].slice(-30);
+        set({ streak, lastActiveDate: today, activeDates });
+        if (state.profile) syncProfile(state.profile, state.xp);
+      },
+
+      markWorksheetDone: (key) => {
+        const state = get();
+        if (state.worksheetsDone.includes(key)) return;
+        set({ worksheetsDone: [...state.worksheetsDone, key].slice(-200) });
+      },
+
+      setTextSize: (t) => {
+        const state = get();
+        if (!state.profile) return;
+        const next = { ...state.profile, textSize: t };
+        set({ profile: next });
+        syncProfile(next, state.xp);
+      },
+
+      addXp: (n) => {
+        const state = get();
+        if (n <= 0) return;
+        const xp = state.xp + n;
+        set({ xp });
+        if (state.profile) syncProfile(state.profile, xp);
+      },
 
       setProfile: (p) => {
         set({ profile: p });
@@ -120,6 +189,7 @@ export const useStudentStore = create<StudentState>()(
         };
         const xp = state.xp + XP.readLesson;
         set({ progress: { ...state.progress, [lessonId]: entry }, xp });
+        get().touchStreak();
         syncProgress(state.profile.id, entry, xp);
       },
 
@@ -144,6 +214,7 @@ export const useStudentStore = create<StudentState>()(
         }
         const xp = state.xp + gained;
         set({ progress: { ...state.progress, [lessonId]: entry }, xp });
+        get().touchStreak();
         syncProgress(state.profile.id, entry, xp);
       },
 
@@ -158,7 +229,16 @@ export const useStudentStore = create<StudentState>()(
       },
 
       startFresh: () => {
-        set({ profile: null, xp: 0, progress: {}, dailyChallenge: null });
+        set({
+          profile: null,
+          xp: 0,
+          progress: {},
+          dailyChallenge: null,
+          streak: 0,
+          lastActiveDate: null,
+          activeDates: [],
+          worksheetsDone: [],
+        });
       },
     }),
     {
