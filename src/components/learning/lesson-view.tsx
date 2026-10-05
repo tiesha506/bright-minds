@@ -11,6 +11,7 @@ import {
   ArrowRight,
   BookOpen,
   CheckCircle2,
+  ChevronDown,
   Clock,
   Lightbulb,
   PartyPopper,
@@ -20,7 +21,7 @@ import {
 import { cn } from "@/lib/utils";
 import { groupStyle } from "@/lib/learning-config";
 import { getLesson, getSubject } from "@/lib/content";
-import type { AgeGroup, LessonSection } from "@/lib/content/types";
+import type { AgeGroup, LessonSection, MethodExample, SolveMethod } from "@/lib/content/types";
 import type { LessonProgress } from "@/lib/student-store";
 import { QuizPanel } from "./quiz-panel";
 import { WorksheetPanel } from "./worksheet-panel";
@@ -118,6 +119,11 @@ export function LessonView({
             ))}
           </div>
 
+          {/* Strategy Lab: the SAME problem solved with DIFFERENT methods */}
+          {lesson.strategyLab && lesson.strategyLab.length > 0 && (
+            <StrategyLab lab={lesson.strategyLab} isMath={subjectId === "math"} />
+          )}
+
           {/* Fun fact */}
           <Card className={cn("border-amber-200 bg-amber-50/70", style.cardRadius)}>
             <CardContent className="p-4 flex items-start gap-3">
@@ -192,6 +198,148 @@ export function LessonView({
         </TabsContent>
       </Tabs>
     </div>
+  );
+}
+
+// ---------------- Strategy Lab: different ways to solve it ----------------
+function StrategyLab({ lab, isMath }: { lab: MethodExample[]; isMath: boolean }) {
+  const [revealed, setRevealed] = useState<Record<number, boolean>>({});
+  return (
+    <section aria-labelledby="lab-heading" className="space-y-4">
+      <div className="flex items-start gap-2.5">
+        <span className="text-3xl leading-none mt-0.5" aria-hidden>
+          🧠
+        </span>
+        <div>
+          <h2 id="lab-heading" className="text-xl sm:text-2xl font-bold">
+            Strategy Lab
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            {isMath
+              ? "Smart mathematicians know MANY ways to solve the same problem. Tap each method, try the steps, then pick the one that clicks for you!"
+              : "There is more than one way to think about a problem. Tap each strategy and see which one clicks for you!"}
+          </p>
+        </div>
+      </div>
+
+      {lab.map((ex, i) => (
+        <Card key={i} className={cn(styleSafeRadius, "overflow-hidden border-2 border-primary/15 bg-gradient-to-br from-primary/5 to-secondary/40")}>
+          <CardContent className="p-4 sm:p-5 space-y-4">
+            {/* Problem banner */}
+            <div
+              className="rounded-xl bg-background/90 border-2 border-dashed border-primary/30 py-3.5 px-4 text-center"
+              aria-label={`Problem: ${ex.problem}`}
+            >
+              <p className="text-xs font-bold uppercase tracking-wider text-primary/70 mb-0.5">
+                Problem {i + 1}
+              </p>
+              <p className="text-2xl sm:text-3xl font-bold" style={{ fontFamily: "var(--font-fredoka)" }}>
+                {ex.problem}
+              </p>
+            </div>
+
+            {/* Method cards */}
+            <div className={cn("grid gap-3", ex.methods.length >= 3 ? "md:grid-cols-2 xl:grid-cols-3" : "md:grid-cols-2")}>
+              {ex.methods.map((m, j) => (
+                <MethodCard key={j} method={m} defaultOpen={j === 0} />
+              ))}
+            </div>
+
+            {/* Answer — revealed on purpose, never just handed over */}
+            {revealed[i] ? (
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="rounded-xl border-2 border-emerald-300 bg-emerald-50 p-4 flex items-start gap-3"
+                aria-live="polite"
+              >
+                <CheckCircle2 className="w-5 h-5 text-emerald-600 mt-0.5 shrink-0" aria-hidden />
+                <div>
+                  <p className="font-bold text-emerald-900">
+                    Answer: {ex.answer}
+                  </p>
+                  <p className="text-sm text-emerald-800">{ex.answerCheck}</p>
+                  <p className="text-xs text-emerald-700 mt-1">
+                    🌟 Which method felt easiest for you? Everyone has a favourite!
+                  </p>
+                </div>
+              </motion.div>
+            ) : (
+              <div className="flex justify-center">
+                <Button
+                  variant="outline"
+                  className="rounded-full font-semibold"
+                  onClick={() => setRevealed((r) => ({ ...r, [i]: true }))}
+                >
+                  <Lightbulb className="w-4 h-4 mr-1.5" />
+                  Tried it yourself? Show the answer &amp; check
+                </Button>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      ))}
+    </section>
+  );
+}
+
+const styleSafeRadius = "rounded-2xl";
+
+function MethodCard({ method, defaultOpen }: { method: SolveMethod; defaultOpen?: boolean }) {
+  const [open, setOpen] = useState(!!defaultOpen);
+  return (
+    <button
+      type="button"
+      onClick={() => setOpen((o) => !o)}
+      aria-expanded={open}
+      aria-label={`Method: ${method.name}. ${open ? "Steps shown" : "Tap to show steps"}`}
+      className="text-left h-full"
+    >
+      <Card
+        className={cn(
+          "h-full py-0 transition-all duration-200 cursor-pointer hover:shadow-md hover:-translate-y-0.5",
+          open && "border-primary/40 bg-background shadow-sm"
+        )}
+      >
+        <CardContent className="p-4">
+          <div className="flex items-center justify-between gap-2">
+            <p className="font-bold flex items-center gap-2 min-w-0">
+              <span className="text-xl shrink-0" aria-hidden>
+                {method.emoji}
+              </span>
+              <span className="truncate">{method.name}</span>
+            </p>
+            <ChevronDown
+              className={cn("w-4 h-4 shrink-0 text-muted-foreground transition-transform", open && "rotate-180")}
+              aria-hidden
+            />
+          </div>
+          <p className="text-xs text-muted-foreground mt-1">
+            <span className="font-semibold">Works great when…</span> {method.whenToUse}
+          </p>
+          {open && (
+            <motion.ol
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.2 }}
+              className="mt-3 space-y-2"
+            >
+              {method.steps.map((s, i) => (
+                <li key={i} className="flex gap-2 text-sm">
+                  <span
+                    className="w-5 h-5 rounded-full bg-primary text-primary-foreground text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5"
+                    aria-hidden
+                  >
+                    {i + 1}
+                  </span>
+                  <span className="text-foreground/90">{s}</span>
+                </li>
+              ))}
+            </motion.ol>
+          )}
+        </CardContent>
+      </Card>
+    </button>
   );
 }
 

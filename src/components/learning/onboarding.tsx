@@ -50,14 +50,10 @@ export function Onboarding({ onDone }: OnboardingProps) {
       <main className="w-full max-w-lg relative">
         {/* Logo + name */}
         <div className="flex flex-col items-center mb-6">
-          <div className="w-24 h-24 rounded-full bg-card shadow-lg border-2 border-primary/20 overflow-hidden flex items-center justify-center">
-            { }
-            <img src="/images/mascot.png" alt="BrightMinds owl mascot" className="w-full h-full object-cover" />
+          <div className="rounded-2xl bg-black shadow-lg border-2 border-primary/20 overflow-hidden px-4 py-2.5">
+            <img src="/logo.png" alt="BrightMinds logo" className="h-20 sm:h-24 w-auto" />
           </div>
-          <h1 className="mt-3 text-4xl font-bold text-primary" style={{ fontFamily: "var(--font-fredoka)" }}>
-            BrightMinds
-          </h1>
-          <p className="text-muted-foreground text-center">
+          <p className="mt-3 text-muted-foreground text-center">
             Learning made just for you — ages 6 to 15!
           </p>
         </div>

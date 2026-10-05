@@ -1,10 +1,37 @@
 import type { AgeGroup, Lesson, Subject } from "./types";
-import { mathSubject } from "./math";
 import { literacySubject } from "./literacy";
 import { scienceSubject } from "./science";
 import { lifeSubject } from "./life";
 
+// Mathematics is composed from four age-group files (rewritten in Task 8-4a..8-4d
+// to cover every requested topic and to include multi-method Strategy Labs).
+import { lessons as mathEarlyLessons } from "./math-early";
+import { lessons as mathPrimaryLessons } from "./math-primary";
+import { lessons as mathIntermediateLessons } from "./math-intermediate";
+import { lessons as mathTeenLessons } from "./math-teen";
+
 export * from "./types";
+
+const mathLessons: Record<AgeGroup, Lesson[]> = {
+  early: mathEarlyLessons,
+  primary: mathPrimaryLessons,
+  intermediate: mathIntermediateLessons,
+  teen: mathTeenLessons,
+};
+
+const mathSubject: Subject = {
+  id: "math",
+  name: "Mathematics",
+  emoji: "🔢",
+  gradient: "from-amber-400 to-orange-500",
+  taglines: {
+    early: "Count, sort and play with numbers every day!",
+    primary: "Level up your times tables, fractions and money smarts!",
+    intermediate: "Crack ratios, integers and equations with real-world math.",
+    teen: "Master algebra, functions and data — skills for exams and for life.",
+  },
+  lessons: mathLessons,
+};
 
 export const subjects: Subject[] = [
   mathSubject,

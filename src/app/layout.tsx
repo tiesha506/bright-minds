@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     "worksheets",
   ],
   icons: {
-    icon: "/images/mascot.png",
+    icon: "/logo.png",
   },
   openGraph: {
     title: "BrightMinds — Learn, Play & Grow",

@@ -115,3 +115,103 @@ Work Log:
 
 Stage Summary:
 - BrightMinds is complete and browser-verified: 4 subjects x 4 age groups = 48 lessons with quizzes + worksheets, 3 themes, XP/levels/8 achievements, daily challenge, DB-backed sync, sticky footer, responsive, accessible (ARIA roles/labels, keyboard operable, semantic landmarks).
+
+---
+Task ID: 8-4a
+Agent: content-math-early
+Task: Early Learning (6-8) math lessons — 7 topics with multi-method Strategy Labs
+
+Work Log:
+- Read worklog.md, src/lib/content/types.ts and the existing math.ts early lessons (math-early-1/2/3) to lock the contract and reuse verified material.
+- Created src/lib/content/math-early.ts — named export `lessons: Lesson[]` only, sole import is `type { Lesson }` from ./types, no default export.
+- Wrote exactly 7 lessons in required order: math-early-1 Counting Carnival 🎉 (counting to 20+, skip counting by 2s/5s/10s; adapted from math.ts early-1), math-early-2 Number Detective 🔍 (reading/writing/comparing 0-20), math-early-3 Addition Adventure ➕ (counting on, make ten, doubles), math-early-4 Subtraction Safari ➖ (take away, count back, difference), math-early-5 Shapes All Around Us 🔷 (2D/3D, sides, corners; adapted from math.ts early-2), math-early-6 Groups of Fun: Simple Multiplication 🍪 (equal groups, arrays, ×2 ×5 ×10 via skip counting), math-early-7 Story Problem Superstars ⭐ (read→draw→solve word problems).
+- Strategy Lab in EVERY lesson: 2 worked MethodExamples each with 2-3 genuinely different mental models (Count All / Skip Count / Draw a Picture; Count On / Number Line Hops / Ten Stacks; Make Ten / Use Doubles; Take Away & Count / Count Back / Think Addition; Count the Sides / Trace and Turn; Equal Groups Addition / Skip Count / Draw an Array; Draw & Cross Out / Match Them Up). Steps are 2-4 concrete kid actions; answerCheck verifies via inverse operation or recount in kid language.
+- Followed early-group rules: minutes 6-7, exactly 3 ultra-simple vocab entries, 4-question quizzes with exactly 3 options, 5-item worksheets each containing exactly 1 match + 1 draw; very short concrete-object sentences.
+- Diverse non-stereotyped names (Maya, Leo, Amara, Kai, Sofia, Dev, Aisha, Marco, Zara, Noah); boys cook/bake and count teddy bears, girls build/spot zebras/collect shells.
+- Hand-verified every quiz answerIndex and worksheet answer; ran a Bun script that re-evaluated all arithmetic match pairings and printed every correct option for a final eyeball — ALL PASS.
+- Ran structural Bun audit: 7 lessons, ids/order, minutes 5-8, vocab=3, quiz=4×3 options with answerIndex in range, worksheet=5 with 1 match + 1 draw, match arrays valid/in-range/unique, strategyLab present (1-2 examples, 2-3 methods each, distinct names, 2-4 steps) — ALL PASS.
+- Ran `bunx tsc --noEmit 2>&1 | grep "math-early"` → no output (file type-checks cleanly). Deleted both temp audit scripts afterwards.
+
+Stage Summary:
+- Produced src/lib/content/math-early.ts: 7 early-learning math lessons (math-early-1..7) with 14 worked multi-method Strategy Lab examples (34 methods total), 28 verified quiz questions, 35 worksheet items, 21 vocab entries. Ready for integration into the lesson pipeline (e.g. content/index.ts) by the orchestrator.
+
+---
+Task ID: 8-4b
+Agent: content-math-primary
+Task: Primary Learning (9-11) math lessons — 8 topics incl. multi-method Division Strategy Lab (24 ÷ 6)
+
+Work Log:
+- Read worklog.md, types.ts contract and math.ts (Task 2-a) primary lessons to reuse verified material.
+- Created src/lib/content/math-primary.ts: named export `lessons: Lesson[]` (only import is `type { Lesson } from "./types"`, no default export), exactly 8 lessons in required order/ids.
+- math-primary-1 Multiplication & Times Tables ✖️ — adapted from math.ts; added Arrays section; Strategy Lab: "7 × 8" (Break It Up, Double-Double-Double, Array Model) + "6 × 9" (Ten Groups Minus One, Nines Skip-Count).
+- math-primary-2 Division: Sharing & Grouping ➗ — NEW; Strategy Lab includes EXACT "24 ÷ 6 = ?" with 4 methods: Equal Groups (deal 24 cookies onto 6 plates), Repeated Subtraction (24−6=18→12→6→0, 4 subtractions), Think Multiplication (6 × 4 = 24), Array Model (4 rows of 6); second lab "35 ÷ 5 = ?" with 3 methods (Equal Groups, Repeated Subtraction, Count by Fives).
+- math-primary-3 Fractions Made Friendly 🍕 — adapted; added Equivalent Fractions + Fractions of a Set sections; lab: "3/4 of 12" (Unit Fractions First, Deal into Equal Piles, Bar Model) + "2/3 vs 3/5" (Match the Bottoms, Draw Both Pictures).
+- math-primary-4 Decimals: Parts of a Whole 💰 — NEW (tenths/hundredths, place value, comparing, money addition); lab: "0.7 + 0.45" (Money Mode, Pad and Line Up, Number Line Bridge) + "0.8 vs 0.75" (Pad to Match, Money Mode).
+- math-primary-5 Percentages: Out of 100 💯 — NEW (50%/25%/10%/1% benchmarks, fraction-decimal-percent links); lab: "25% of 48" (Half Then Half Again, Divide by 4, Four Equal Groups) + "10% off $30" (Divide by 10, Count the Tens).
+- math-primary-6 Geometry 📐 — NEW (2D/3D shapes, perimeter, area, angle basics); lab: perimeter 6×4 (Walk the Sides, Double the Sides, Pairs Plus) + area 6×4 (Count Squares, Multiply Sides, Skip-Count Rows).
+- math-primary-7 Measurement Masters ⚖️ — NEW incl. material adapted from old Time & Money lesson (metric length/mass/capacity, time, money); lab: ribbon compare 250 cm vs 2 m 40 cm (convert both directions) + 1 L jug / four 250 mL cups (convert to mL, quarter-jug picture).
+- math-primary-8 Word Problem Champions 🏆 — NEW (two-step problems, untangle routine, bar models, check backwards); lab: Maya's beads 34 + 3×12 − 20 (Step by Step, Bar Model, Number Line Jumps) + Amara's fair muffins 24 ÷ 4 bags × $3 (Bags First, Count Up in Threes).
+- Group rules enforced: minutes 8-12, exactly 4 vocab per lesson, 4-question quizzes with exactly 4 options, 5-6 worksheet items each (2 fb/2 p/1 match/1 short-answer mix), all 10 diverse names used, gender-neutral roles.
+- Hand-verified every quiz answerIndex against its options and every gradable worksheet answer (e.g. 56, 24, 3/8→12, 1.15 vs 0.75, 25% of 48 = 12, 28 cm perimeter, 400 mL, 34+36−20 = 50, 45÷5×$2 = $18); all 8 match answer arrays valid/in-range/correct.
+- Ran `bunx tsc --noEmit | grep "math-primary"` → no output (clean).
+- Ran bun audit script (8 lessons, ids in order, quiz 4×4, answerIndex bounds, strategyLab ≥1 example × ≥2 methods, worksheet 5-6, match integrity, "24 ÷ 6 = ?" exact-match check, name diversity) → AUDIT PASS; temp script deleted.
+
+Stage Summary:
+- Produced src/lib/content/math-primary.ts with 8 primary lessons (multiplication, division, fractions, decimals, percentages, geometry, measurement, word problems). Every lesson carries a Strategy Lab (2 worked examples each, 2-4 genuinely different methods per example, inverse-operation answer checks); the required "24 ÷ 6 = ?" lab shows all 4 mandated methods. Type-check clean, structural audit passed, ready for UI integration.
+
+---
+Task ID: 8-4c
+Agent: content-math-intermediate
+Task: Intermediate (12-13) math lessons — 7 topics with multi-method Strategy Labs
+
+Work Log:
+- Read worklog.md, src/lib/content/types.ts and math.ts (Task 2-a) intermediate lessons (math-intermediate-1/2/3) to lock the contract and reuse verified material.
+- Created src/lib/content/math-intermediate.ts — named export `lessons: Lesson[]` only, sole import is `type { Lesson }` from ./types, no default export.
+- Wrote exactly 7 lessons in required order/ids: math-intermediate-1 Ratios & Proportions ⚖️ (adapted from math.ts math-intermediate-2, extended with proportion tables + map scales), math-intermediate-2 Integers: The Number Line in Both Directions 🌡️ (NEW: ordering, +/-/×/÷ signed numbers, zero pairs, temperature/elevation/debt), math-intermediate-3 Percent Power 💯 (adapted from math.ts math-intermediate-1: conversions, 10% benchmarks, increase/decrease, discounts & tax), math-intermediate-4 Algebra Basics: Solving Equations 🧩 (adapted from math.ts math-intermediate-3: balance method, two-step, translating words), math-intermediate-5 Geometry: Angles, Area & Volume 📐 (NEW: line/point/parallel angle laws, triangle 180° & quadrilateral 360°, parallelogram/triangle area, prism volume, circle vocabulary), math-intermediate-6 Statistics: Making Sense of Data 📊 (NEW: mean/median/mode/range, choosing averages with outliers, bar/line graphs, misleading graphs), math-intermediate-7 The Problem-Solving Toolbox 🧰 (NEW: work backwards, draw a diagram, make a table, find the pattern, guess-check-improve on mixed multi-step challenges).
+- Strategy Lab in EVERY lesson: 2 worked MethodExamples × 3 genuinely different methods each (14 examples, 42 methods total). Highlights: smoothie 3:4 scaling (Scale Factor Detective / Unit Rate First / Cross-Multiply), map scale 8.5 cm → 42.5 km (Rate Multiplier / Chunk & Add / Cross-Multiply), -4°C + 9° (Number Line Moves / Bridge to Zero / Sign Rules), 20% off $45 (10% Benchmark / Fraction Friend / Pay-the-Rest Multiplier), reverse percent $36 after 25% off (Reverse Multiplier / Quarter Chunks / Estimate-then-Check), 3x + 4 = 19 (Balance / Cover-Up / Guess-Check-Improve), triangle third angle (Angle Sum / Right-Triangle Shortcut / Solve It Like Algebra), box volume (Layer Stacking / Formula / Friendliest-Order Chunking), mean via deviations (Add & Divide / Leveling Out / Balance Around a Guess), outlier videos (Compute Both / Outlier Radar / Make a Table), Maya's $18 (Work Backwards / Bar Model / Guess-Check-Improve), Sofia's $165 savings (Gauss-style Pair Up / Make a Table / Shortcut Formula). Every answerCheck uses substitution, inverse operation or estimation.
+- Group rules enforced: minutes 12-15, exactly 5 vocab entries per lesson, 5-question quizzes with exactly 4 options, 6-item worksheets each (fill-blank/practice/short-answer mix, NO draw, no match needed), shopping/cooking/maps/games/sports contexts, all 10 diverse names used with no stereotyping.
+- Hand-verified every quiz answerIndex (e.g. greatest of -7/-2/-9/0 is 0; -4-6=-10; (-3)(-5)=15; 30% of 80=24; 40% off $50=$30; 20→30 likes=50%; 2x+3=11→4; 180-115=65; cube 3³=27; radius 14÷2=7; mean 32÷4=8; range 22-8=14; 19×21≈400) and every gradable worksheet answer (e.g. -9-7=-16, |-12|=12, 25% off $32=$24, $40+10% tax=$44, 2y+5=17→6, 180-85-60=35, 10×6÷2=30, median 7, mode 5, snail escapes day 8, backwards 30÷2+3-6=12).
+- Ran `bunx tsc --noEmit 2>&1 | grep "math-intermediate"` → zero matches (clean), re-run confirmed.
+- Ran bun structural audit script: 7 lessons in order, minutes 10-15, vocab=5, quiz 5×4 with answerIndex in range, strategyLab ≥1 example × ≥2 methods (all 2×3), worksheet exactly 6 with no draw, sections/intro/funFact present → AUDIT PASS; temp script deleted.
+
+Stage Summary:
+- Produced src/lib/content/math-intermediate.ts: 7 lessons for ages 12-13 (ratios, integers, percents, algebra, geometry, statistics, problem solving) with 14 multi-method Strategy Lab examples (42 distinct methods), 35 verified quiz questions, 42 worksheet items, 35 vocab entries. Type-check clean, structural audit passed; ready for the orchestrator to wire into the content pipeline alongside math-early.ts and math-primary.ts.
+---
+Task ID: 8-4d
+Agent: content-math-teen
+Task: Teen/Advanced (14-15) math lessons — 8 topics with multi-method Strategy Labs
+
+Work Log:
+- Read worklog.md, src/lib/content/types.ts and src/lib/content/math.ts (verified teen lessons math-teen-1/2/3) to lock the Lesson/QuizQuestion/WorksheetItem/MethodExample contract.
+- Created src/lib/content/math-teen.ts — named export `lessons: Lesson[]` only, single `import type { Lesson } from "./types"`, no default export.
+- Wrote 8 lessons in the required order/ids: math-teen-1 Algebra Essentials 🧮 (NEW: like terms, expanding, factorising quadratics, index laws), math-teen-2 Linear Equations & Graphing Lines 📈 (adapted old teen-1 + balance solving + systems intro), math-teen-3 Functions: Input-Output Machines ⚙️ (NEW: f(x), domain/range, tables/graphs, linear vs non-linear), math-teen-4 Geometry: Pythagoras & Beyond 📐 (adapted old teen-2 + angle reasoning + congruence/similarity + area scale factor k²), math-teen-5 Ratios & Proportions, Advanced ⚖️ (NEW: direct/inverse proportion, unitary method, map scales, similar figures), math-teen-6 Statistics: Data in the Real World 📊 (refit stats half of old teen-3 + sampling/bias, quartiles/IQR/box plots, correlation ≠ causation), math-teen-7 Probability: Predicting Chance 🎲 (refit probability half of old teen-3 + tree diagrams, complementary counting, expected value), math-teen-8 Advanced Problem Solving 🏔️ (NEW: UPSC loop, Fermi estimation, break-even modelling, exam technique).
+- Every lesson: minutes 15-20, exactly 6 vocab, 5-question quiz with 4 options, 6-item worksheet (2 fill-blank + 2 practice + 1 short-answer + 1 extra fill-blank or match; NO draw), funFact fact-checked (al-Khwarizmi, Euler 1734, Descartes fly legend, 3-4-5 rope trick, octave 2:1 ratio, Nightingale coxcomb, Pascal–Fermat 1654, Fermi piano tuners).
+- Strategy Lab in ALL 8 lessons (16 worked examples, 2 per lesson, each 2-3 genuinely different methods with reasoning-teaching steps): FOIL vs area-model vs sum-product shortcut; product-sum search vs split-the-middle-term; balance vs trial-table; substitution vs elimination vs graphing; balance vs backtracking vs table-of-values; first differences vs x²-pattern hunting; Pythagoras rearranged vs spot-the-triple vs difference-of-squares; scale factor vs cross-multiplication; unitary vs fraction multiplier; constant product vs double-and-halve; range vs deviation-from-mean; order-split-middles vs five-number summary; grid listing vs for-each partner count; complementary counting vs tree diagram; break-even equation vs table vs graph; chunked Fermi vs π×10⁷ shortcut. All answerChecks use substitution, inverse ops, estimation or second-method agreement.
+- Hand-verified every quiz answerIndex and all numeric results; wrote a temporary bun audit (8 lessons, 5×4 quizzes, answerIndex bounds, strategyLab ≥1 example with ≥2 methods with 2-4 steps, worksheet 6 items/no draw/match index validity, 47 independent numeric recomputations). Audit caught one real error: P(bonus) expected value 80 × 1/5 = 16 (not 20) — fixed answerIndex and explanation. Re-ran: AUDIT PASS. Deleted temp audit.
+- Ran bunx tsc --noEmit | grep math-teen → no output (clean).
+- Diverse non-stereotyped names throughout (Maya modelling tank/shadows, Amara data/money shares, Sofia machines/proportions, Aisha estimation/spinners, Zara stickers, Kai kite/coins, Leo/Dev/Marco/Noah in varied roles).
+
+Stage Summary:
+- Produced src/lib/content/math-teen.ts: exactly 8 teen lessons (math-teen-1..8) covering Algebra, Linear Equations, Functions, Geometry, Ratios & Proportions, Statistics, Probability, Advanced Problem Solving. 40 verified quiz questions, 48 verified worksheet items (no draw), 16 multi-method Strategy Lab examples. tsc clean, structural + numeric audit PASS.
+
+---
+Task ID: 8 (round: subjects + math deep dive)
+Agent: orchestrator (Z.ai Code)
+Task: Four-subject dashboard alignment + expanded Mathematics topics per age group + "different methods" pedagogy (Strategy Lab) + official logo integration.
+
+Work Log:
+- User provided the official BrightMinds logo -> copied upload to public/logo.png.
+- Extended src/lib/content/types.ts with SolveMethod + MethodExample and optional Lesson.strategyLab (never just the answer: same problem solved with 2-4 genuinely different methods).
+- Built Strategy Lab UI in lesson-view.tsx: problem banner, expandable method cards (emoji, "Works great when...", numbered steps), answer intentionally hidden behind a "Tried it yourself? Show answer & check" reveal with inverse-operation check.
+- Logo integration: app-header (black-badge rounded logo), onboarding hero (replaced mascot roundel + removed duplicated wordmark text), page.tsx loading splash, layout.tsx favicon. Mascot kept as "learning buddy" on dashboard/footer.
+- Launched 4 parallel content agents (8-4a..8-4d) rewriting math content into 4 files per age group, each lesson with 1-2 Strategy Lab examples:
+  - math-early.ts (7 lessons): Counting, Number Recognition, Addition, Subtraction, Shapes, Simple Multiplication, Basic Word Problems.
+  - math-primary.ts (8 lessons): Multiplication, Division (incl. the EXACT "24 ÷ 6 = ?" lab with Equal Groups / Repeated Subtraction / Think Multiplication / Array Model), Fractions, Decimals, Percentages, Geometry, Measurement, Multi-step Word Problems.
+  - math-intermediate.ts (7 lessons): Ratios & Proportions, Integers, Percent Power, Algebra Basics, Geometry (angles/area/volume), Statistics, Problem-Solving Toolbox.
+  - math-teen.ts (8 lessons): Algebra Essentials, Linear Equations & Graphing, Functions, Geometry (Pythagoras+), Advanced Ratios & Proportions, Statistics, Probability, Advanced Problem Solving.
+- Rewired src/lib/content/index.ts to compose mathSubject from the 4 new files (renamed subject to "Mathematics"); deleted legacy math.ts.
+- Verification: bunx tsc --noEmit clean (only pre-existing examples/skills errors); bun run lint clean; dev.log error-free.
+- Agent Browser E2E: onboarding (Maya/8/pink) -> dashboard shows logo + "Mathematics 0 of 7"; subject view 7 early lessons; Counting Carnival Strategy Lab renders 3 method cards, expand/collapse works, answer reveal works; switched age to 10 -> 8 primary lessons, Division lab confirms all 4 required methods for 24÷6 + second 35÷5 lab; age 14 -> Functions lab shows Balance/Backtracking/Table-of-Values methods; quiz answered correctly (f(5)=13, feedback + Next question); mobile 390px layout clean, footer natural push-down confirmed.
+
+Stage Summary:
+- Mathematics now covers EVERY topic the user listed for all four age groups (30 math lessons total, 64 site-wide) and every math lesson teaches multiple solving methods via the interactive Strategy Lab before revealing answers. Official logo is the brand mark across header/onboarding/splash/favicon. Four major subjects on the dashboard: Mathematics, Reading & Writing, Science, Life & World.

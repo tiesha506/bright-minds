@@ -1,0 +1,1259 @@
+     1→import type { Subject } from "./types";
+     2→
+     3→export const mathSubject: Subject = {
+     4→  id: "math",
+     5→  name: "Math",
+     6→  emoji: "🔢",
+     7→  gradient: "from-amber-400 to-orange-500",
+     8→
+     9→  taglines: {
+    10→    early: "Count, sort and play with numbers every day!",
+    11→    primary: "Level up your times tables, fractions and money smarts!",
+    12→    intermediate: "Crack decimals, ratios and equations with real-world math.",
+    13→    teen: "Master algebra, geometry and data — skills for exams and for life.",
+    14→  },
+    15→
+    16→  lessons: {
+    17→    early: [
+    18→      {
+    19→        id: "math-early-1",
+    20→        title: "Counting & Numbers to 20+",
+    21→        emoji: "🧮",
+    22→        minutes: 6,
+    23→        intro:
+    24→          "Numbers are everywhere! Let's count apples, balloons and toys all the way up.",
+    25→        sections: [
+    26→          {
+    27→            heading: "Counting to 10",
+    28→            body: "Count your fingers. One, two, three… all the way to ten!",
+    29→            example: "🍎🍎🍎🍎🍎 — five apples! Say one number for each apple.",
+    30→            tip: "Point at each thing as you count. Do not skip anything!",
+    31→          },
+    32→          {
+    33→            heading: "Bigger Numbers",
+    34→            body: "After ten comes eleven. Then twelve, thirteen… up to twenty!",
+    35→            example: "🎈 Twelve balloons! That is a lot of balloons.",
+    36→            tip: "Numbers from 13 to 19 all end in '-teen'.",
+    37→          },
+    38→          {
+    39→            heading: "How Many Do You See?",
+    40→            body: "Look around you. Count the chairs. Count the doors. Count everything!",
+    41→            example: "1, 2, 3 — three teddy bears on the bed!",
+    42→          },
+    43→        ],
+    44→        vocab: [
+    45→          { word: "count", meaning: "Say numbers in order to find how many." },
+    46→          { word: "more", meaning: "A bigger amount. 7 cookies is more than 3 cookies." },
+    47→          { word: "zero", meaning: "No things at all! 0 means none." },
+    48→        ],
+    49→        funFact:
+    50→          "Honeybees can count! Studies show they can keep track of up to 4 landmarks on the way back home.",
+    51→        quiz: [
+    52→          {
+    53→            question: "Count the apples: 🍎🍎🍎",
+    54→            options: ["2", "3", "4"],
+    55→            answerIndex: 1,
+    56→            explanation: "Touch each apple one time as you count: one, two, three!",
+    57→          },
+    58→          {
+    59→            question: "What number comes after 6?",
+    60→            options: ["5", "7", "8"],
+    61→            answerIndex: 1,
+    62→            explanation: "When you count up, seven comes right after six.",
+    63→          },
+    64→          {
+    65→            question: "How many fingers are on one hand?",
+    66→            options: ["5", "10", "3"],
+    67→            answerIndex: 0,
+    68→            explanation: "One hand has five fingers. Two hands have ten!",
+    69→          },
+    70→          {
+    71→            question: "Which number is the biggest?",
+    72→            options: ["12", "9", "15"],
+    73→            answerIndex: 2,
+    74→            explanation: "15 comes last when you count, so it is the biggest.",
+    75→          },
+    76→        ],
+    77→        worksheet: [
+    78→          { kind: "draw", prompt: "Draw 4 circles. Then count them out loud!" },
+    79→          {
+    80→            kind: "practice",
+    81→            prompt: "Count the stars: ⭐⭐⭐⭐⭐⭐ How many stars?",
+    82→            answer: "6",
+    83→            hint: "Point to each star as you count.",
+    84→          },
+    85→          {
+    86→            kind: "fill-blank",
+    87→            prompt: "What number comes right after 9?",
+    88→            answer: "10",
+    89→          },
+    90→          {
+    91→            kind: "match",
+    92→            prompt: "Match each number to its word!",
+    93→            left: ["3", "5", "7"],
+    94→            right: ["three", "five", "seven"],
+    95→            answer: [0, 1, 2],
+    96→          },
+    97→          {
+    98→            kind: "fill-blank",
+    99→            prompt: "Count the balloons: 🎈🎈🎈🎈🎈🎈🎈🎈 How many balloons?",
+   100→            answer: "8",
+   101→          },
+   102→        ],
+   103→      },
+   104→      {
+   105→        id: "math-early-2",
+   106→        title: "Shapes All Around Us",
+   107→        emoji: "🔺",
+   108→        minutes: 6,
+   109→        intro: "Look around! Shapes are hiding everywhere in your home.",
+   110→        sections: [
+   111→          {
+   112→            heading: "Circles Are Round",
+   113→            body: "A circle is round like a ball. It has no corners at all.",
+   114→            example: "A pizza is a circle. A clock is a circle too!",
+   115→            tip: "Trace the bottom of a cup to draw a perfect circle.",
+   116→          },
+   117→          {
+   118→            heading: "Shapes with Sides",
+   119→            body: "A square has 4 sides. They are all the same. A triangle has 3 sides.",
+   120→            example: "A slice of watermelon looks like a triangle!",
+   121→            tip: "Count the sides to name a shape.",
+   122→          },
+   123→          {
+   124→            heading: "Go on a Shape Hunt",
+   125→            body: "Shapes hide everywhere in your home. Can you find them?",
+   126→            example: "A window is a square. A wheel is a circle!",
+   127→          },
+   128→        ],
+   129→        vocab: [
+   130→          { word: "circle", meaning: "A round shape with no corners." },
+   131→          { word: "square", meaning: "A shape with 4 sides, all the same." },
+   132→          { word: "triangle", meaning: "A shape with 3 sides." },
+   133→        ],
+   134→        funFact:
+   135→          "Bees build their honeycombs out of hexagons — six-sided shapes that fit together with no gaps!",
+   136→        quiz: [
+   137→          {
+   138→            question: "How many sides does a triangle have?",
+   139→            options: ["2", "3", "4"],
+   140→            answerIndex: 1,
+   141→            explanation: "Tri means three! A triangle always has 3 sides.",
+   142→          },
+   143→          {
+   144→            question: "Which shape is round?",
+   145→            options: ["🔺 triangle", "🔵 circle", "🟨 square"],
+   146→            answerIndex: 1,
+   147→            explanation: "A circle is round like a ball. It has no corners!",
+   148→          },
+   149→          {
+   150→            question: "How many sides does a square have?",
+   151→            options: ["4", "3", "5"],
+   152→            answerIndex: 0,
+   153→            explanation: "A square always has 4 sides, and they are all the same length.",
+   154→          },
+   155→          {
+   156→            question: "A ball looks most like a…",
+   157→            options: ["square", "circle", "triangle"],
+   158→            answerIndex: 1,
+   159→            explanation: "A ball is round, just like a circle!",
+   160→          },
+   161→        ],
+   162→        worksheet: [
+   163→          { kind: "draw", prompt: "Draw a big triangle. Then draw a circle under it!" },
+   164→          {
+   165→            kind: "match",
+   166→            prompt: "Match each shape to its name!",
+   167→            left: ["🔴", "🟦", "🔺"],
+   168→            right: ["circle", "square", "triangle"],
+   169→            answer: [0, 1, 2],
+   170→          },
+   171→          {
+   172→            kind: "practice",
+   173→            prompt: "How many sides does a square have?",
+   174→            answer: "4",
+   175→          },
+   176→          {
+   177→            kind: "fill-blank",
+   178→            prompt: "A pizza has the shape of a ______.",
+   179→            answer: "circle",
+   180→            hint: "It is round with no corners.",
+   181→          },
+   182→          {
+   183→            kind: "fill-blank",
+   184→            prompt: "How many corners does a triangle have?",
+   185→            answer: "3",
+   186→          },
+   187→        ],
+   188→      },
+   189→      {
+   190→        id: "math-early-3",
+   191→        title: "Adding & Subtracting Small Numbers",
+   192→        emoji: "➕",
+   193→        minutes: 7,
+   194→        intro: "Put together, take away — number magic with apples and balloons!",
+   195→        sections: [
+   196→          {
+   197→            heading: "Adding Puts Together",
+   198→            body: "Adding means putting groups together. The group gets bigger!",
+   199→            example: "🍎🍎 + 🍎 = 3 apples! Two apples and one apple make three.",
+   200→            tip: "Start with the big group, then count on: 2… 3!",
+   201→          },
+   202→          {
+   203→            heading: "Subtracting Takes Away",
+   204→            body: "Subtracting means taking some away. The group gets smaller!",
+   205→            example: "5 balloons, 2 pop. 5 − 2 = 3 balloons left!",
+   206→            tip: "Use your fingers. Put some down to take away.",
+   207→          },
+   208→          {
+   209→            heading: "Opposite Twins",
+   210→            body: "Adding and subtracting are opposites. They undo each other!",
+   211→            example: "3 + 2 = 5. Then 5 − 2 = 3. See? Back to the start!",
+   212→          },
+   213→        ],
+   214→        vocab: [
+   215→          { word: "add", meaning: "Put groups together to make a bigger group." },
+   216→          { word: "take away", meaning: "Subtract. Some things go away!" },
+   217→          { word: "equals", meaning: "Means 'the same as'. 2 + 2 equals 4." },
+   218→        ],
+   219→        funFact:
+   220→          "The plus (+) and minus (−) signs first appeared in a printed math book in 1489 — over 500 years ago!",
+   221→        quiz: [
+   222→          {
+   223→            question: "2 apples + 2 apples = ?",
+   224→            options: ["3 apples", "4 apples", "5 apples"],
+   225→            answerIndex: 1,
+   226→            explanation: "Put the two groups together: 2 + 2 = 4 apples!",
+   227→          },
+   228→          {
+   229→            question: "You have 5 cookies 🍪 and eat 1. How many are left?",
+   230→            options: ["4", "5", "6"],
+   231→            answerIndex: 0,
+   232→            explanation: "5 − 1 = 4. One cookie is gone!",
+   233→          },
+   234→          {
+   235→            question: "3 + 1 = ?",
+   236→            options: ["2", "3", "4"],
+   237→            answerIndex: 2,
+   238→            explanation: "Count on from 3: one more is 4!",
+   239→          },
+   240→          {
+   241→            question: "4 balloons and 2 pop. How many are left?",
+   242→            options: ["2", "3", "6"],
+   243→            answerIndex: 0,
+   244→            explanation: "4 − 2 = 2 balloons still floating!",
+   245→          },
+   246→        ],
+   247→        worksheet: [
+   248→          {
+   249→            kind: "practice",
+   250→            prompt: "2 + 3 = ?",
+   251→            answer: "5",
+   252→            hint: "Count on from 2: 3, 4, 5.",
+   253→          },
+   254→          {
+   255→            kind: "practice",
+   256→            prompt: "5 − 2 = ?",
+   257→            answer: "3",
+   258→          },
+   259→          { kind: "draw", prompt: "Draw 4 circles. Then draw 2 more circles. Count them all!" },
+   260→          {
+   261→            kind: "match",
+   262→            prompt: "Match each problem to its answer!",
+   263→            left: ["1 + 1", "4 − 1", "2 + 2"],
+   264→            right: ["2", "3", "4"],
+   265→            answer: [0, 1, 2],
+   266→          },
+   267→          {
+   268→            kind: "fill-blank",
+   269→            prompt: "6 − 4 = ?",
+   270→            answer: "2",
+   271→          },
+   272→        ],
+   273→      },
+   274→    ],
+   275→
+   276→    primary: [
+   277→      {
+   278→        id: "math-primary-1",
+   279→        title: "Multiplication & Times Tables",
+   280→        emoji: "✖️",
+   281→        minutes: 10,
+   282→        intro:
+   283→          "Times tables are a shortcut for fast adding — and they unlock puzzles everywhere, from muffin trays to sticker packs.",
+   284→        sections: [
+   285→          {
+   286→            heading: "Multiplication Is Fast Adding",
+   287→            body: "3 × 4 means 3 groups of 4. You could add 4 + 4 + 4, but multiplying is much faster.",
+   288→            example:
+   289→              "Maya bakes 3 trays of muffins. Each tray holds 4 muffins. 3 × 4 = 12 muffins in total.",
+   290→            tip: "Every time you see ×, think 'groups of'.",
+   291→          },
+   292→          {
+   293→            heading: "Tricks for Times Tables",
+   294→            body: "Some facts are easy friends. Anything × 1 stays the same. Anything × 10 just adds a zero. The 5s hop by fives: 5, 10, 15, 20…",
+   295→            example: "7 × 1 = 7,  8 × 10 = 80,  6 × 5 = 30 (count by fives!).",
+   296→            tip: "9s trick: 9 × 7 → the digits of the answer add to 9 (6 + 3), so the answer is 63.",
+   297→          },
+   298→          {
+   299→            heading: "Tables in Real Life",
+   300→            body: "Multiplication pops up everywhere — packing goody bags, counting wheels on cars, buying packs of cards.",
+   301→            example:
+   302→              "Kai buys 6 packs of stickers. Each pack has 5 stickers. 6 × 5 = 30 stickers. Nice haul!",
+   303→            tip: "Practise 5 minutes a day. Small steps add up fast.",
+   304→          },
+   305→        ],
+   306→        vocab: [
+   307→          {
+   308→            word: "multiply",
+   309→            meaning: "Add the same number again and again, like 4 + 4 + 4.",
+   310→          },
+   311→          { word: "factor", meaning: "A number being multiplied, like the 3 in 3 × 4." },
+   312→          { word: "product", meaning: "The answer to a multiplication problem." },
+   313→          {
+   314→            word: "times table",
+   315→            meaning: "A list of answers for one number, like the 5s: 5, 10, 15, 20…",
+   316→          },
+   317→        ],
+   318→        funFact:
+   319→          "Babylonian students used multiplication tables carved into clay tablets nearly 4,000 years ago!",
+   320→        quiz: [
+   321→          {
+   322→            question: "What does 4 × 3 mean?",
+   323→            options: ["4 + 3", "3 groups of 4", "3 × 3 plus 1", "4 more than 3"],
+   324→            answerIndex: 1,
+   325→            explanation: "Multiplying makes equal groups: 3 groups of 4 = 12.",
+   326→          },
+   327→          {
+   328→            question: "6 × 5 = ?",
+   329→            options: ["11", "30", "35", "25"],
+   330→            answerIndex: 1,
+   331→            explanation: "Count by fives six times: 5, 10, 15, 20, 25, 30.",
+   332→          },
+   333→          {
+   334→            question: "Noah packs 4 bags with 6 marbles each. How many marbles in total?",
+   335→            options: ["10", "18", "24", "30"],
+   336→            answerIndex: 2,
+   337→            explanation: "4 groups of 6: 4 × 6 = 24 marbles.",
+   338→          },
+   339→          {
+   340→            question: "Which is TRUE about multiplying by 1?",
+   341→            options: [
+   342→              "It doubles the number",
+   343→              "It keeps the number the same",
+   344→              "It makes the number 1",
+   345→              "It adds 10",
+   346→            ],
+   347→            answerIndex: 1,
+   348→            explanation: "1 group of anything is just that thing: 9 × 1 = 9.",
+   349→          },
+   350→        ],
+   351→        worksheet: [
+   352→          {
+   353→            kind: "practice",
+   354→            prompt: "7 × 8 = ?",
+   355→            answer: "56",
+   356→            hint: "Remember: 5, 6, 7, 8 → 56 = 7 × 8.",
+   357→          },
+   358→          { kind: "fill-blank", prompt: "5 × 9 = ?", answer: "45" },
+   359→          {
+   360→            kind: "practice",
+   361→            prompt: "Amara puts 8 pencils in each of 5 cups. How many pencils in total?",
+   362→            answer: "40",
+   363→          },
+   364→          { kind: "fill-blank", prompt: "3 × ___ = 24. What number goes in the blank?", answer: "8" },
+   365→          {
+   366→            kind: "practice",
+   367→            prompt: "Sofia buys 9 packs of cards. Each pack has 6 cards. How many cards?",
+   368→            answer: "54",
+   369→          },
+   370→          {
+   371→            kind: "short-answer",
+   372→            prompt:
+   373→              "Write one times-table fact you find tricky, then describe a trick that could help you remember it.",
+   374→            sampleAnswer:
+   375→              "7 × 8 is tricky for me. The trick is '5, 6, 7, 8' → 56 = 7 × 8, and I can check it by doubling 7 × 4 = 28.",
+   376→          },
+   377→        ],
+   378→      },
+   379→      {
+   380→        id: "math-primary-2",
+   381→        title: "Fractions Made Friendly",
+   382→        emoji: "🍕",
+   383→        minutes: 10,
+   384→        intro:
+   385→          "Fractions are just fair shares — like splitting a pizza with friends so everyone gets their part.",
+   386→        sections: [
+   387→          {
+   388→            heading: "Fair Shares",
+   389→            body: "A fraction shows parts of a whole. If you cut a pizza into 4 equal slices and eat 1 slice, you ate 1/4 of the pizza.",
+   390→            example: "Leo cuts a sandwich into 2 equal parts. Each part is 1/2.",
+   391→            tip: "The parts must be equal! Unequal parts are not real fractions.",
+   392→          },
+   393→          {
+   394→            heading: "Numerator and Denominator",
+   395→            body: "The top number (numerator) tells how many parts you have. The bottom number (denominator) tells how many equal parts the whole was split into.",
+   396→            example: "In 3/8, you have 3 of the 8 equal parts — like 3 slices of an 8-slice pizza.",
+   397→            tip: "Down is the denominator — both words start with D.",
+   398→          },
+   399→          {
+   400→            heading: "Comparing Fractions",
+   401→            body: "A bigger bottom number means smaller slices! 1/2 is bigger than 1/4, because half a pizza beats a quarter of it.",
+   402→            example:
+   403→              "Zara eats 1/2 of a chocolate bar and Dev eats 1/3 of the same bar. Zara gets more chocolate!",
+   404→            tip: "Same top number? The smaller bottom number wins.",
+   405→          },
+   406→        ],
+   407→        vocab: [
+   408→          { word: "fraction", meaning: "An equal part of a whole, like 1/2 or 3/4." },
+   409→          { word: "numerator", meaning: "The top number: how many parts you have." },
+   410→          {
+   411→            word: "denominator",
+   412→            meaning: "The bottom number: how many equal parts the whole has.",
+   413→          },
+   414→          { word: "half", meaning: "One of 2 equal parts. Written 1/2." },
+   415→        ],
+   416→        funFact:
+   417→          "The word 'fraction' comes from the Latin 'fractus', which means 'broken' — a fraction is a whole number broken into parts!",
+   418→        quiz: [
+   419→          {
+   420→            question: "A pizza is cut into 4 equal slices. You eat 1 slice. What fraction did you eat?",
+   421→            options: ["1/2", "1/3", "1/4", "4/1"],
+   422→            answerIndex: 2,
+   423→            explanation: "The whole had 4 equal parts, so each slice is 1/4.",
+   424→          },
+   425→          {
+   426→            question: "Which fraction is the biggest?",
+   427→            options: ["1/2", "1/3", "1/4", "1/8"],
+   428→            answerIndex: 0,
+   429→            explanation: "Fewer slices means bigger slices — half beats them all here.",
+   430→          },
+   431→          {
+   432→            question: "In the fraction 3/5, what does the 5 tell you?",
+   433→            options: [
+   434→              "How many parts you have",
+   435→              "How many equal parts the whole has",
+   436→              "The final answer",
+   437→              "How many pizzas",
+   438→            ],
+   439→            answerIndex: 1,
+   440→            explanation: "The denominator (bottom) says the whole was split into 5 equal parts.",
+   441→          },
+   442→          {
+   443→            question: "Aisha eats 2/4 of a cake and Marco eats 2/8 of the same cake. Who ate more?",
+   444→            options: ["Marco", "Aisha", "They ate the same", "Cannot tell"],
+   445→            answerIndex: 1,
+   446→            explanation: "Fourths are bigger slices than eighths, so 2/4 is more than 2/8.",
+   447→          },
+   448→        ],
+   449→        worksheet: [
+   450→          { kind: "fill-blank", prompt: "1/2 of 10 grapes is ___ grapes.", answer: "5" },
+   451→          { kind: "fill-blank", prompt: "In the fraction 2/3, the numerator is ___.", answer: "2" },
+   452→          {
+   453→            kind: "practice",
+   454→            prompt: "Which fraction is bigger: 1/2 or 1/6? Type the bigger one (like 1/2).",
+   455→            answer: "1/2",
+   456→          },
+   457→          {
+   458→            kind: "practice",
+   459→            prompt: "Kai cuts a melon into 8 equal pieces and eats 3. What fraction did Kai eat? (like 3/8)",
+   460→            answer: "3/8",
+   461→          },
+   462→          {
+   463→            kind: "short-answer",
+   464→            prompt:
+   465→              "Describe how you would share 1 sandwich fairly between you and 3 friends. What fraction does each person get?",
+   466→            sampleAnswer:
+   467→              "Cut it into 4 equal pieces — one for me and three for my friends. Each person gets 1/4 of the sandwich.",
+   468→          },
+   469→          {
+   470→            kind: "match",
+   471→            prompt: "Match each fraction to its words!",
+   472→            left: ["1/2", "1/4", "3/4"],
+   473→            right: ["three quarters", "one half", "one quarter"],
+   474→            answer: [1, 2, 0],
+   475→          },
+   476→        ],
+   477→      },
+   478→      {
+   479→        id: "math-primary-3",
+   480→        title: "Time & Money Skills",
+   481→        emoji: "⏰",
+   482→        minutes: 9,
+   483→        intro:
+   484→          "Read the clock, count your coins — these two skills pay off every single day of your life.",
+   485→        sections: [
+   486→          {
+   487→            heading: "Reading Clocks",
+   488→            body: "The short hand shows the hour. The long hand shows the minutes. When the long hand points at 3, it is 15 minutes past.",
+   489→            example: "Short hand on 4, long hand on 12 → 4 o'clock. Snack time!",
+   490→            tip: "Count by fives around the clock: 5, 10, 15, 20, 25, 30…",
+   491→          },
+   492→          {
+   493→            heading: "Counting Money",
+   494→            body: "Coins and bills have values. Add the biggest first: a dollar, then quarters (25¢ each), then dimes (10¢) and nickels (5¢).",
+   495→            example: "2 quarters + 1 dime + 1 nickel = 25 + 25 + 10 + 5 = 65¢.",
+   496→            tip: "100¢ makes 1 dollar.",
+   497→          },
+   498→          {
+   499→            heading: "Making Change",
+   500→            body: "Change is the money you get back when you pay more than the price. Start at the price and count up to what you paid.",
+   501→            example:
+   502→              "Sofia pays $1.00 for a 75¢ pencil. Count up: 75… 85, 90, 95, $1.00. That is 25¢ change.",
+   503→            tip: "Counting up to the dollar is easier than subtracting!",
+   504→          },
+   505→        ],
+   506→        vocab: [
+   507→          { word: "quarter", meaning: "A coin worth 25¢ — one quarter of a dollar." },
+   508→          { word: "change", meaning: "Money you get back after paying too much." },
+   509→          { word: "hour", meaning: "60 minutes. The short clock hand counts hours." },
+   510→          { word: "minute", meaning: "60 seconds. The long clock hand counts minutes." },
+   511→        ],
+   512→        funFact:
+   513→          "The minute hand of a clock travels about 1,440 full laps around the clock face every single day!",
+   514→        quiz: [
+   515→          {
+   516→            question: "The long hand points at 6 and the short hand is just past 2. What time is it?",
+   517→            options: ["2:30", "6:00", "2:06", "12:30"],
+   518→            answerIndex: 0,
+   519→            explanation: "Long hand on 6 means 30 minutes — half past 2 is 2:30.",
+   520→          },
+   521→          {
+   522→            question: "How many quarters make 1 dollar?",
+   523→            options: ["2", "3", "4", "5"],
+   524→            answerIndex: 2,
+   525→            explanation: "4 × 25¢ = 100¢ = $1.",
+   526→          },
+   527→          {
+   528→            question: "Maya buys a sticker for 60¢ and pays with a dollar. How much change does she get?",
+   529→            options: ["40¢", "50¢", "60¢", "30¢"],
+   530→            answerIndex: 0,
+   531→            explanation: "100 − 60 = 40, so she gets 40¢ back.",
+   532→          },
+   533→          {
+   534→            question: "Which coin is worth the most?",
+   535→            options: ["nickel", "dime", "quarter", "penny"],
+   536→            answerIndex: 2,
+   537→            explanation: "A quarter is 25¢ — more than a dime (10¢), nickel (5¢) or penny (1¢).",
+   538→          },
+   539→        ],
+   540→        worksheet: [
+   541→          {
+   542→            kind: "fill-blank",
+   543→            prompt: "The long hand on a clock counts ______.",
+   544→            answer: "minutes",
+   545→          },
+   546→          { kind: "practice", prompt: "How many minutes are in 1 hour?", answer: "60" },
+   547→          {
+   548→            kind: "practice",
+   549→            prompt: "2 quarters + 3 dimes = ___¢. Type just the number of cents.",
+   550→            answer: "80",
+   551→            hint: "Quarters are 25¢ each, dimes are 10¢ each.",
+   552→          },
+   553→          {
+   554→            kind: "fill-blank",
+   555→            prompt: "Dev pays $1.00 for a 65¢ juice. His change is ___¢.",
+   556→            answer: "35",
+   557→          },
+   558→          {
+   559→            kind: "short-answer",
+   560→            prompt:
+   561→              "You have two quarters and one dime. You want to buy a ball for 50¢. Do you have enough? Explain your thinking.",
+   562→            sampleAnswer:
+   563→              "Two quarters are 50¢, plus a dime makes 60¢. Since 60¢ is more than 50¢, yes — and I would have 10¢ left over.",
+   564→          },
+   565→          {
+   566→            kind: "match",
+   567→            prompt: "Match each coin to its value!",
+   568→            left: ["penny", "dime", "quarter"],
+   569→            right: ["10¢", "1¢", "25¢"],
+   570→            answer: [1, 0, 2],
+   571→          },
+   572→        ],
+   573→      },
+   574→    ],
+   575→
+   576→    intermediate: [
+   577→      {
+   578→        id: "math-intermediate-1",
+   579→        title: "Decimals & Percents",
+   580→        emoji: "🛒",
+   581→        minutes: 12,
+   582→        intro:
+   583→          "Decimals and percents are two languages for the same idea — parts of a whole — and you will meet both every time you shop.",
+   584→        sections: [
+   585→          {
+   586→            heading: "Place Value Past the Point",
+   587→            body: "A decimal point splits whole numbers from parts. In 3.75, the 7 sits in the tenths place (7/10) and the 5 sits in the hundredths place (5/100).",
+   588→            example:
+   589→              "$3.75 means 3 dollars, plus 7 tenths of a dollar (70¢), plus 5 hundredths (5¢).",
+   590→            tip: "The further right a digit sits, the smaller its value.",
+   591→          },
+   592→          {
+   593→            heading: "Percent Means 'Per Hundred'",
+   594→            body: "A percent is a fraction with 100 on the bottom: 25% = 25/100 = 0.25. To switch between forms, move the decimal point two places.",
+   595→            example:
+   596→              "A $40 hoodie is on sale for 25% off. 25% of 40 = 40 × 0.25 = 10. You save $10 and pay $30.",
+   597→            tip: "10% of a number = move the decimal one place left. 10% of 60 is 6.",
+   598→          },
+   599→          {
+   600→            heading: "Converting Between Forms",
+   601→            body: "Fractions, decimals and percents are three outfits for the same number: 1/2 = 0.5 = 50%. To find a percent of a number, convert the percent to a decimal first, then multiply.",
+   602→            example:
+   603→              "A game download shows 0.75 complete. That is 75% — three quarters done. A 20% chance of rain is 0.2 — unlikely, so sunglasses are fine.",
+   604→          },
+   605→        ],
+   606→        vocab: [
+   607→          { word: "decimal", meaning: "A number with a point showing parts of a whole, like 0.5." },
+   608→          { word: "percent", meaning: "Parts per hundred. 40% = 40/100 = 0.4." },
+   609→          { word: "tenth", meaning: "One of ten equal parts — the first digit after the point." },
+   610→          {
+   611→            word: "hundredth",
+   612→            meaning: "One of a hundred equal parts — the second digit after the point.",
+   613→          },
+   614→          { word: "discount", meaning: "Money taken off a price, often shown as a percent." },
+   615→        ],
+   616→        funFact:
+   617→          "The % symbol evolved from an Italian abbreviation of 'per cento' — literally 'per hundred'.",
+   618→        quiz: [
+   619→          {
+   620→            question: "What is 0.7 written as a percent?",
+   621→            options: ["0.7%", "7%", "70%", "700%"],
+   622→            answerIndex: 2,
+   623→            explanation: "Move the decimal point two places right: 0.7 → 70%.",
+   624→          },
+   625→          {
+   626→            question: "A $60 game is 50% off. What do you pay?",
+   627→            options: ["$6", "$20", "$30", "$50"],
+   628→            answerIndex: 2,
+   629→            explanation: "50% off means half price: 60 ÷ 2 = $30.",
+   630→          },
+   631→          {
+   632→            question: "Which number is the largest?",
+   633→            options: ["0.4", "0.35", "0.09", "0.401"],
+   634→            answerIndex: 3,
+   635→            explanation: "0.401 is just past 0.4; 0.35 and 0.09 are smaller.",
+   636→          },
+   637→          {
+   638→            question: "12 is what percent of 60?",
+   639→            options: ["12%", "20%", "24%", "72%"],
+   640→            answerIndex: 1,
+   641→            explanation: "12/60 = 1/5 = 0.2 = 20%.",
+   642→          },
+   643→          {
+   644→            question: "Aisha tips 15% on an $8 snack. About how much is the tip?",
+   645→            options: ["$0.15", "$0.80", "$1.20", "$12.00"],
+   646→            answerIndex: 2,
+   647→            explanation: "10% of 8 is 0.80 and 5% is 0.40, so 15% = 0.80 + 0.40 = $1.20.",
+   648→          },
+   649→        ],
+   650→        worksheet: [
+   651→          { kind: "fill-blank", prompt: "Write 45% as a decimal.", answer: "0.45" },
+   652→          { kind: "practice", prompt: "What is 10% of 250?", answer: "25" },
+   653→          {
+   654→            kind: "practice",
+   655→            prompt: "A $36 game is 25% off. What is the sale price, in dollars?",
+   656→            answer: "27",
+   657→            hint: "First find 25% of 36, then subtract it.",
+   658→          },
+   659→          { kind: "fill-blank", prompt: "0.9 = ___% (type just the number).", answer: "90" },
+   660→          {
+   661→            kind: "short-answer",
+   662→            prompt:
+   663→              "A weather report says there is an 80% chance of rain tomorrow. What does that mean, and should Kai bring an umbrella? Explain.",
+   664→            sampleAnswer:
+   665→              "It means that on about 80 days out of 100 like this one, it rained. That is very likely, so yes — Kai should bring an umbrella.",
+   666→          },
+   667→          {
+   668→            kind: "practice",
+   669→            prompt: "Marco scores 18 out of 20 on a quiz. What percent is that? (type just the number)",
+   670→            answer: "90",
+   671→            hint: "18/20 as a decimal, then move the point two places.",
+   672→          },
+   673→        ],
+   674→      },
+   675→      {
+   676→        id: "math-intermediate-2",
+   677→        title: "Ratios & Proportions",
+   678→        emoji: "⚖️",
+   679→        minutes: 12,
+   680→        intro:
+   681→          "Ratios compare things — like a perfect pancake recipe. Get the ratio right and you can scale it up for any crowd.",
+   682→        sections: [
+   683→          {
+   684→            heading: "What Is a Ratio?",
+   685→            body: "A ratio compares two amounts. If a fruit punch mixes 2 cups of juice with 3 cups of water, the ratio is 2 to 3, written 2:3. Order matters!",
+   686→            example:
+   687→              "In a class of 12 students, 8 play soccer and 4 play chess. The ratio of soccer to chess is 8:4, which simplifies to 2:1.",
+   688→            tip: "Simplify ratios just like fractions — divide both parts by the same number.",
+   689→          },
+   690→          {
+   691→            heading: "Proportions: Equal Ratios",
+   692→            body: "A proportion says two ratios are equal, like 2:3 = 4:6. To find a missing value, scale up or down — multiply or divide both parts by the same number.",
+   693→            example:
+   694→              "A recipe needs 2 eggs for every 3 cups of flour. For 9 cups of flour: 9 ÷ 3 = 3, so you need 2 × 3 = 6 eggs.",
+   695→          },
+   696→          {
+   697→            heading: "Unit Rates",
+   698→            body: "A unit rate compares to exactly 1 — like price per item or speed per hour. Divide to find it.",
+   699→            example: "6 apples cost $3.00, so each apple costs 3 ÷ 6 = $0.50 — fifty cents per apple.",
+   700→            tip: "Unit rates make shopping comparisons easy: the lowest price per item wins.",
+   701→          },
+   702→        ],
+   703→        vocab: [
+   704→          { word: "ratio", meaning: "A comparison of two amounts, like 3:2." },
+   705→          { word: "proportion", meaning: "Two equal ratios, like 1:2 = 4:8." },
+   706→          { word: "unit rate", meaning: "A rate per one unit, like $2 per apple." },
+   707→          {
+   708→            word: "scale",
+   709→            meaning: "Grow or shrink both parts of a ratio by the same factor.",
+   710→          },
+   711→          {
+   712→            word: "equivalent",
+   713→            meaning: "Different-looking ratios that mean the same comparison.",
+   714→          },
+   715→        ],
+   716→        funFact:
+   717→          "The golden ratio (about 1.618) shows up in sunflower seeds, seashells and even the Parthenon in Greece.",
+   718→        quiz: [
+   719→          {
+   720→            question: "A smoothie uses 3 bananas for 2 cups of milk. What is the banana-to-milk ratio?",
+   721→            options: ["2:3", "3:2", "3:5", "2:2"],
+   722→            answerIndex: 1,
+   723→            explanation: "Bananas come first in the question: 3 bananas to 2 cups = 3:2.",
+   724→          },
+   725→          {
+   726→            question: "Which ratio is equivalent to 4:6?",
+   727→            options: ["2:3", "6:4", "4:3", "2:6"],
+   728→            answerIndex: 0,
+   729→            explanation: "Divide both parts by 2: 4:6 = 2:3.",
+   730→          },
+   731→          {
+   732→            question: "A car travels 180 miles in 3 hours. What is its speed as a unit rate?",
+   733→            options: ["60 miles per hour", "180 miles per hour", "54 miles per hour", "36 miles per hour"],
+   734→            answerIndex: 0,
+   735→            explanation: "180 ÷ 3 = 60, so the car averages 60 mph.",
+   736→          },
+   737→          {
+   738→            question: "If 5 notebooks cost $10, how much do 8 notebooks cost?",
+   739→            options: ["$14", "$16", "$18", "$12"],
+   740→            answerIndex: 1,
+   741→            explanation: "Each notebook is $2, so 8 × 2 = $16.",
+   742→          },
+   743→          {
+   744→            question: "A map scale says 1 cm = 5 km. Two cities are 7 cm apart on the map. What is the real distance?",
+   745→            options: ["12 km", "35 km", "57 km", "70 km"],
+   746→            answerIndex: 1,
+   747→            explanation: "7 × 5 = 35 km.",
+   748→          },
+   749→        ],
+   750→        worksheet: [
+   751→          {
+   752→            kind: "fill-blank",
+   753→            prompt: "Simplify the ratio 6:8 to its simplest form (like 3:4).",
+   754→            answer: "3:4",
+   755→          },
+   756→          {
+   757→            kind: "practice",
+   758→            prompt: "A trail mix uses 2 cups of nuts per 1 cup of raisins. How many cups of nuts for 5 cups of raisins?",
+   759→            answer: "10",
+   760→          },
+   761→          {
+   762→            kind: "practice",
+   763→            prompt: "Zara reads 30 pages in 45 minutes. At that rate, how many pages in 90 minutes?",
+   764→            answer: "60",
+   765→            hint: "90 minutes is double 45 minutes.",
+   766→          },
+   767→          {
+   768→            kind: "fill-blank",
+   769→            prompt: "12 pencils cost $3.00. The unit price is $___ per pencil.",
+   770→            answer: "0.25",
+   771→          },
+   772→          {
+   773→            kind: "short-answer",
+   774→            prompt:
+   775→              "A pancake recipe serves 4 people and calls for 1.5 cups of milk. You need to serve 6 people. How much milk do you need, and how do you know?",
+   776→            sampleAnswer:
+   777→              "6 is 1.5 times 4, so scale the whole recipe by 1.5: 1.5 × 1.5 = 2.25 cups of milk.",
+   778→          },
+   779→          {
+   780→            kind: "practice",
+   781→            prompt: "A model car is built at 1:24 scale. The real car is 4.8 meters long. How long is the model, in meters?",
+   782→            answer: "0.2",
+   783→            hint: "Divide the real length by 24.",
+   784→          },
+   785→        ],
+   786→      },
+   787→      {
+   788→        id: "math-intermediate-3",
+   789→        title: "Intro to Algebra: Solving Equations",
+   790→        emoji: "🧩",
+   791→        minutes: 13,
+   792→        intro:
+   793→          "Algebra turns 'mystery number' puzzles into equations you can actually solve — it is detective work with letters.",
+   794→        sections: [
+   795→          {
+   796→            heading: "Letters Stand for Numbers",
+   797→            body: "A variable is a letter that holds the place of a mystery number. If Noah has n marbles and finds 5 more, we write n + 5.",
+   798→            example: "n + 5 = 12 asks: what number plus 5 makes 12? The answer is n = 7.",
+   799→            tip: "Read expressions out loud: 3x means 'three groups of x'.",
+   800→          },
+   801→          {
+   802→            heading: "Balance the Equation",
+   803→            body: "An equation is like a balanced scale. Whatever you do to one side, you must do to the other. To undo '+ 5', subtract 5 from both sides.",
+   804→            example: "x + 5 = 12 → x + 5 − 5 = 12 − 5 → x = 7. Check: 7 + 5 = 12 ✓",
+   805→          },
+   806→          {
+   807→            heading: "Undo Multiplication Too",
+   808→            body: "Use the opposite operation to peel away each layer. Addition undoes subtraction, and division undoes multiplication.",
+   809→            example: "4y = 28 → divide both sides by 4 → y = 7. Check: 4 × 7 = 28 ✓",
+   810→            tip: "Always check your answer by substituting it back into the original equation.",
+   811→          },
+   812→        ],
+   813→        vocab: [
+   814→          {
+   815→            word: "variable",
+   816→            meaning: "A letter, like x, standing for an unknown number.",
+   817→          },
+   818→          {
+   819→            word: "equation",
+   820→            meaning: "A math sentence with an equals sign, balanced on both sides.",
+   821→          },
+   822→          { word: "solve", meaning: "Find the value of the variable that makes the equation true." },
+   823→          {
+   824→            word: "inverse operation",
+   825→            meaning: "The opposite operation — subtraction undoes addition, division undoes multiplication.",
+   826→          },
+   827→          { word: "term", meaning: "A building block of an expression, like 3x or +5." },
+   828→        ],
+   829→        funFact:
+   830→          "The word 'algebra' comes from 'al-jabr', the title of a 9th-century math book by the Persian mathematician al-Khwarizmi.",
+   831→        quiz: [
+   832→          {
+   833→            question: "What does the x in 3x stand for?",
+   834→            options: ["The letter after w", "An unknown number", "The times symbol", "Zero"],
+   835→            answerIndex: 1,
+   836→            explanation: "A variable is a placeholder for a number we have not found yet.",
+   837→          },
+   838→          {
+   839→            question: "Solve: x + 6 = 14",
+   840→            options: ["x = 6", "x = 8", "x = 14", "x = 20"],
+   841→            answerIndex: 1,
+   842→            explanation: "Subtract 6 from both sides: x = 14 − 6 = 8.",
+   843→          },
+   844→          {
+   845→            question: "Solve: 5m = 45",
+   846→            options: ["m = 9", "m = 40", "m = 50", "m = 225"],
+   847→            answerIndex: 0,
+   848→            explanation: "Divide both sides by 5: m = 45 ÷ 5 = 9.",
+   849→          },
+   850→          {
+   851→            question: "Solve: y − 7 = 3",
+   852→            options: ["y = 4", "y = 10", "y = 21", "y = −4"],
+   853→            answerIndex: 1,
+   854→            explanation: "Add 7 to both sides: y = 3 + 7 = 10.",
+   855→          },
+   856→          {
+   857→            question: "Sofia thinks n = 4 solves 2n + 3 = 10. Is she right?",
+   858→            options: [
+   859→              "Yes — because 2 + 3 = 5",
+   860→              "No — n = 4 gives 11",
+   861→              "No — n = 4 gives 7",
+   862→              "Yes — because 2 × 4 = 8",
+   863→            ],
+   864→            answerIndex: 1,
+   865→            explanation: "Check it: 2 × 4 + 3 = 11, not 10. The real solution is n = 3.5.",
+   866→          },
+   867→        ],
+   868→        worksheet: [
+   869→          { kind: "fill-blank", prompt: "Solve: x + 9 = 15.  x = ___", answer: "6" },
+   870→          { kind: "practice", prompt: "Solve: 3a = 21.  a = ?", answer: "7" },
+   871→          { kind: "practice", prompt: "Solve: y − 4 = 10.  y = ?", answer: "14" },
+   872→          {
+   873→            kind: "fill-blank",
+   874→            prompt: "To solve 2x = 18, divide both sides by ___.",
+   875→            answer: "2",
+   876→          },
+   877→          {
+   878→            kind: "short-answer",
+   879→            prompt:
+   880→              "Dev writes the equation x + 4 = 4x − 8 and guesses that x = 4. Check his guess by substituting into both sides, then explain whether he is correct.",
+   881→            sampleAnswer:
+   882→              "Left side: 4 + 4 = 8. Right side: 4 × 4 − 8 = 16 − 8 = 8. Both sides equal 8, so yes — x = 4 is correct.",
+   883→          },
+   884→          {
+   885→            kind: "practice",
+   886→            prompt: "Amara buys 4 same-priced pens for $12. If p is the price of one pen, solve 4p = 12.  p = ?",
+   887→            answer: "3",
+   888→            hint: "Divide both sides by 4. The answer is in dollars.",
+   889→          },
+   890→        ],
+   891→      },
+   892→    ],
+   893→
+   894→    teen: [
+   895→      {
+   896→        id: "math-teen-1",
+   897→        title: "Linear Equations & Graphing Lines",
+   898→        emoji: "📈",
+   899→        minutes: 18,
+   900→        intro:
+   901→          "Every straight line hides a simple rule. Learn to read y = mx + b and you can model anything that changes at a constant rate — taxi fares, gym fees, phone plans.",
+   902→        sections: [
+   903→          {
+   904→            heading: "Slope: The Rate of Change",
+   905→            body: "In y = mx + b, m is the slope — how fast y rises for each step of x. Slope = rise/run = (y₂ − y₁)/(x₂ − x₁). A slope of 3 means y grows 3 units for every 1 unit of x.",
+   906→            example:
+   907→              "A phone plan costs $20 plus $2 per GB. The cost line has slope 2: each extra gigabyte adds exactly $2.",
+   908→            tip: "Positive slope rises left to right; negative slope falls. Zero slope is horizontal.",
+   909→          },
+   910→          {
+   911→            heading: "Intercepts and Forms",
+   912→            body: "b is the y-intercept — where the line crosses the y-axis, the starting value when x = 0. Key forms: slope-intercept y = mx + b, point-slope y − y₁ = m(x − x₁), standard Ax + By = C.",
+   913→            example:
+   914→              "For the phone plan C = 2g + 20: at g = 0 the cost is $20, so the y-intercept is (0, 20).",
+   915→            tip: "Convert to slope-intercept form when you need to graph quickly.",
+   916→          },
+   917→          {
+   918→            heading: "Graphing and Interpreting",
+   919→            body: "Plot the y-intercept, then step with the slope: run 1, rise m. Two points fix a line completely. Parallel lines share a slope; perpendicular lines have slopes multiplying to −1.",
+   920→            example: "Graph y = 2x + 20: start at (0, 20), move right 1 and up 2 to reach (1, 22).",
+   921→            tip: "The x-intercept solves 0 = mx + b — the point where the model hits zero.",
+   922→          },
+   923→        ],
+   924→        vocab: [
+   925→          {
+   926→            word: "slope",
+   927→            meaning: "Rate of change of a line: rise over run, the m in y = mx + b.",
+   928→          },
+   929→          {
+   930→            word: "y-intercept",
+   931→            meaning: "Where the line crosses the y-axis — the value when x = 0.",
+   932→          },
+   933→          {
+   934→            word: "linear",
+   935→            meaning: "Changing by equal amounts; a constant rate that graphs as a straight line.",
+   936→          },
+   937→          { word: "parallel", meaning: "Lines with the same slope that never intersect." },
+   938→          {
+   939→            word: "perpendicular",
+   940→            meaning: "Lines meeting at 90°; their slopes multiply to −1.",
+   941→          },
+   942→          {
+   943→            word: "system",
+   944→            meaning: "Two or more equations solved together; the solution is where the lines cross.",
+   945→          },
+   946→        ],
+   947→        funFact:
+   948→          "The coordinate plane is named after René Descartes — legend says watching a fly walk across his ceiling gave him the idea.",
+   949→        quiz: [
+   950→          {
+   951→            question: "What is the slope of the line through (1, 5) and (3, 11)?",
+   952→            options: ["2", "3", "6", "1/2"],
+   953→            answerIndex: 1,
+   954→            explanation: "Slope = (11 − 5)/(3 − 1) = 6/2 = 3.",
+   955→          },
+   956→          {
+   957→            question: "Which line is parallel to y = 4x − 7?",
+   958→            options: ["y = −4x + 7", "y = 4x + 3", "y = (1/4)x − 7", "y = x + 4"],
+   959→            answerIndex: 1,
+   960→            explanation: "Parallel lines share the same slope — only y = 4x + 3 has slope 4.",
+   961→          },
+   962→          {
+   963→            question:
+   964→              "A taxi charges $3.50 to start plus $1.20 per km. Which equation gives the fare f for a d-km ride?",
+   965→            options: ["f = 3.50d + 1.20", "f = 1.20d + 3.50", "f = 4.70d", "f = 1.20(d + 3.50)"],
+   966→            answerIndex: 1,
+   967→            explanation: "The per-km rate is the slope (1.20d) and the start fee is the intercept (3.50).",
+   968→          },
+   969→          {
+   970→            question: "Where does y = 3x − 6 cross the x-axis?",
+   971→            options: ["(0, −6)", "(2, 0)", "(−2, 0)", "(6, 0)"],
+   972→            answerIndex: 1,
+   973→            explanation: "Set y = 0: 3x = 6, so x = 2. The point is (2, 0).",
+   974→          },
+   975→          {
+   976→            question: "How many intersection points do y = 2x + 1 and y = 2x − 5 have?",
+   977→            options: ["Exactly one", "None — they are parallel", "Infinitely many", "Cannot be determined"],
+   978→            answerIndex: 1,
+   979→            explanation: "Equal slopes but different intercepts → parallel lines never meet.",
+   980→          },
+   981→        ],
+   982→        worksheet: [
+   983→          { kind: "fill-blank", prompt: "The slope of y = −5x + 2 is ___.", answer: "-5" },
+   984→          {
+   985→            kind: "practice",
+   986→            prompt: "Find the slope of the line through (2, 3) and (6, 15).",
+   987→            answer: "3",
+   988→            hint: "Slope = (y₂ − y₁)/(x₂ − x₁).",
+   989→          },
+   990→          {
+   991→            kind: "fill-blank",
+   992→            prompt: "A line has slope 2 and y-intercept 7. Its equation is y = 2x + ___.",
+   993→            answer: "7",
+   994→          },
+   995→          {
+   996→            kind: "practice",
+   997→            prompt: "Solve the system: y = x + 4 and y = 3x − 2. What is the x-value of the intersection point?",
+   998→            answer: "3",
+   999→            hint: "Set x + 4 = 3x − 2 and solve.",
+  1000→          },
+  1001→          {
+  1002→            kind: "short-answer",
+  1003→            prompt:
+  1004→              "A gym charges a flat fee plus a per-visit fee. 5 visits cost $45 and 8 visits cost $66. Explain how to find the per-visit fee and the flat fee.",
+  1005→            sampleAnswer:
+  1006→              "Cost rises $66 − $45 = $21 over 3 extra visits, so the slope is $7 per visit. Flat fee = 45 − 5 × 7 = $10.",
+  1007→          },
+  1008→          {
+  1009→            kind: "fill-blank",
+  1010→            prompt: "The x-intercept of y = 4x − 12 is (___, 0).",
+  1011→            answer: "3",
+  1012→          },
+  1013→        ],
+  1014→      },
+  1015→      {
+  1016→        id: "math-teen-2",
+  1017→        title: "Pythagorean Theorem & Geometry",
+  1018→        emoji: "📐",
+  1019→        minutes: 16,
+  1020→        intro:
+  1021→          "One ancient formula still powers construction, navigation and video games: a² + b² = c². Let's put it to work.",
+  1022→        sections: [
+  1023→          {
+  1024→            heading: "Right Triangles and the Theorem",
+  1025→            body: "In a right triangle, the two shorter sides are the legs and the longest side (opposite the right angle) is the hypotenuse. The theorem states a² + b² = c², where c is the hypotenuse.",
+  1026→            example: "Legs 3 and 4: 3² + 4² = 9 + 16 = 25, so c² = 25 and c = 5.",
+  1027→            tip: "Only the two legs get squared and added — never include c² on the left.",
+  1028→          },
+  1029→          {
+  1030→            heading: "Finding Any Missing Side",
+  1031→            body: "To find the hypotenuse, square both legs, add, then take the square root. To find a leg, subtract instead: a² = c² − b².",
+  1032→            example:
+  1033→              "A ladder leans with its foot 5 m from a wall and reaches 12 m up. Its length: 5² + 12² = 25 + 144 = 169, so √169 = 13 m.",
+  1034→            tip: "Memorize the triples 3-4-5, 5-12-13 and 8-15-17 — they appear in exams constantly.",
+  1035→          },
+  1036→          {
+  1037→            heading: "Why It Matters",
+  1038→            body: "The theorem verifies right angles on construction sites, computes straight-line (diagonal) distances, and underpins the coordinate distance formula: d = √((x₂−x₁)² + (y₂−y₁)²).",
+  1039→            example:
+  1040→              "A screen is 16 by 12 inches. Its diagonal is √(16² + 12²) = √(256 + 144) = √400 = 20 inches.",
+  1041→            tip: "The distance formula is just the Pythagorean theorem on a grid.",
+  1042→          },
+  1043→        ],
+  1044→        vocab: [
+  1045→          {
+  1046→            word: "hypotenuse",
+  1047→            meaning: "The longest side of a right triangle, opposite the right angle.",
+  1048→          },
+  1049→          { word: "leg", meaning: "Either of the two shorter sides forming the right angle." },
+  1050→          {
+  1051→            word: "square root",
+  1052→            meaning: "A number that multiplied by itself gives the original: √25 = 5.",
+  1053→          },
+  1054→          {
+  1055→            word: "Pythagorean triple",
+  1056→            meaning: "Whole numbers satisfying a² + b² = c², like 3-4-5.",
+  1057→          },
+  1058→          {
+  1059→            word: "converse",
+  1060→            meaning: "If a² + b² = c² holds for three sides, the triangle must be right-angled.",
+  1061→          },
+  1062→          {
+  1063→            word: "diagonal",
+  1064→            meaning: "A straight line cutting across a shape, e.g. corner to corner of a screen.",
+  1065→          },
+  1066→        ],
+  1067→        funFact:
+  1068→          "Babylonian mathematicians used Pythagorean triples like 3-4-5 over 1,000 years before Pythagoras was born.",
+  1069→        quiz: [
+  1070→          {
+  1071→            question: "A right triangle has legs 6 and 8. What is the hypotenuse?",
+  1072→            options: ["10", "12", "14", "48"],
+  1073→            answerIndex: 0,
+  1074→            explanation: "6² + 8² = 36 + 64 = 100, and √100 = 10.",
+  1075→          },
+  1076→          {
+  1077→            question: "The hypotenuse is 13 and one leg is 5. The other leg is…",
+  1078→            options: ["8", "12", "18", "13² − 5²"],
+  1079→            answerIndex: 1,
+  1080→            explanation: "13² − 5² = 169 − 25 = 144, and √144 = 12.",
+  1081→          },
+  1082→          {
+  1083→            question: "Which set is a Pythagorean triple?",
+  1084→            options: ["2, 3, 4", "4, 5, 6", "6, 8, 10", "5, 6, 8"],
+  1085→            answerIndex: 2,
+  1086→            explanation: "36 + 64 = 100, so 6-8-10 works — it is the 3-4-5 triple doubled.",
+  1087→          },
+  1088→          {
+  1089→            question: "A rectangle measures 9 m by 12 m. Its diagonal is…",
+  1090→            options: ["15 m", "21 m", "13 m", "3 m"],
+  1091→            answerIndex: 0,
+  1092→            explanation: "√(9² + 12²) = √(81 + 144) = √225 = 15 m.",
+  1093→          },
+  1094→          {
+  1095→            question: "A triangle has sides 7, 24, 25. What can you conclude?",
+  1096→            options: [
+  1097→              "It is a right triangle",
+  1098→              "It is equilateral",
+  1099→              "It cannot exist",
+  1100→              "It has no right angle",
+  1101→            ],
+  1102→            answerIndex: 0,
+  1103→            explanation: "7² + 24² = 49 + 576 = 625 = 25², so by the converse it is right-angled.",
+  1104→          },
+  1105→        ],
+  1106→        worksheet: [
+  1107→          {
+  1108→            kind: "fill-blank",
+  1109→            prompt: "In a right triangle with legs 9 and 12, the hypotenuse is ___.",
+  1110→            answer: "15",
+  1111→            hint: "9² + 12² = 225.",
+  1112→          },
+  1113→          { kind: "practice", prompt: "Find the hypotenuse for legs 5 and 12.", answer: "13" },
+  1114→          {
+  1115→            kind: "fill-blank",
+  1116→            prompt: "Hypotenuse 10, one leg 6: the other leg is √___ (type the number under the root).",
+  1117→            answer: "64",
+  1118→          },
+  1119→          {
+  1120→            kind: "practice",
+  1121→            prompt: "A kite string is taut: it runs 30 m horizontally from Kai and the kite is 40 m high. How long is the string, in meters?",
+  1122→            answer: "50",
+  1123→          },
+  1124→          {
+  1125→            kind: "short-answer",
+  1126→            prompt:
+  1127→              "A TV screen measures 40 inches diagonally and is 32 inches wide. Show how to find its height using the Pythagorean theorem, then state the height.",
+  1128→            sampleAnswer:
+  1129→              "height² = 40² − 32² = 1600 − 1024 = 576, so height = √576 = 24 inches.",
+  1130→          },
+  1131→          {
+  1132→            kind: "fill-blank",
+  1133→            prompt: "The squares of the two legs equal the square of the ______.",
+  1134→            answer: "hypotenuse",
+  1135→          },
+  1136→        ],
+  1137→      },
+  1138→      {
+  1139→        id: "math-teen-3",
+  1140→        title: "Statistics & Probability",
+  1141→        emoji: "🎲",
+  1142→        minutes: 17,
+  1143→        intro:
+  1144→          "Data is everywhere — sports stats, app analytics, weather forecasts. Statistics turns raw numbers into decisions, and probability tells you what to expect.",
+  1145→        sections: [
+  1146→          {
+  1147→            heading: "Measures of Center",
+  1148→            body: "The mean is the sum divided by the count. The median is the middle value of an ordered list. The mode is the most frequent value. Outliers drag the mean but barely move the median.",
+  1149→            example:
+  1150→              "Salaries (in $k): 30, 35, 40, 45, 250. Mean = 400 ÷ 5 = 80, but the median is 40 — one outlier makes the mean misleading.",
+  1151→            tip: "When outliers are present, report the median.",
+  1152→          },
+  1153→          {
+  1154→            heading: "Spread and Display",
+  1155→            body: "Range = maximum − minimum. Standard deviation measures how far values typically sit from the mean. Box plots show median, quartiles and outliers; histograms show the shape of the data.",
+  1156→            example: "Quiz scores 60, 70, 70, 80, 90: range = 90 − 60 = 30, and the mode is 70.",
+  1157→            tip: "Always check units and sample size before comparing two data sets.",
+  1158→          },
+  1159→          {
+  1160→            heading: "Probability Basics",
+  1161→            body: "Probability = favourable outcomes ÷ total outcomes, always between 0 and 1. Independent events multiply: P(A and B) = P(A) × P(B).",
+  1162→            example: "Two fair coins: P(two heads) = 1/2 × 1/2 = 1/4 = 25%.",
+  1163→            tip: "0 means impossible, 1 means certain — nothing in between is guaranteed.",
+  1164→          },
+  1165→        ],
+  1166→        vocab: [
+  1167→          { word: "mean", meaning: "Sum of all values divided by how many values there are." },
+  1168→          { word: "median", meaning: "The middle value once the data is ordered." },
+  1169→          { word: "mode", meaning: "The value that appears most often." },
+  1170→          { word: "outlier", meaning: "A value far away from the rest of the data." },
+  1171→          {
+  1172→            word: "probability",
+  1173→            meaning: "A number from 0 to 1 measuring how likely an event is.",
+  1174→          },
+  1175→          {
+  1176→            word: "independent",
+  1177→            meaning: "Events that do not affect each other, so their probabilities multiply.",
+  1178→          },
+  1179→        ],
+  1180→        funFact:
+  1181→          "The word 'statistics' comes from 'state' — it began as the data governments collected about their populations.",
+  1182→        quiz: [
+  1183→          {
+  1184→            question: "Data: 4, 8, 15, 16, 23, 42. What is the median?",
+  1185→            options: ["15", "16", "15.5", "23"],
+  1186→            answerIndex: 2,
+  1187→            explanation: "With six values, average the two middle ones: (15 + 16) ÷ 2 = 15.5.",
+  1188→          },
+  1189→          {
+  1190→            question: "A bag has 3 red, 2 blue and 5 green marbles. What is P(blue)?",
+  1191→            options: ["1/2", "1/5", "2/3", "2/5"],
+  1192→            answerIndex: 1,
+  1193→            explanation: "2 blue out of 10 total: 2/10 = 1/5.",
+  1194→          },
+  1195→          {
+  1196→            question:
+  1197→              "Which measure of center best describes a typical income when one billionaire is in the data set?",
+  1198→            options: ["Mean", "Median", "Mode", "Range"],
+  1199→            answerIndex: 1,
+  1200→            explanation: "The extreme outlier inflates the mean; the median resists outliers.",
+  1201→          },
+  1202→          {
+  1203→            question: "Rolling two fair dice, what is P(both show 6)?",
+  1204→            options: ["1/6", "1/12", "1/36", "1/2"],
+  1205→            answerIndex: 2,
+  1206→            explanation: "Independent events: 1/6 × 1/6 = 1/36.",
+  1207→          },
+  1208→          {
+  1209→            question: "Scores: 70, 75, 80, 85, 250. Which statement is true?",
+  1210→            options: [
+  1211→              "The mean is the best summary",
+  1212→              "The median is 80",
+  1213→              "The mode is 250",
+  1214→              "The range is 5",
+  1215→            ],
+  1216→            answerIndex: 1,
+  1217→            explanation: "Ordered, the middle value is 80. The outlier drags the mean to 112.",
+  1218→          },
+  1219→        ],
+  1220→        worksheet: [
+  1221→          {
+  1222→            kind: "fill-blank",
+  1223→            prompt: "Find the mean of 6, 7, 8, 11. (type the number)",
+  1224→            answer: "8",
+  1225→          },
+  1226→          {
+  1227→            kind: "practice",
+  1228→            prompt: "Find the median of 12, 5, 9, 3, 10.",
+  1229→            answer: "9",
+  1230→            hint: "Order the list first.",
+  1231→          },
+  1232→          {
+  1233→            kind: "fill-blank",
+  1234→            prompt: "Rolling a fair die: P(even number) = ___ (as a fraction like 1/2).",
+  1235→            answer: "1/2",
+  1236→          },
+  1237→          {
+  1238→            kind: "practice",
+  1239→            prompt: "Data set: 3, 3, 5, 9, 10, 18. What is the range?",
+  1240→            answer: "15",
+  1241→          },
+  1242→          {
+  1243→            kind: "short-answer",
+  1244→            prompt:
+  1245→              "A game drops a rare item 5% of the time per attempt. Aisha claims that 'after 20 attempts it is guaranteed'. Explain why she is wrong, and describe what actually happens to the chance as attempts pile up.",
+  1246→            sampleAnswer:
+  1247→              "Each attempt is independent, so nothing is guaranteed: after 20 attempts the chance of at least one drop is 1 − 0.95²⁰ ≈ 64%. The odds climb toward 100% but never quite reach it.",
+  1248→          },
+  1249→          {
+  1250→            kind: "fill-blank",
+  1251→            prompt: "Independent events: P(A) = 1/2 and P(B) = 1/3. P(A and B) = ___ (fraction like 1/2).",
+  1252→            answer: "1/6",
+  1253→          },
+  1254→        ],
+  1255→      },
+  1256→    ],
+  1257→  },
+  1258→};
+  1259→

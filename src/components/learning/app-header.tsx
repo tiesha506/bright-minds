@@ -37,9 +37,8 @@ export function AppHeader({
     <header className="sticky top-0 z-40 border-b bg-background/85 backdrop-blur-md no-print">
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-3">
         <div className="flex items-center gap-2 min-w-0">
-          <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/25 shrink-0">
-            { }
-            <img src="/images/mascot.png" alt="BrightMinds mascot" className="w-full h-full object-cover" />
+          <div className="h-10 rounded-lg overflow-hidden border-2 border-primary/25 bg-black shadow-sm shrink-0 flex items-center">
+            <img src="/logo.png" alt="BrightMinds logo" className="h-full w-auto" />
           </div>
           <div className="min-w-0">
             <p className="font-bold text-lg leading-tight truncate" style={{ fontFamily: "var(--font-fredoka)" }}>

@@ -41,6 +41,33 @@ export interface LessonSection {
   tip?: string;
 }
 
+// ---------------------------------------------------------------------------
+// Strategy Lab — "never just the answer, show DIFFERENT ways to solve it"
+// Used heavily by Mathematics lessons: the same problem is solved with
+// multiple genuinely different methods so students can pick what clicks.
+// ---------------------------------------------------------------------------
+
+export interface SolveMethod {
+  /** Method name, e.g. "Repeated Subtraction" or "Make Ten". */
+  name: string;
+  emoji: string;
+  /** One friendly line: when this method shines (tuned to the age group). */
+  whenToUse: string;
+  /** 2-4 numbered steps that solve the example using THIS method. */
+  steps: string[];
+}
+
+export interface MethodExample {
+  /** The problem, e.g. "24 ÷ 6 = ?". */
+  problem: string;
+  /** The final answer, e.g. "4". */
+  answer: string;
+  /** Why the answer makes sense — e.g. check with the inverse operation. */
+  answerCheck: string;
+  /** 2-4 genuinely DIFFERENT methods for the same problem. */
+  methods: SolveMethod[];
+}
+
 export interface Lesson {
   /** Pattern: `${subjectId}-${group}-${n}` e.g. "math-early-1". */
   id: string;
@@ -54,6 +81,12 @@ export interface Lesson {
   /** 3-6 key words with age-appropriate meanings. */
   vocab: { word: string; meaning: string }[];
   funFact: string;
+  /**
+   * Optional "Strategy Lab": worked problems, each solved with MULTIPLE
+   * different methods. Math lessons SHOULD include 1-2 of these — never
+   * simply hand over the answer, always show the different ways of thinking.
+   */
+  strategyLab?: MethodExample[];
   /** early/primary: 4 questions; intermediate/teen: 5 questions. */
   quiz: QuizQuestion[];
   /** 5-6 varied worksheet items. */
