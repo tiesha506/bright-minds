@@ -52,7 +52,7 @@ function buildMixedLesson(group: AgeGroup): Lesson {
     s = (s * 9301 + 49297) % 233280;
     const idx = Math.floor((s / 233280) * pool.length);
     const candidate = pool[idx];
-    if (!picked.some((p) => p.q === candidate)) picked.push(candidate);
+    if (!picked.some((p) => p.q === candidate.q)) picked.push(candidate);
   }
   return {
     id: `mixed-challenge-${seed}`,

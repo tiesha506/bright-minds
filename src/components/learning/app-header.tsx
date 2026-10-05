@@ -80,7 +80,9 @@ export function AppHeader({
   const { level, intoLevel } = levelFromXp(xp);
   const group = AGE_GROUPS[profile.ageGroup];
 
-  const go = (key: NavKey) => () => onNavigate(key);
+  // Defensive: during a hot-reload a caller chunk can briefly render the header
+  // without fresh props — a missing callback must never crash the whole app.
+  const go = (key: NavKey) => () => onNavigate?.(key);
 
   return (
     <header className="sticky top-0 z-40 border-b bg-background/90 backdrop-blur-md no-print">

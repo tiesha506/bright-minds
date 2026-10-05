@@ -73,7 +73,7 @@ export function WorksheetPanel({ items, lessonTitle, meta, onGraded }: Worksheet
   const [states, setStates] = useState<ItemState[]>(() => initState(items));
   const [allChecked, setAllChecked] = useState(false);
   const [keyVisible, setKeyVisible] = useState(false);
-  const gradedOnce = useRef(false);
+  const [gradedOnce, setGradedOnce] = useState(false);
 
   // Re-seed states if the item set changes (worksheet generator).
   const itemsKey = useMemo(() => JSON.stringify(items).length + items.length, [items]);
@@ -82,7 +82,7 @@ export function WorksheetPanel({ items, lessonTitle, meta, onGraded }: Worksheet
     setLastKey(itemsKey);
     setStates(initState(items));
     setAllChecked(false);
-    gradedOnce.current = false;
+    setGradedOnce(false);
   }
 
   const update = (i: number, patch: Partial<ItemState>) =>
@@ -130,8 +130,8 @@ export function WorksheetPanel({ items, lessonTitle, meta, onGraded }: Worksheet
     const someRight = results.some((r) => r.correct === true);
     if (gradableIdx.length > 0 && allRight) celebrate("big");
     else if (someRight) celebrate("small");
-    if (!gradedOnce.current && onGraded) {
-      gradedOnce.current = true;
+    if (!gradedOnce && onGraded) {
+      setGradedOnce(true);
       const correct = results.filter((r) => r.correct === true).length;
       onGraded(correct, gradableIdx.length);
     }

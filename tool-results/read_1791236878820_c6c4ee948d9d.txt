@@ -1,0 +1,1087 @@
+     1→     1→// English — Intermediate (ages 12-13)
+     2→     2→// Six lessons: clauses & complex sentences, active/passive voice, figurative
+     3→     3→// language, formal vs informal register, advanced punctuation, and persuasive
+     4→     4→// techniques. Confident, concrete, and never babyish.
+     5→     5→import type { Lesson } from "./types";
+     6→     6→
+     7→     7→export const lessons: Lesson[] = [
+     8→     8→  // -------------------------------------------------------------------------
+     9→     9→  // 1. Clauses and Complex Sentences
+    10→    10→  // -------------------------------------------------------------------------
+    11→    11→  {
+    12→    12→    id: "english-intermediate-1",
+    13→    13→    title: "Clauses and Complex Sentences",
+    14→    14→    emoji: "🔗",
+    15→    15→    minutes: 12,
+    16→    16→    intro:
+    17→    17→      "Simple sentences are fine — but complex sentences let you show cause, contrast, and timing in a single elegant line. Time to upgrade your sentence engine.",
+    18→    18→    sections: [
+    19→    19→      {
+    20→    20→        heading: "Two Kinds of Clauses",
+    21→    21→        body:
+    22→    22→          "A clause is a group of words with a subject and a verb. An INDEPENDENT clause can stand alone as a sentence: 'The storm arrived early.' A DEPENDENT clause has a subject and verb too, but it starts with a word like because, although, when, or if — and it CANNOT stand alone: 'because the roads flooded.' It leaves you waiting for more.",
+    23→    23→        example:
+    24→    24→          "Independent: 'We canceled the picnic.' Dependent: 'because the roads flooded.' Glue them together: 'We canceled the picnic because the roads flooded.'",
+    25→    25→        tip: "If a clause starts with because/although/when/if, it needs a partner.",
+    26→    26→      },
+    27→    27→      {
+    28→    28→        heading: "The Subordinating Superpowers",
+    29→    29→        body:
+    30→    30→          "Subordinating conjunctions are the tiny words that turn independent clauses into dependent ones — and each one adds meaning. BECAUSE gives a reason. WHEN gives a time. ALTHOUGH gives a contrast. IF gives a condition. Choose the one that matches what you actually mean.",
+    31→    31→        example:
+    32→    32→          "'Although it rained, we hiked' and 'Because it rained, we hiked' describe two very different hikes!",
+    33→    33→        tip: "Conjunction choice changes meaning — pick deliberately.",
+    34→    34→      },
+    35→    35→      {
+    36→    36→        heading: "Building Complex Sentences",
+    37→    37→        body:
+    38→    38→          "A complex sentence = one independent clause + at least one dependent clause. When the dependent clause comes FIRST, follow it with a comma: 'Although she was nervous, Priya auditioned.' When it comes second, usually no comma: 'Priya auditioned although she was nervous.'",
+    39→    39→        example:
+    40→    40→          "'When the bell rings, we leave.' vs. 'We leave when the bell rings.' Same facts, different punctuation.",
+    41→    41→        tip: "Dependent clause first → comma. Dependent clause second → usually no comma.",
+    42→    42→      },
+    43→    43→    ],
+    44→    44→    vocab: [
+    45→    45→      { word: "clause", meaning: "A group of words with a subject and a verb." },
+    46→    46→      { word: "independent clause", meaning: "A clause that can stand alone as a full sentence." },
+    47→    47→      { word: "dependent clause", meaning: "A clause that cannot stand alone — it starts with words like because or although." },
+    48→    48→      { word: "subordinating conjunction", meaning: "A word like because, when, although, or if that creates a dependent clause." },
+    49→    49→    ],
+    50→    50→    funFact:
+    51→    51→      "'It was the best of times, it was the worst of times…' — Charles Dickens's famous opening in 'A Tale of Two Cities' is built entirely from balanced clauses, and readers still quote it more than 165 years later.",
+    52→    52→    quiz: [
+    53→    53→      {
+    54→    54→        question: "Which of these is a DEPENDENT clause?",
+    55→    55→        options: [
+    56→    56→          "The storm arrived early.",
+    57→    57→          "because the roads flooded",
+    58→    58→          "We canceled the picnic.",
+    59→    59→          "It rained all day.",
+    60→    60→        ],
+    61→    61→        answerIndex: 1,
+    62→    62→        explanation:
+    63→    63→          "'Because the roads flooded' starts with 'because' — it leaves you hanging, so it can't stand alone.",
+    64→    64→        misconceptions: [
+    65→    65→          "This has a subject and verb and makes a complete thought — it's independent.",
+    66→    66→          "Yes! 'Because' makes this clause dependent on the rest of the sentence.",
+    67→    67→          "Complete thought, stands alone — independent through and through.",
+    68→    68→          "Full sentence with subject and verb — nothing missing, so it's independent.",
+    69→    69→        ],
+    70→    70→      },
+    71→    71→      {
+    72→    72→        question: "Which is a complex sentence?",
+    73→    73→        options: [
+    74→    74→          "The dog barked.",
+    75→    75→          "The dog barked, and the cat ran.",
+    76→    76→          "When the dog barked, the cat ran.",
+    77→    77→          "The dog barked; the cat ran.",
+    78→    78→        ],
+    79→    79→        answerIndex: 2,
+    80→    80→        explanation:
+    81→    81→          "'When the dog barked' is a dependent clause attached to an independent clause — that's the complex recipe.",
+    82→    82→        misconceptions: [
+    83→    83→          "One independent clause alone = a simple sentence.",
+    84→    84→          "Two independent clauses joined by 'and' = a compound sentence.",
+    85→    85→          "Correct! One dependent + one independent clause = complex.",
+    86→    86→          "A semicolon joins two independent clauses — still compound, not complex.",
+    87→    87→        ],
+    88→    88→      },
+    89→    89→      {
+    90→    90→        question: "In 'Although she was nervous, Priya auditioned', why is there a comma?",
+    91→    91→        options: [
+    92→    92→          "The dependent clause comes first",
+    93→    93→          "'Priya' is a long name",
+    94→    94→          "Commas are optional decorations",
+    95→    95→          "Because 'although' is a verb",
+    96→    96→        ],
+    97→    97→        answerIndex: 0,
+    98→    98→        explanation:
+    99→    99→          "When a dependent clause opens the sentence, a comma separates it from the independent clause that follows.",
+   100→   100→        misconceptions: [
+   101→   101→          "Yes! Opener-dependent clauses need a comma before the main clause starts.",
+   102→   102→          "Name length has nothing to do with it — position of the clause does.",
+   103→   103→          "Commas follow rules — this one marks the end of the dependent opener.",
+   104→   104→          "'Although' is a conjunction — it's the comma's placement that follows the rule.",
+   105→   105→        ],
+   106→   106→      },
+   107→   107→      {
+   108→   108→        question: "'Because the bus was late.' What's wrong with this?",
+   109→   109→        options: [
+   110→   110→          "It's a fragment — a dependent clause can't stand alone",
+   111→   111→          "It needs an exclamation mark",
+   112→   112→          "Nothing — it's a perfect sentence",
+   113→   113→          "'Because' is spelled wrong",
+   114→   114→        ],
+   115→   115→        answerIndex: 0,
+   116→   116→        explanation:
+   117→   117→          "Starting with 'because' makes it dependent — the reader is left waiting for the rest of the thought.",
+   118→   118→        misconceptions: [
+   119→   119→          "Correct! Attach an independent clause, like: 'Because the bus was late, we missed registration.'",
+   120→   120→          "Punctuation energy won't fix it — the clause is incomplete, not unexciting.",
+   121→   121→          "It looks like a sentence, but the 'because' leaves the thought unfinished.",
+   122→   122→          "The spelling is fine — the problem is the clause can't stand alone.",
+   123→   123→        ],
+   124→   124→      },
+   125→   125→      {
+   126→   126→        question: "Which subordinating conjunction shows a CONTRAST?",
+   127→   127→        options: ["because", "when", "although", "if"],
+   128→   128→        answerIndex: 2,
+   129→   129→        explanation: "'Although' signals a contrast — something surprising given the first clause.",
+   130→   130→        misconceptions: [
+   131→   131→          "'Because' gives a REASON, not a contrast.",
+   132→   132→          "'When' gives a TIME.",
+   133→   133→          "Yes! 'Although' sets up an expected twist — that's contrast.",
+   134→   134→          "'If' sets a CONDITION.",
+   135→   135→        ],
+   136→   136→      },
+   137→   137→    ],
+   138→   138→    worksheet: [
+   139→   139→      {
+   140→   140→        kind: "correct-sentence",
+   141→   141→        prompt:
+   142→   142→          "Fix this fragment by attaching the idea 'we canceled the picnic'. Start with 'Because' and retype the whole corrected sentence.",
+   143→   143→        sentence: "Because it was raining.",
+   144→   144→        answer: "Because it was raining, we canceled the picnic.",
+   145→   145→        why: "'Because it was raining' is a dependent clause that cannot stand alone — it must hook onto an independent clause to complete the thought.",
+   146→   146→      },
+   147→   147→      {
+   148→   148→        kind: "fill-blank",
+   149→   149→        prompt: "A dependent clause ______ stand alone as a sentence. (Write can or cannot.)",
+   150→   150→        answer: "cannot",
+   151→   151→      },
+   152→   152→      {
+   153→   153→        kind: "fill-blank",
+   154→   154→        prompt: "In 'When the bell rings, we leave', the dependent clause is '______'.",
+   155→   155→        answer: "when the bell rings",
+   156→   156→      },
+   157→   157→      {
+   158→   158→        kind: "fill-blank",
+   159→   159→        prompt: "Join these with a subordinating conjunction: 'I slept early ______ I was exhausted.'",
+   160→   160→        answer: "because",
+   161→   161→        hint: "Which conjunction gives a reason?",
+   162→   162→      },
+   163→   163→      {
+   164→   164→        kind: "match",
+   165→   165→        prompt: "Match each sentence to its type!",
+   166→   166→        left: ["The dog barked.", "The dog barked, and the cat ran.", "When the dog barked, the cat ran."],
+   167→   167→        right: ["complex sentence", "simple sentence", "compound sentence"],
+   168→   168→        answer: [1, 2, 0],
+   169→   169→      },
+   170→   170→      {
+   171→   171→        kind: "writing",
+   172→   172→        prompt: "Write ONE complex sentence about your day that starts with 'Although'.",
+   173→   173→        sampleAnswer:
+   174→   174→          "Although my morning started with a spilled smoothie, the rest of my day turned out great.",
+   175→   175→      },
+   176→   176→    ],
+   177→   177→    challenge: {
+   178→   178→      prompt:
+   179→   179→        "Combine these two sentences into ONE complex sentence: 'The test was hard.' + 'Everyone passed it.' Use 'although' and start your sentence with it.",
+   180→   180→      hint: "Put the dependent clause first, then a comma, then the independent clause.",
+   181→   181→      steps: [
+   182→   182→        "Build the dependent clause: 'Although the test was hard,'",
+   183→   183→        "Add a comma after the opener.",
+   184→   184→        "Attach the independent clause: 'everyone passed it.'",
+   185→   185→        "Read it aloud — it should feel complete in one breath.",
+   186→   186→        "Bonus: flip the order and notice the comma disappears.",
+   187→   187→      ],
+   188→   188→      answer: "Although the test was hard, everyone passed it.",
+   189→   189→      answerWhy:
+   190→   190→        "'Although' demotes 'the test was hard' to a dependent clause, and the comma marks the join. Flip it — 'Everyone passed it although the test was hard.' — and standard style drops the comma, because the sentence no longer needs the pause.",
+   191→   191→    },
+   192→   192→  },
+   193→   193→
+   194→   194→  // -------------------------------------------------------------------------
+   195→   195→  // 2. Active and Passive Voice
+   196→   196→  // -------------------------------------------------------------------------
+   197→   197→  {
+   198→   198→    id: "english-intermediate-2",
+   199→   199→    title: "Active and Passive Voice",
+   200→   200→    emoji: "🎭",
+   201→   201→    minutes: 12,
+   202→   202→    intro:
+   203→   203→      "Did the subject DO the thing, or did the thing get DONE to it? Voice changes who's in charge of your sentence — and sometimes who takes the blame.",
+   204→   204→    sections: [
+   205→   205→      {
+   206→   206→        heading: "Who's Driving the Sentence?",
+   207→   207→        body:
+   208→   208→          "ACTIVE voice: the subject does the action — 'Amara scored the goal.' PASSIVE voice: the subject receives the action — 'The goal was scored by Amara.' Same event, but active puts the doer in the driver's seat.",
+   209→   209→        example:
+   210→   210→          "Active: 'Leo broke the window.' Passive: 'The window was broken by Leo.' Active is shorter and more direct.",
+   211→   211→        tip: "Ask: is my subject acting or being acted upon?",
+   212→   212→      },
+   213→   213→      {
+   214→   214→        heading: "Spot the Passive Recipe",
+   215→   215→        body:
+   216→   216→          "Passive voice is built with a form of 'be' (is, was, were, been) plus a past participle (broken, sung, eaten), often followed by 'by' + doer. Signals: 'was broken', 'is considered', 'were chosen'. If you can ask 'by whom?' and the sentence doesn't answer, that's passive without a named doer.",
+   217→   217→        example:
+   218→   218→          "'The song was sung by the choir.' Be-verb (was) + participle (sung) + by-phrase = textbook passive.",
+   219→   219→        tip: "'be' + past participle = passive alarm bells.",
+   220→   220→      },
+   221→   221→      {
+   222→   222→        heading: "When Passive Actually Wins",
+   223→   223→        body:
+   224→   224→          "Passive isn't wrong — it's a tool. Use it when the doer is unknown ('My bike was stolen'), when the receiver matters more ('The vaccines were refrigerated'), or in science writing where the process is the star. Just don't use it to dodge responsibility — readers notice.",
+   225→   225→        example:
+   226→   226→          "Science: 'The solution was heated to 90°C.' The heating matters more than who held the beaker.",
+   227→   227→        tip: "Default to active; choose passive only for a reason.",
+   228→   228→      },
+   229→   229→    ],
+   230→   230→    vocab: [
+   231→   231→      { word: "active voice", meaning: "The subject does the action: 'Amara scored.'" },
+   232→   232→      { word: "passive voice", meaning: "The subject receives the action: 'The goal was scored.'" },
+   233→   233→      { word: "past participle", meaning: "The verb form used with 'be' in passive: broken, sung, eaten." },
+   234→   234→      { word: "by-phrase", meaning: "The 'by Amara' part of a passive sentence that names the doer." },
+   235→   235→    ],
+   236→   236→    funFact:
+   237→   237→      "'Mistakes were made' is the most famous passive-voice dodge in politics — it admits that mistakes happened without ever saying WHO made them!",
+   238→   238→    quiz: [
+   239→   239→      {
+   240→   240→        question: "Which sentence is in the PASSIVE voice?",
+   241→   241→        options: [
+   242→   242→          "The cat knocked over the vase.",
+   243→   243→          "The vase was knocked over by the cat.",
+   244→   244→          "The clumsy cat strikes again.",
+   245→   245→          "Knock-knock — who's there?",
+   246→   246→        ],
+   247→   247→        answerIndex: 1,
+   248→   248→        explanation:
+   249→   249→          "'Was knocked over' = be-verb + past participle. The vase receives the action — that's passive.",
+   250→   250→        misconceptions: [
+   251→   251→          "Here the cat DOES the knocking — that's active voice.",
+   252→   252→          "Yes! The vase isn't doing anything — it's receiving the action.",
+   253→   253→          "The cat is acting again — active voice with attitude.",
+   254→   254→          "A joke, not a voice — but nice timing.",
+   255→   255→        ],
+   256→   256→      },
+   257→   257→      {
+   258→   258→        question: "What's the passive voice recipe?",
+   259→   259→        options: [
+   260→   260→          "a form of 'be' + past participle",
+   261→   261→          "past tense + exclamation mark",
+   262→   262→          "a subject + two adjectives",
+   263→   263→          "'by' + verb + comma",
+   264→   264→        ],
+   265→   265→        answerIndex: 0,
+   266→   266→        explanation: "Passive = be-verb (was, is, were) + past participle (broken, sung). That's the formula.",
+   267→   267→        misconceptions: [
+   268→   268→          "Correct! 'was broken', 'is sung', 'were eaten' — that's the passive engine.",
+   269→   269→          "Exclamation marks add excitement, not passivity.",
+   270→   270→          "Adjectives describe — they don't build the passive.",
+   271→   271→          "The by-phrase is optional garnish; the real recipe is be + past participle.",
+   272→   272→        ],
+   273→   273→      },
+   274→   274→      {
+   275→   275→        question: "Change to ACTIVE voice: 'The goal was scored by Amara.'",
+   276→   276→        options: [
+   277→   277→          "Amara scored the goal.",
+   278→   278→          "The goal scored Amara.",
+   279→   279→          "Amara was scoring.",
+   280→   280→          "The goal is scoring.",
+   281→   281→        ],
+   282→   282→        answerIndex: 0,
+   283→   283→        explanation: "Move the doer (Amara) to the front and let her act: 'Amara scored the goal.'",
+   284→   284→        misconceptions: [
+   285→   285→          "Yes! Doer first, action verb, receiver last — active and direct.",
+   286→   286→          "Careful — now the goal is scoring Amara! Keep the roles straight.",
+   287→   287→          "'Was scoring' is a tense change, not a voice change — and it alters the meaning.",
+   288→   288→          "The goal still isn't doing anything — the doer must act.",
+   289→   289→        ],
+   290→   290→      },
+   291→   291→      {
+   292→   292→        question: "'My bike was stolen last night.' Why might the speaker choose passive here?",
+   293→   293→        options: [
+   294→   294→          "The doer is unknown",
+   295→   295→          "Bikes can't speak",
+   296→   296→          "It's shorter to type",
+   297→   297→          "Passive is always wrong",
+   298→   298→        ],
+   299→   299→        answerIndex: 0,
+   300→   300→        explanation:
+   301→   301→          "When you don't know who did it, passive lets you state the event without inventing a doer.",
+   302→   302→        misconceptions: [
+   303→   303→          "Yes! Unknown doer is the classic reason to go passive.",
+   304→   304→          "True, but irrelevant — no sentence needs the bike to speak.",
+   305→   305→          "Passive is usually LONGER, not shorter.",
+   306→   306→          "Passive is legitimate when the doer is unknown or unimportant — the trick is choosing it on purpose.",
+   307→   307→        ],
+   308→   308→      },
+   309→   309→      {
+   310→   310→        question: "In 'The song was sung by the choir', what is the subject of the sentence?",
+   311→   311→        options: ["the song", "the choir", "sung", "by"],
+   312→   312→        answerIndex: 0,
+   313→   313→        explanation:
+   314→   314→          "In passive voice, the RECEIVER of the action ('the song') is the grammatical subject.",
+   315→   315→        misconceptions: [
+   316→   316→          "Yes! Passive promotes the receiver to subject — that's its signature move.",
+   317→   317→          "The choir is the DOER, but in passive the doer hides in the by-phrase.",
+   318→   318→          "'Sung' is the past participle — part of the verb, not the subject.",
+   319→   319→          "'By' is a preposition introducing the doer — not a subject.",
+   320→   320→        ],
+   321→   321→      },
+   322→   322→    ],
+   323→   323→    worksheet: [
+   324→   324→      {
+   325→   325→        kind: "correct-sentence",
+   326→   326→        prompt: "Make this sentence active and punchy. Retype it.",
+   327→   327→        sentence: "The window was broken by Leo.",
+   328→   328→        answer: "Leo broke the window.",
+   329→   329→        why: "The doer ('Leo') moves to the front and the be + past participle scaffolding disappears — active voice is shorter and more direct.",
+   330→   330→      },
+   331→   331→      {
+   332→   332→        kind: "fill-blank",
+   333→   333→        prompt: "Passive voice is built with a form of 'be' plus the ______ participle.",
+   334→   334→        answer: "past",
+   335→   335→      },
+   336→   336→      {
+   337→   337→        kind: "fill-blank",
+   338→   338→        prompt:
+   339→   339→          "'The cake was eaten.' Ask 'by whom?' — if the sentence doesn't say, it's in ______ voice.",
+   340→   340→        answer: "passive",
+   341→   341→      },
+   342→   342→      {
+   343→   343→        kind: "match",
+   344→   344→        prompt: "Match each sentence to its description!",
+   345→   345→        left: [
+   346→   346→          "The choir sang the song.",
+   347→   347→          "The song was sung by the choir.",
+   348→   348→          "My phone was stolen last night.",
+   349→   349→        ],
+   350→   350→        right: [
+   351→   351→          "active voice — doer up front",
+   352→   352→          "passive voice — doer unknown",
+   353→   353→          "passive voice with a 'by' phrase",
+   354→   354→        ],
+   355→   355→        answer: [0, 2, 1],
+   356→   356→      },
+   357→   357→      {
+   358→   358→        kind: "fill-blank",
+   359→   359→        prompt: "'The ball was thrown.' If WHO threw it matters, switch to ______ voice.",
+   360→   360→        answer: "active",
+   361→   361→      },
+   362→   362→      {
+   363→   363→        kind: "writing",
+   364→   364→        prompt:
+   365→   365→          "Rewrite these two passive sentences in active voice, then say in one sentence which version sounds stronger and why: 'The medals were won by our team. The trophy was carried home by Kai.'",
+   366→   366→        sampleAnswer:
+   367→   367→          "Our team won the medals, and Kai carried the trophy home. The active versions sound stronger because the doers act up front instead of receiving the action.",
+   368→   368→      },
+   369→   369→    ],
+   370→   370→  },
+   371→   371→
+   372→   372→  // -------------------------------------------------------------------------
+   373→   373→  // 3. Figurative Language
+   374→   374→  // -------------------------------------------------------------------------
+   375→   375→  {
+   376→   376→    id: "english-intermediate-3",
+   377→   377→    title: "Figurative Language",
+   378→   378→    emoji: "🎨",
+   379→   379→    minutes: 11,
+   380→   380→    intro:
+   381→   381→      "Sometimes the best way to describe something is to compare it to something else entirely. Similes, metaphors, and personification are the artist's tools of writing.",
+   382→   382→    sections: [
+   383→   383→      {
+   384→   384→        heading: "Simile: Say 'Like'",
+   385→   385→        body:
+   386→   386→          "A simile compares two things using 'like' or 'as'. 'Her laugh was like silver bells.' The comparison creates an instant picture — you HEAR that laugh now, don't you?",
+   387→   387→        example:
+   388→   388→          "'As brave as a lion.' 'The clouds drifted like ships.' Both similes — both with like or as.",
+   389→   389→        tip: "See 'like' or 'as' doing a comparison? That's a simile.",
+   390→   390→      },
+   391→   391→      {
+   392→   392→        heading: "Metaphor: It IS the Thing",
+   393→   393→        body:
+   394→   394→          "A metaphor skips 'like' and says one thing IS another. 'The classroom was a zoo.' Nobody means actual animals — the metaphor borrows the zoo's wildness and drops it onto the classroom.",
+   395→   395→        example:
+   396→   396→          "'Time is a thief.' Time can't literally steal — but the metaphor makes you feel moments slipping away.",
+   397→   397→        tip: "Metaphor = direct equation. Simile = comparison with like/as.",
+   398→   398→      },
+   399→   399→      {
+   400→   400→        heading: "Personification: Human Traits for Everything",
+   401→   401→        body:
+   402→   402→          "Personification gives human abilities to non-human things: the wind whispers, the thunder growls, opportunity knocks. It makes the world of your writing feel alive.",
+   403→   403→        example:
+   404→   404→          "'The old house groaned and sighed all night.' Houses can't literally groan — but now yours feels haunted.",
+   405→   405→        tip: "If a non-human thing acts human, you've found personification.",
+   406→   406→      },
+   407→   407→    ],
+   408→   408→    vocab: [
+   409→   409→      { word: "simile", meaning: "A comparison using 'like' or 'as': brave as a lion." },
+   410→   410→      { word: "metaphor", meaning: "A direct comparison saying one thing IS another: time is a thief." },
+   411→   411→      { word: "personification", meaning: "Giving human traits to non-human things: the wind whispered." },
+   412→   412→      { word: "figurative language", meaning: "Words used creatively, beyond their literal meaning." },
+   413→   413→    ],
+   414→   414→    funFact:
+   415→   415→      "Shakespeare packed one of the most quoted metaphors of all time into 'As You Like It': 'All the world's a stage, and all the men and women merely players.'",
+   416→   416→    quiz: [
+   417→   417→      {
+   418→   418→        question: "Which sentence contains a simile?",
+   419→   419→        options: [
+   420→   420→          "The moon was a lantern.",
+   421→   421→          "Her laugh was like silver bells.",
+   422→   422→          "The wind grabbed his jacket.",
+   423→   423→          "Time crawled.",
+   424→   424→        ],
+   425→   425→        answerIndex: 1,
+   426→   426→        explanation: "'Like silver bells' — the word 'like' makes this comparison a simile.",
+   427→   427→        misconceptions: [
+   428→   428→          "'Was a lantern' with no 'like' — that's a metaphor.",
+   429→   429→          "Yes! 'Like' or 'as' signals a simile every time.",
+   430→   430→          "The wind acting like a person is personification.",
+   431→   431→          "'Crawled' gives time an animal trait — personification again.",
+   432→   432→        ],
+   433→   433→      },
+   434→   434→      {
+   435→   435→        question: "'The classroom was a zoo.' This is a…",
+   436→   436→        options: ["simile", "metaphor", "personification", "rhyme"],
+   437→   437→        answerIndex: 1,
+   438→   438→        explanation:
+   439→   439→          "It says the classroom IS a zoo — no 'like', no 'as'. Direct equation = metaphor.",
+   440→   440→        misconceptions: [
+   441→   441→          "A simile would need 'like' or 'as' — 'was like a zoo'.",
+   442→   442→          "Yes! It directly calls the classroom a zoo — a metaphor.",
+   443→   443→          "No humans-acting traits here — just a direct comparison.",
+   444→   444→          "Rhyme is about matching sounds — this is about comparison.",
+   445→   445→        ],
+   446→   446→      },
+   447→   447→      {
+   448→   448→        question: "'The thunder growled all night.' This is…",
+   449→   449→        options: ["personification", "metaphor", "simile", "alliteration"],
+   450→   450→        answerIndex: 0,
+   451→   451→        explanation:
+   452→   452→          "Growling is something animals — and only famously grumpy people — do. Thunder got a human/animal trait: personification.",
+   453→   453→        misconceptions: [
+   454→   454→          "Yes! Thunder doing something so alive and moody is personification.",
+   455→   455→          "A metaphor would call thunder something else — 'thunder was an orchestra'.",
+   456→   456→          "No 'like' or 'as' — not a simile.",
+   457→   457→          "Alliteration repeats starting sounds (like 'big black boots') — not this.",
+   458→   458→        ],
+   459→   459→      },
+   460→   460→      {
+   461→   461→        question: "'Time is a thief' means…",
+   462→   462→        options: [
+   463→   463→          "Time literally steals watches",
+   464→   464→          "Time passes quietly and takes moments from us",
+   465→   465→          "Thieves love clocks",
+   466→   466→          "Time is expensive",
+   467→   467→        ],
+   468→   468→        answerIndex: 1,
+   469→   469→        explanation:
+   470→   470→          "Metaphors work by borrowing feelings: a thief takes things secretly, and so does passing time.",
+   471→   471→        misconceptions: [
+   472→   472→          "Figurative language isn't literal — no watches were harmed.",
+   473→   473→          "Yes! The metaphor captures how time silently steals our moments.",
+   474→   474→          "Cute theory, but the metaphor is about loss, not burglary tools.",
+   475→   475→          "That would be about money — this metaphor is about moments.",
+   476→   476→        ],
+   477→   477→      },
+   478→   478→      {
+   479→   479→        question: "What's the difference between a simile and a metaphor?",
+   480→   480→        options: [
+   481→   481→          "A simile uses 'like' or 'as'; a metaphor says one thing IS another",
+   482→   482→          "Metaphors rhyme; similes don't",
+   483→   483→          "Similes are always longer",
+   484→   484→          "There is no difference",
+   485→   485→        ],
+   486→   486→        answerIndex: 0,
+   487→   487→        explanation:
+   488→   488→          "Similes compare openly (like/as); metaphors fuse the two things (X is Y). Different tools, different feel.",
+   489→   489→        misconceptions: [
+   490→   490→          "Exactly — 'like a lion' (simile) vs. 'he IS a lion' (metaphor).",
+   491→   491→          "Neither one requires rhyme — that's poetry's job, not comparison's.",
+   492→   492→          "Length has nothing to do with it — watch for like/as vs. is.",
+   493→   493→          "They're cousins, but the like/as vs. is difference is real and matters.",
+   494→   494→        ],
+   495→   495→      },
+   496→   496→    ],
+   497→   497→    worksheet: [
+   498→   498→      {
+   499→   499→        kind: "match",
+   500→   500→        prompt: "Match each example to its technique!",
+   501→   501→        left: ["as brave as a lion", "The wind whispered secrets", "Time is a thief"],
+   502→   502→        right: ["metaphor", "simile", "personification"],
+   503→   503→        answer: [1, 2, 0],
+   504→   504→      },
+   505→   505→      {
+   506→   506→        kind: "fill-blank",
+   507→   507→        prompt: "A simile compares using 'like' or '______'.",
+   508→   508→        answer: "as",
+   509→   509→      },
+   510→   510→      {
+   511→   511→        kind: "fill-blank",
+   512→   512→        prompt: "'The thunder growled angrily' gives thunder a ______ trait.",
+   513→   513→        answer: "human",
+   514→   514→      },
+   515→   515→      {
+   516→   516→        kind: "fill-blank",
+   517→   517→        prompt: "'The classroom was a zoo' is a ______.",
+   518→   518→        answer: "metaphor",
+   519→   519→      },
+   520→   520→      {
+   521→   521→        kind: "short-answer",
+   522→   522→        prompt: "Write your own simile about homework.",
+   523→   523→        sampleAnswer:
+   524→   524→          "Homework is like a stubborn knot — annoying at first, but satisfying once you work it out.",
+   525→   525→      },
+   526→   526→      {
+   527→   527→        kind: "writing",
+   528→   528→        prompt:
+   529→   529→          "Describe a storm in two sentences: use ONE metaphor and ONE personification.",
+   530→   530→        sampleAnswer:
+   531→   531→          "The storm was an angry orchestra tuning up. Lightning lashed the sky while the rain drummed its fingers on the roof.",
+   532→   532→      },
+   533→   533→    ],
+   534→   534→  },
+   535→   535→
+   536→   536→  // -------------------------------------------------------------------------
+   537→   537→  // 4. Formal vs Informal Language
+   538→   538→  // -------------------------------------------------------------------------
+   539→   539→  {
+   540→   540→    id: "english-intermediate-4",
+   541→   541→    title: "Formal vs Informal Language",
+   542→   542→    emoji: "🎩",
+   543→   543→    minutes: 12,
+   544→   544→    intro:
+   545→   545→      "You already speak two (or more!) versions of English — the one you text your friends and the one you'd use emailing a principal. The skill is switching on purpose.",
+   546→   546→    sections: [
+   547→   547→      {
+   548→   548→        heading: "Two Outfits for Your Words",
+   549→   549→        body:
+   550→   550→          "FORMAL language is precise, complete, and polished: full sentences, no slang, few contractions. INFORMAL language is relaxed and chatty: contractions, slang, and fragments are fine. Neither is 'better' — the SITUATION decides which one to wear.",
+   551→   551→        example:
+   552→   552→          "Informal: 'gonna head out, cya tmr!' Formal: 'I am leaving now and will see you tomorrow.'",
+   553→   553→        tip: "Match your words to the moment, like matching clothes to the weather.",
+   554→   554→      },
+   555→   555→      {
+   556→   556→        heading: "The Formal Signals",
+   557→   557→        body:
+   558→   558→          "Formal writing swaps casual words for precise ones (kids → children), avoids texting abbreviations, and uses full verb forms (can't → cannot). It also prefers objective tone: 'The experiment yielded fascinating results' instead of 'The experiment was super cool.'",
+   559→   559→        example:
+   560→   560→          "'I would like to request a meeting' beats 'can we meet up sometime?' in an email to a teacher.",
+   561→   561→        tip: "When in doubt with adults and officials: formal.",
+   562→   562→      },
+   563→   563→      {
+   564→   564→        heading: "Know Your Audience",
+   565→   565→        body:
+   566→   566→          "Before writing, ask: WHO is reading, and what do they expect? A text to your best friend, a history essay, and a club application each call for a different register. Skilled writers switch smoothly — and never let slang sneak into an essay by accident.",
+   567→   567→        example:
+   568→   568→          "Same news, two registers: 'We won 3–0, it was INSANE!' vs. 'Our team won three to nil in a dominant performance.'",
+   569→   569→        tip: "Audience first, words second.",
+   570→   570→      },
+   571→   571→    ],
+   572→   572→    vocab: [
+   573→   573→      { word: "formal language", meaning: "Polished, precise language for serious situations." },
+   574→   574→      { word: "informal language", meaning: "Relaxed, chatty language for friends and familiar settings." },
+   575→   575→      { word: "slang", meaning: "Very casual words understood by a group, like 'cool' or 'ghosting'." },
+   576→   576→      { word: "register", meaning: "The level of formality that fits a situation." },
+   577→   577→    ],
+   578→   578→    funFact:
+   579→   579→      "In 2013, Oxford Dictionaries chose 'selfie' as its Word of the Year — proof that slang can hop from text messages to the official dictionary in just a few years!",
+   580→   580→    quiz: [
+   581→   581→      {
+   582→   582→        question: "Which sentence belongs in a letter to the principal?",
+   583→   583→        options: [
+   584→   584→          "Yo! Quick q — can we get longer lunch?",
+   585→   585→          "I am writing to request a longer lunch period.",
+   586→   586→          "Lunch too short, pls fix, thx.",
+   587→   587→          "guess what, lunch is SO short lol",
+   588→   588→        ],
+   589→   589→        answerIndex: 1,
+   590→   590→        explanation:
+   591→   591→          "Complete sentences, precise words, respectful tone — that's formal register for a formal audience.",
+   592→   592→        misconceptions: [
+   593→   593→          "Slang like 'yo' and 'q' belongs with friends, not principals.",
+   594→   594→          "Yes! Formal, polite, and precise — exactly right for the principal.",
+   595→   595→          "Abbreviations like 'pls' and 'thx' are texting language.",
+   596→   596→          "Lowercase casualness and 'lol' are fine in chats — not in letters.",
+   597→   597→        ],
+   598→   598→      },
+   599→   599→      {
+   600→   600→        question: "What makes writing informal?",
+   601→   601→        options: [
+   602→   602→          "Slang, contractions, and chatty phrases",
+   603→   603→          "Long paragraphs",
+   604→   604→          "Footnotes",
+   605→   605→          "Silent letters",
+   606→   606→        ],
+   607→   607→        answerIndex: 0,
+   608→   608→        explanation:
+   609→   609→          "Informal writing relaxes the rules: slang, contractions, and conversational flow are welcome.",
+   610→   610→        misconceptions: [
+   611→   611→          "Yes! Those three are the classic informal signals.",
+   612→   612→          "Long paragraphs can be formal OR informal — length isn't the clue.",
+   613→   613→          "Footnotes are a formal research habit, if anything.",
+   614→   614→          "Silent letters are just spelling — register lives in word choice.",
+   615→   615→        ],
+   616→   616→      },
+   617→   617→      {
+   618→   618→        question: "'The experiment yielded fascinating results' is ______ language.",
+   619→   619→        options: ["formal", "informal", "texting slang", "a contraction"],
+   620→   620→        answerIndex: 0,
+   621→   621→        explanation:
+   622→   622→          "'Yielded' is a precise, formal word choice — texting slang would say 'gave us' or 'got'.",
+   623→   623→        misconceptions: [
+   624→   624→          "Yes! 'Yielded' and 'fascinating' are polished, formal choices.",
+   625→   625→          "Informal would sound more like 'the experiment was really cool'.",
+   626→   626→          "No abbreviations or slang here — it's the opposite of texting language.",
+   627→   627→          "There's no contracted word in the sentence at all.",
+   628→   628→        ],
+   629→   629→      },
+   630→   630→      {
+   631→   631→        question: "Which audience is most likely to hear your informal register?",
+   632→   632→        options: [
+   633→   633→          "A university admissions officer",
+   634→   634→          "Your best friend",
+   635→   635→          "A job interviewer",
+   636→   636→          "A judge",
+   637→   637→        ],
+   638→   638→        answerIndex: 1,
+   639→   639→        explanation:
+   640→   640→          "Close friends share your slang and casual tone — that's where informal language lives.",
+   641→   641→        misconceptions: [
+   642→   642→          "Admissions officers expect polished, formal writing.",
+   643→   643→          "Yes! Friends get the real, relaxed you.",
+   644→   644→          "Interviewers expect professional, formal speech.",
+   645→   645→          "Courtrooms are about as formal as language gets.",
+   646→   646→        ],
+   647→   647→      },
+   648→   648→      {
+   649→   649→        question: "When is informal language the RIGHT choice?",
+   650→   650→        options: [
+   651→   651→          "Never",
+   652→   652→          "In a text to a friend or a personal blog",
+   653→   653→          "In a science report",
+   654→   654→          "In a formal complaint",
+   655→   655→        ],
+   656→   656→        answerIndex: 1,
+   657→   657→        explanation:
+   658→   658→          "Informal language fits relaxed settings where the audience shares your casual tone.",
+   659→   659→        misconceptions: [
+   660→   660→          "Never? You'd sound robotic texting your friends!",
+   661→   661→          "Yes! Casual audience + casual setting = informal register wins.",
+   662→   662→          "Science reports demand precise, formal language.",
+   663→   663→          "Formal complaints need formal language to be taken seriously.",
+   664→   664→        ],
+   665→   665→      },
+   666→   666→    ],
+   667→   667→    worksheet: [
+   668→   668→      {
+   669→   669→        kind: "correct-sentence",
+   670→   670→        prompt: "Translate this text-message English into one formal sentence. Retype it.",
+   671→   671→        sentence: "gonna finish my project tmr, sry",
+   672→   672→        answer: "I will finish my project tomorrow.",
+   673→   673→        why: "Formal writing avoids slang and abbreviations: 'gonna' becomes 'will', 'tmr' becomes 'tomorrow', and any apology deserves its own polite sentence.",
+   674→   674→      },
+   675→   675→      {
+   676→   676→        kind: "fill-blank",
+   677→   677→        prompt: "In an essay, swap 'kids' for the more formal word '______'.",
+   678→   678→        answer: "children",
+   679→   679→      },
+   680→   680→      {
+   681→   681→        kind: "match",
+   682→   682→        prompt: "Formal or informal? Match each line to its register.",
+   683→   683→        left: ["Hey!!", "Furthermore, the evidence suggests…", "Gonna head out now.", "I would appreciate your consideration."],
+   684→   684→        right: ["formal — email to your principal", "informal — text to your best friend"],
+   685→   685→        answer: [1, 0, 1, 0],
+   686→   686→      },
+   687→   687→      {
+   688→   688→        kind: "writing",
+   689→   689→        prompt:
+   690→   690→          "Rewrite this text message as a formal sentence for your teacher: 'cant come 2 practice, sry'",
+   691→   691→        sampleAnswer: "I am sorry, but I will be unable to attend practice today.",
+   692→   692→      },
+   693→   693→      {
+   694→   694→        kind: "short-answer",
+   695→   695→        prompt: "Name one situation where informal language is perfectly acceptable, and say why.",
+   696→   696→        sampleAnswer:
+   697→   697→          "A group chat with friends is fine for informal language because everyone there shares the slang and expects a chatty tone.",
+   698→   698→      },
+   699→   699→      {
+   700→   700→        kind: "fill-blank",
+   701→   701→        prompt: "Textspeak like 'u' and 'tmr' belongs in ______ messages, not essays.",
+   702→   702→        answer: "informal",
+   703→   703→      },
+   704→   704→    ],
+   705→   705→    challenge: {
+   706→   706→      prompt:
+   707→   707→        "Translate this formal sentence into casual text-speak for a friend, then list two things that changed: 'I would like to inform you that the meeting has been rescheduled to Thursday.'",
+   708→   708→      hint: "Think: which phrases get compressed, and how does the tone change?",
+   709→   709→      steps: [
+   710→   710→        "Read the formal sentence aloud — notice the long phrases.",
+   711→   711→        "Compress 'I would like to inform you' into something like 'fyi'.",
+   712→   712→        "Shorten 'has been rescheduled to' into 'moved to'.",
+   713→   713→        "Add friend-energy (lowercase, an emoji) if you like.",
+   714→   714→        "List two changes: vocabulary compressed, tone relaxed.",
+   715→   715→      ],
+   716→   716→      answer:
+   717→   717→        "Example: 'fyi the meeting moved to thursday!' Changes: the long phrases got compressed and the serious tone relaxed.",
+   718→   718→      answerWhy:
+   719→   719→        "Register is a sliding scale, not a switch. The same facts can wear formal or casual clothes — a strong writer picks the outfit the audience expects and can explain exactly what changed.",
+   720→   720→    },
+   721→   721→  },
+   722→   722→
+   723→   723→  // -------------------------------------------------------------------------
+   724→   724→  // 5. Semicolons, Colons and Dashes
+   725→   725→  // -------------------------------------------------------------------------
+   726→   726→  {
+   727→   727→    id: "english-intermediate-5",
+   728→   728→    title: "Semicolons, Colons and Dashes",
+   729→   729→    emoji: "⚡",
+   730→   730→    minutes: 11,
+   731→   731→    intro:
+   732→   732→      "You've mastered commas and full stops — now meet the punctuation power trio that makes writing sound sophisticated, dramatic, or both at once.",
+   733→   733→    sections: [
+   734→   734→      {
+   735→   735→        heading: "The Semicolon: The Elegant Join",
+   736→   736→        body:
+   737→   737→          "A semicolon (;) joins two independent clauses that are closely related: 'The rain stopped; we played outside.' Both halves could stand alone, but the semicolon says they belong together. It's a period and a comma holding hands.",
+   738→   738→        example:
+   739→   739→          "'I finished my essay; then I celebrated with hot chocolate.' Two thoughts, one elegant sentence.",
+   740→   740→        tip: "Semicolons join full sentences only — never a full sentence plus a fragment.",
+   741→   741→      },
+   742→   742→      {
+   743→   743→        heading: "The Colon: The Announcer",
+   744→   744→        body:
+   745→   745→          "A colon (:) follows a COMPLETE sentence and announces what's next: a list, an explanation, or a dramatic reveal. 'I need three things: paper, glue, and glitter.' The sentence before the colon must be able to stand alone.",
+   746→   746→        example:
+   747→   747→          "'Here's the plan: wake up, run, then celebrate.' The colon says 'ta-da!' before the list arrives.",
+   748→   748→        tip: "No colon directly after a verb — 'My favorites are: …' is a classic mistake.",
+   749→   749→      },
+   750→   750→      {
+   751→   751→        heading: "The Dash: The Dramatic Entrance",
+   752→   752→        body:
+   753→   753→          "A dash (—) inserts a sudden extra thought or interruption: 'The answer — finally — arrived.' Dashes are louder than commas and more casual than parentheses. Use them for emphasis and surprise — but sparingly.",
+   754→   754→        example:
+   755→   755→          "'My plan was simple: one dash can change the rhythm — dramatically.'",
+   756→   756→        tip: "One or two dashes per page, max. Drama loses power when it's constant.",
+   757→   757→      },
+   758→   758→    ],
+   759→   759→    vocab: [
+   760→   760→      { word: "semicolon", meaning: "The mark (;) that joins two closely related full sentences." },
+   761→   761→      { word: "colon", meaning: "The mark (:) that announces a list or explanation after a complete sentence." },
+   762→   762→      { word: "dash", meaning: "The mark (—) that inserts a dramatic extra thought." },
+   763→   763→      { word: "independent clause", meaning: "A group of words that can stand alone as a sentence." },
+   764→   764→    ],
+   765→   765→    funFact:
+   766→   766→      "The semicolon is only about 500 years old! A Venetian printer named Aldus Manutius invented it around 1494 so related thoughts could travel together in one sentence.",
+   767→   767→    quiz: [
+   768→   768→      {
+   769→   769→        question: "Which sentence uses a semicolon correctly?",
+   770→   770→        options: [
+   771→   771→          "I finished my homework; then I played outside.",
+   772→   772→          "I finished; my homework then I played outside.",
+   773→   773→          "I finished my homework; playing, outside.",
+   774→   774→          "I finished; then; I played outside.",
+   775→   775→        ],
+   776→   776→        answerIndex: 0,
+   777→   777→        explanation:
+   778→   778→          "Both halves are complete thoughts, and the semicolon joins them because they're closely related.",
+   779→   779→        misconceptions: [
+   780→   780→          "Yes! Two complete, related thoughts joined by a semicolon — textbook.",
+   781→   781→          "The split lands in the middle of a phrase — each side must be a full sentence.",
+   782→   782→          "'Playing, outside' isn't a complete sentence on the right side.",
+   783→   783→          "One semicolon per join — stacking them breaks the sentence apart.",
+   784→   784→        ],
+   785→   785→      },
+   786→   786→      {
+   787→   787→        question: "Which sentence uses the colon correctly?",
+   788→   788→        options: [
+   789→   789→          "Pack these three things paper glue glitter.",
+   790→   790→          "Pack these three things: paper, glue, and glitter.",
+   791→   791→          "Pack these, three things paper glue glitter.",
+   792→   792→          "Pack: these three things paper glue glitter.",
+   793→   793→        ],
+   794→   794→        answerIndex: 1,
+   795→   795→        explanation:
+   796→   796→          "The complete sentence 'Pack these three things' announces the list — colon, then the items.",
+   797→   797→        misconceptions: [
+   798→   798→          "With no punctuation, the list crashes into the sentence.",
+   799→   799→          "Yes! Complete sentence first, colon, then the announced list.",
+   800→   800→          "A comma can't announce a list — it's too quiet for the job.",
+   801→   801→          "The colon must follow a COMPLETE sentence — 'Pack:' leaves it hanging.",
+   802→   802→        ],
+   803→   803→      },
+   804→   804→      {
+   805→   805→        question: "What does the dash do in 'The answer — finally — arrived.'?",
+   806→   806→        options: [
+   807→   807→          "Interrupts for dramatic emphasis",
+   808→   808→          "Ends the sentence",
+   809→   809→          "Shows ownership",
+   810→   810→          "Replaces a letter",
+   811→   811→        ],
+   812→   812→        answerIndex: 0,
+   813→   813→        explanation:
+   814→   814→          "The dashes pinch out the middle of the sentence to add drama — 'finally' gets its moment.",
+   815→   815→        misconceptions: [
+   816→   816→          "Yes! The dash interrupts the flow for emphasis.",
+   817→   817→          "The sentence ends with a full stop — the dashes work inside it.",
+   818→   818→          "Ownership is the apostrophe's job ('the dog's bone').",
+   819→   819→          "That's the apostrophe's other job — contractions like don't.",
+   820→   820→        ],
+   821→   821→      },
+   822→   822→      {
+   823→   823→        question: "Which sentence MISUSES the colon?",
+   824→   824→        options: [
+   825→   825→          "Here's the plan: wake up, run, then celebrate.",
+   826→   826→          "My favorite colors are: green and gold.",
+   827→   827→          "One thing is certain: the quiz will be tricky.",
+   828→   828→          "She packed one item: a toothbrush.",
+   829→   829→        ],
+   830→   830→        answerIndex: 1,
+   831→   831→        explanation:
+   832→   832→          "Never put a colon directly after a verb — 'are' already flows into its objects.",
+   833→   833→        misconceptions: [
+   834→   834→          "This one is correct — a complete sentence announces the plan.",
+   835→   835→          "Right — the colon after 'are' is the classic mistake. 'My favorite colors are green and gold.'",
+   836→   836→          "Correct usage: complete sentence, then the reveal.",
+   837→   837→          "Correct again — one item or many, the colon announces them the same way.",
+   838→   838→        ],
+   839→   839→      },
+   840→   840→      {
+   841→   841→        question: "A semicolon can join two ______ clauses.",
+   842→   842→        options: ["independent", "dependent", "verb", "adjective"],
+   843→   843→        answerIndex: 0,
+   844→   844→        explanation:
+   845→   845→          "Each side of a semicolon must be able to stand alone — that means independent clauses.",
+   846→   846→        misconceptions: [
+   847→   847→          "Yes! Two standalone thoughts, joined with style.",
+   848→   848→          "Dependent clauses can't stand alone — a semicolon between them would wobble.",
+   849→   849→          "There's no such thing as a verb clause — clauses need a subject AND verb.",
+   850→   850→          "Adjectives describe — they don't form clauses at all.",
+   851→   851→        ],
+   852→   852→      },
+   853→   853→    ],
+   854→   854→    worksheet: [
+   855→   855→      {
+   856→   856→        kind: "correct-sentence",
+   857→   857→        prompt: "Add the missing mark and retype the sentence.",
+   858→   858→        sentence: "I have three pets a cat, a dog, and a fish.",
+   859→   859→        answer: "I have three pets: a cat, a dog, and a fish.",
+   860→   860→        why: "The complete sentence 'I have three pets' announces the list, so a colon goes after 'pets'.",
+   861→   861→      },
+   862→   862→      {
+   863→   863→        kind: "fill-blank",
+   864→   864→        prompt: "A semicolon can join two ______ clauses that could each stand alone.",
+   865→   865→        answer: "independent",
+   866→   866→      },
+   867→   867→      {
+   868→   868→        kind: "fill-blank",
+   869→   869→        prompt: "Use a ______ to announce a list after a complete sentence.",
+   870→   870→        answer: "colon",
+   871→   871→      },
+   872→   872→      {
+   873→   873→        kind: "match",
+   874→   874→        prompt: "Match each sentence to the mark it showcases!",
+   875→   875→        left: [
+   876→   876→          "The rain stopped; we played outside.",
+   877→   877→          "I need three things: paper, glue, and glitter.",
+   878→   878→          "The answer — finally — arrived.",
+   879→   879→        ],
+   880→   880→        right: ["colon announcing a list", "semicolon joining two sentences", "dash adding dramatic interruption"],
+   881→   881→        answer: [1, 0, 2],
+   882→   882→      },
+   883→   883→      {
+   884→   884→        kind: "correct-sentence",
+   885→   885→        prompt: "Fix the colon misuse and retype.",
+   886→   886→        sentence: "My favorite colors are: green and gold.",
+   887→   887→        answer: "My favorite colors are green and gold.",
+   888→   888→        why: "Never put a colon directly after a verb — the sentence already flows into its own objects. Colons follow complete sentences.",
+   889→   889→      },
+   890→   890→      {
+   891→   891→        kind: "short-answer",
+   892→   892→        prompt: "Write your own sentence that uses a dash for drama.",
+   893→   893→        sampleAnswer: "The volcano — quiet for a hundred years — began to rumble.",
+   894→   894→      },
+   895→   895→    ],
+   896→   896→  },
+   897→   897→
+   898→   898→  // -------------------------------------------------------------------------
+   899→   899→  // 6. Persuasive Writing Techniques
+   900→   900→  // -------------------------------------------------------------------------
+   901→   901→  {
+   902→   902→    id: "english-intermediate-6",
+   903→   903→    title: "Persuasive Writing Techniques",
+   904→   904→    emoji: "📣",
+   905→   905→    minutes: 12,
+   906→   906→    intro:
+   907→   907→      "Persuasion is everywhere — ads, speeches, even that group chat arguing about pizza toppings. Learn the techniques and you'll spot them AND use them.",
+   908→   908→    sections: [
+   909→   909→      {
+   910→   910→        heading: "Claim + Reasons + Evidence",
+   911→   911→        body:
+   912→   912→          "Every persuasive piece starts with a CLAIM (what you want readers to believe), supports it with REASONS, and backs each reason with EVIDENCE — facts, statistics, examples, or expert opinions. Feelings start arguments; evidence wins them.",
+   913→   913→        example:
+   914→   914→          "Claim: 'Our town needs a bike lane.' Evidence: 'City data shows 42 bike accidents on Main Street in two years.'",
+   915→   915→        tip: "No evidence? No persuasion. Opinions alone are just noise.",
+   916→   916→      },
+   917→   917→      {
+   918→   918→        heading: "The Persuasive Toolbox",
+   919→   919→        body:
+   920→   920→          "Writers reach for reliable devices: the RULE OF THREE ('Reduce, reuse, recycle' — triads are memorable), EMOTIVE language ('desperate', 'thriving'), RHETORICAL questions ('Would you want to be judged by one bad day?'), and vivid 'imagine if…' scenarios that put readers inside the picture.",
+   921→   921→        example:
+   922→   922→          "'Imagine if every student had a garden outside their classroom.' One sentence, and readers are already there.",
+   923→   923→        tip: "Devices work best in small doses — one per paragraph, maximum.",
+   924→   924→      },
+   925→   925→      {
+   926→   926→        heading: "Meet the Counter-Argument",
+   927→   927→        body:
+   928→   928→          "Strong persuaders don't ignore the other side — they invite it in and answer it. 'Some say later start times would clash with sports practice. But pilot schools solved this with rotating schedules.' Addressing objections shows confidence and makes your case harder to knock down.",
+   929→   929→        example:
+   930→   930→          "Claim: homework should be capped. Counter: 'Homework builds discipline.' Answer: 'Students already build discipline through sports, music, and classwork.'",
+   931→   931→        tip: "Answer the other side before your reader thinks of it.",
+   932→   932→      },
+   933→   933→    ],
+   934→   934→    vocab: [
+   935→   935→      { word: "claim", meaning: "The main point you want readers to believe." },
+   936→   936→      { word: "evidence", meaning: "Facts, statistics, or examples that support your claim." },
+   937→   937→      { word: "counter-argument", meaning: "The opposing view, mentioned and then answered." },
+   938→   938→      { word: "call to action", meaning: "The line that tells readers exactly what to do next." },
+   939→   939→    ],
+   940→   940→    funFact:
+   941→   941→      "Aristotle's three persuasion tools — ethos (trust), pathos (emotion), and logos (logic) — are over 2,300 years old, and you can still spot all three in every ad break today.",
+   942→   942→    quiz: [
+   943→   943→      {
+   944→   944→        question: "Which evidence BEST supports the claim 'Our town needs a bike lane'?",
+   945→   945→        options: [
+   946→   946→          "Bikes are pretty.",
+   947→   947→          "City data shows 42 bike accidents on Main Street in two years.",
+   948→   948→          "I think bikes are neat.",
+   949→   949→          "My cousin likes his bike.",
+   950→   950→        ],
+   951→   951→        answerIndex: 1,
+   952→   952→        explanation:
+   953→   953→          "Specific, checkable data about safety directly supports the claim. That's evidence that persuades.",
+   954→   954→        misconceptions: [
+   955→   955→          "Pretty is an opinion — it doesn't prove a need for a lane.",
+   956→   956→          "Yes! A specific statistic about accidents is powerful, relevant evidence.",
+   957→   957→          "'I think' announces an opinion, not evidence.",
+   958→   958→          "One cousin's preference is too small and personal to convince a town.",
+   959→   959→        ],
+   960→   960→      },
+   961→   961→      {
+   962→   962→        question: "'Would you want to be judged by one bad day?' This is…",
+   963→   963→        options: ["a rhetorical question", "a comma splice", "a simile", "a thesis"],
+   964→   964→        answerIndex: 0,
+   965→   965→        explanation:
+   966→   966→          "It's asked for effect, not for an answer — it makes readers reflect and agree.",
+   967→   967→        misconceptions: [
+   968→   968→          "Yes! Rhetorical questions persuade by making readers think it through themselves.",
+   969→   969→          "A comma splice is a grammar error — two sentences joined by only a comma.",
+   970→   970→          "A simile compares with like/as — no comparison here.",
+   971→   971→          "A thesis is an essay's main claim — this is a persuasion device.",
+   972→   972→        ],
+   973→   973→      },
+   974→   974→      {
+   975→   975→        question: "What is a counter-argument for?",
+   976→   976→        options: [
+   977→   977→          "To mention the other side and answer it — making you more convincing",
+   978→   978→          "To confuse the reader",
+   979→   979→          "To make your essay longer with lies",
+   980→   980→          "To end your essay",
+   981→   981→        ],
+   982→   982→        answerIndex: 0,
+   983→   983→        explanation:
+   984→   984→          "Addressing objections shows confidence: you've considered the other side and it still loses.",
+   985→   985→        misconceptions: [
+   986→   986→          "Yes! Meeting objections head-on makes your argument sturdier.",
+   987→   987→          "Clarity persuades — confusion loses readers.",
+   988→   988→          "Never argue with lies — answer honestly and fairly.",
+   989→   989→          "The counter-argument usually sits before the conclusion, not at the very end.",
+   990→   990→        ],
+   991→   991→      },
+   992→   992→      {
+   993→   993→        question: "'Reduce, reuse, recycle' works because of…",
+   994→   994→        options: ["the rule of three", "the Oxford comma", "passive voice", "rhyming"],
+   995→   995→        answerIndex: 0,
+   996→   996→        explanation:
+   997→   997→          "Three-part phrases are rhythmically satisfying and easy to remember — that's the rule of three.",
+   998→   998→        misconceptions: [
+   999→   999→          "Yes! Triads stick in memory — that's why speeches and slogans love them.",
+  1000→  1000→          "No comma drama here — it's the three-part rhythm doing the work.",
+  1001→  1001→          "All three verbs are active — passive voice isn't the trick.",
+  1002→  1002→          "Nothing rhymes — it's the pattern of three that makes it memorable.",
+  1003→  1003→        ],
+  1004→  1004→      },
+  1005→  1005→      {
+  1006→  1006→        question: "Which phrase uses emotive language?",
+  1007→  1007→        options: [
+  1008→  1008→          "The shelter is full.",
+  1009→  1009→          "The shelter is desperate — cold, crowded, and out of time.",
+  1010→  1010→          "The shelter has a roof.",
+  1011→  1011→          "The shelter opened in 2004.",
+  1012→  1012→        ],
+  1013→  1013→        answerIndex: 1,
+  1014→  1014→        explanation:
+  1015→  1015→          "'Desperate', 'cold', 'out of time' — these words are chosen to make readers FEEL something.",
+  1016→  1016→        misconceptions: [
+  1017→  1017→          "True but neutral — no emotional charge.",
+  1018→  1018→          "Yes! Those word choices are designed to stir emotion.",
+  1019→  1019→          "Factual and flat — no emotional pull.",
+  1020→  1020→          "A historical fact — informative, but it doesn't tug at feelings.",
+  1021→  1021→        ],
+  1022→  1022→      },
+  1023→  1023→    ],
+  1024→  1024→    worksheet: [
+  1025→  1025→      {
+  1026→  1026→        kind: "writing",
+  1027→  1027→        prompt:
+  1028→  1028→          "Write a mini persuasive paragraph (3-4 sentences) answering: Should the school day start later? Include a claim, two reasons, and a call to action.",
+  1029→  1029→        sampleAnswer:
+  1030→  1030→          "Our school day should start one hour later because teenage brains need sleep to learn. Studies link later start times to better grades and fewer morning accidents. Ask the school board to test a later start next term — our grades and our safety are worth it.",
+  1031→  1031→        minWords: 30,
+  1032→  1032→      },
+  1033→  1033→      {
+  1034→  1034→        kind: "match",
+  1035→  1035→        prompt: "Match each line to its persuasive technique!",
+  1036→  1036→        left: [
+  1037→  1037→          "Imagine if every student had a garden…",
+  1038→  1038→          "Studies show 8 in 10 doctors agree…",
+  1039→  1039→          "Would you want homework on YOUR birthday?",
+  1040→  1040→          "Sign the petition today!",
+  1041→  1041→        ],
+  1042→  1042→        right: ["statistics (logos)", "rhetorical question", "call to action", "emotional image (pathos)"],
+  1043→  1043→        answer: [3, 0, 1, 2],
+  1044→  1044→      },
+  1045→  1045→      {
+  1046→  1046→        kind: "fill-blank",
+  1047→  1047→        prompt: "Backing your claim with facts, data, and examples is called ______.",
+  1048→  1048→        answer: "evidence",
+  1049→  1049→      },
+  1050→  1050→      {
+  1051→  1051→        kind: "short-answer",
+  1052→  1052→        prompt:
+  1053→  1053→          "Give ONE counter-argument to 'Homework should be banned', then answer it in a sentence.",
+  1054→  1054→        sampleAnswer:
+  1055→  1055→          "Some say homework builds discipline, but students already practice discipline through sports, music, and classwork.",
+  1056→  1056→      },
+  1057→  1057→      {
+  1058→  1058→        kind: "fill-blank",
+  1059→  1059→        prompt: "A question you ask without expecting an answer is a ______ question.",
+  1060→  1060→        answer: "rhetorical",
+  1061→  1061→      },
+  1062→  1062→      {
+  1063→  1063→        kind: "short-answer",
+  1064→  1064→        prompt: "Turn 'Cats are popular pets' into an emotive sentence.",
+  1065→  1065→        sampleAnswer:
+  1066→  1066→          "Cats curl into warm, purring knots of comfort, winning hearts in millions of homes.",
+  1067→  1067→      },
+  1068→  1068→    ],
+  1069→  1069→    challenge: {
+  1070→  1070→      prompt:
+  1071→  1071→        "You have 60 seconds to persuade the class: 'Every student should join a club.' Write a three-sentence pitch — one sentence of ethos, one of pathos, one of logos — and label each one.",
+  1072→  1072→      hint: "Ethos = credibility or experience; pathos = feeling; logos = facts and numbers. One sentence each, then tag them.",
+  1073→  1073→      steps: [
+  1074→  1074→        "Ethos sentence: speak from experience or cite a trustworthy voice.",
+  1075→  1075→        "Pathos sentence: make the listener FEEL belonging, excitement, or missing out.",
+  1076→  1076→        "Logos sentence: use a number, a study, or clear cause-and-effect.",
+  1077→  1077→        "Reread and label each sentence: ethos, pathos, logos.",
+  1078→  1078→        "Finish with a mini call to action if you have room.",
+  1079→  1079→      ],
+  1080→  1080→      answer:
+  1081→  1081→        "Example — 'As club president for two years, I've watched shy students become confident leaders (ethos). Imagine never finding your people in a school of hundreds (pathos). Clubs meet weekly, cost nothing, and members report 20% less stress (logos).'",
+  1082→  1082→      answerWhy:
+  1083→  1083→        "Aristotle's three appeals still power every pitch, ad, and speech: credibility earns trust, emotion creates connection, and logic seals the decision. Using all three makes persuasion feel effortless.",
+  1084→  1084→    },
+  1085→  1085→  },
+  1086→  1086→];
+  1087→  1087→

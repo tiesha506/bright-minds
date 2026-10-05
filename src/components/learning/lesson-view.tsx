@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -26,11 +27,15 @@ import type { LessonProgress } from "@/lib/student-store";
 import { QuizPanel } from "./quiz-panel";
 import { WorksheetPanel } from "./worksheet-panel";
 
+type LessonTab = "learn" | "quiz" | "worksheet";
+
 interface LessonViewProps {
   subjectId: string;
   lessonId: string;
   ageGroup: AgeGroup;
   progress: LessonProgress | undefined;
+  /** Tab to open first (used by search results). Defaults to "learn". */
+  initialTab?: LessonTab;
   onBack: () => void;
   onMarkRead: () => void;
   onQuizScore: (score: number) => void;
@@ -41,13 +46,14 @@ export function LessonView({
   lessonId,
   ageGroup,
   progress,
+  initialTab = "learn",
   onBack,
   onMarkRead,
   onQuizScore,
 }: LessonViewProps) {
   const subject = getSubject(subjectId);
   const lesson = getLesson(subjectId, lessonId);
-  const [tab, setTab] = useState("learn");
+  const [tab, setTab] = useState<LessonTab>(initialTab);
 
   if (!subject || !lesson) return null;
 
@@ -92,7 +98,7 @@ export function LessonView({
         <p className="mt-3 text-base text-foreground/85">{lesson.intro}</p>
       </div>
 
-      <Tabs value={tab} onValueChange={setTab} className="w-full">
+      <Tabs value={tab} onValueChange={(v) => setTab(v as LessonTab)} className="w-full">
         <TabsList className="w-full sm:w-auto grid grid-cols-3 sm:inline-flex h-auto p-1 rounded-2xl no-print">
           <TabsTrigger value="learn" className="rounded-xl py-2 gap-1.5">
             <BookOpen className="w-4 h-4" /> Learn

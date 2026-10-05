@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import {
   CommandDialog,
   CommandEmpty,
@@ -27,10 +27,11 @@ export function SearchDialog({ open, onOpenChange, ageGroup, onSelect }: SearchD
   const index = useMemo(() => buildSearchIndex(ageGroup), [ageGroup]);
   const results = useMemo(() => searchContent(index, query), [index, query]);
 
-  // Reset the query each time the dialog opens.
-  useEffect(() => {
-    if (open) setQuery("");
-  }, [open]);
+  // Clearing on close means every open starts with a fresh query.
+  const handleOpenChange = (next: boolean) => {
+    if (!next) setQuery("");
+    onOpenChange(next);
+  };
 
   const grouped = useMemo(() => {
     const map = new Map<string, typeof results>();
@@ -43,7 +44,7 @@ export function SearchDialog({ open, onOpenChange, ageGroup, onSelect }: SearchD
   }, [results]);
 
   return (
-    <CommandDialog open={open} onOpenChange={onOpenChange}>
+    <CommandDialog open={open} onOpenChange={handleOpenChange}>
       <CommandInput
         value={query}
         onValueChange={setQuery}

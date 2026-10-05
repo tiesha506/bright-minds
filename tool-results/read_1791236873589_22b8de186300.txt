@@ -1,0 +1,848 @@
+     1→// English — Early Learning (ages 6-8)
+     2→// Six lessons: nouns, verbs, capital letters & full stops, adjectives,
+     3→// rhyming words and simple sentences. Short sentences, everyday examples,
+     4→// lots of warmth — big ideas in tiny, friendly bites.
+     5→import type { Lesson } from "./types";
+     6→
+     7→export const lessons: Lesson[] = [
+     8→  // -------------------------------------------------------------------------
+     9→  // 1. Nouns: People, Places, Things
+    10→  // -------------------------------------------------------------------------
+    11→  {
+    12→    id: "english-early-1",
+    13→    title: "Nouns: People, Places, Things",
+    14→    emoji: "🔎",
+    15→    minutes: 6,
+    16→    intro:
+    17→      "Words are hiding all around you — and some of them are NAME words! Let's go noun hunting.",
+    18→    sections: [
+    19→      {
+    20→        heading: "Nouns Are Naming Words",
+    21→        body:
+    22→          "A noun names something. If you can see it, visit it, or give it a high-five, it might be a noun! A noun can name a person (teacher), a place (park), or a thing (balloon).",
+    23→        example:
+    24→          "Yuki, school, and backpack are all nouns. Yuki is a person, school is a place, and a backpack is a thing!",
+    25→        tip: "Point at something right now. Its name is a noun. You just found one!",
+    26→      },
+    27→      {
+    28→        heading: "Nouns Are Everywhere!",
+    29→        body:
+    30→          "Look around your room: lamp, floor, teddy bear. Look outside: tree, road, cloud. Even your OWN name is a noun — names of people are nouns too.",
+    31→        example:
+    32→          "At the beach you can spot nouns in seconds: sand (thing), ocean (place), Leo (person splashing in the waves).",
+    33→        tip: "Pet names count! If you have a cat named Miso, 'Miso' is a noun.",
+    34→      },
+    35→      {
+    36→        heading: "Sorting Your Noun Treasure",
+    37→        body:
+    38→          "Good noun hunters sort their finds into three treasure chests: PEOPLE, PLACES, and THINGS. Try it with any words you spot.",
+    39→        example:
+    40→          "Magnet, doctor, kitchen. Doctor goes in the PEOPLE chest, kitchen in the PLACES chest, and magnet in the THINGS chest.",
+    41→        tip: "Ask: is it someone, someWHERE, or something?",
+    42→      },
+    43→    ],
+    44→    vocab: [
+    45→      { word: "noun", meaning: "A word that names a person, a place, or a thing." },
+    46→      { word: "person", meaning: "Someone — like a teacher, a friend, or you!" },
+    47→      { word: "place", meaning: "Somewhere you can go — like a park or a kitchen." },
+    48→      { word: "thing", meaning: "Something you can touch or see — like a spoon or a kite." },
+    49→    ],
+    50→    funFact:
+    51→      "'Noun' comes from the Latin word 'nomen', which means 'name' — so a noun really is just a fancy name for a naming word!",
+    52→    quiz: [
+    53→      {
+    54→        question: "Which word is a noun?",
+    55→        options: ["jump", "playground", "quickly", "happy"],
+    56→        answerIndex: 1,
+    57→        explanation:
+    58→          "A noun names a person, place, or thing. 'Playground' names a place — so it's a noun!",
+    59→        misconceptions: [
+    60→          "'Jump' shows an action — that makes it a verb, not a noun.",
+    61→          "Yes! 'Playground' names a place, and naming words are nouns.",
+    62→          "'Quickly' tells HOW you do something — it's a describing word for actions, not a name.",
+    63→          "'Happy' describes a feeling — it tells what something is like, but it doesn't NAME anything.",
+    64→        ],
+    65→      },
+    66→      {
+    67→        question: "Which of these names a PLACE?",
+    68→        options: ["toothbrush", "Amina", "library", "fluffy"],
+    69→        answerIndex: 2,
+    70→        explanation: "A library is a place you can visit — so 'library' is a place-noun!",
+    71→        misconceptions: [
+    72→          "A toothbrush is a thing you can hold — a thing-noun, not a place.",
+    73→          "Amina is a person! People are nouns too, just not PLACES.",
+    74→          "That's it! A library is somewhere you can go.",
+    75→          "'Fluffy' describes what something feels like — it's a describing word.",
+    76→        ],
+    77→      },
+    78→      {
+    79→        question: "In 'The dog chased the ball', which word is a noun?",
+    80→        options: ["chased", "dog", "quickly", "the"],
+    81→        answerIndex: 1,
+    82→        explanation:
+    83→          "'Dog' names an animal — animals are things-nouns too! ('Ball' is a noun as well.)",
+    84→        misconceptions: [
+    85→          "'Chased' is the action word — the verb. The noun is WHO the sentence is about!",
+    86→          "Right! 'Dog' names a furry friend, so it's a noun.",
+    87→          "'Quickly' tells how the dog chased — it's a describing word for the action.",
+    88→          "'The' is a tiny helper word — it points at nouns but isn't one itself.",
+    89→        ],
+    90→      },
+    91→      {
+    92→        question: "Which word names a person?",
+    93→        options: ["soup", "spoon", "Grandpa", "kitchen"],
+    94→        answerIndex: 2,
+    95→        explanation: "Grandpa is a person — and people are nouns!",
+    96→        misconceptions: [
+    97→          "Soup is a thing you can eat — a thing-noun.",
+    98→          "A spoon is a thing too — it names an object, not a person.",
+    99→          "Yes! Grandpa is a person, so 'Grandpa' is a person-noun.",
+   100→          "A kitchen is a place — it's a noun, but a place-noun.",
+   101→        ],
+   102→      },
+   103→    ],
+   104→    worksheet: [
+   105→      {
+   106→        kind: "fill-blank",
+   107→        prompt: "A noun names a person, ______, or thing.",
+   108→        answer: "place",
+   109→        hint: "You can visit one!",
+   110→      },
+   111→      {
+   112→        kind: "fill-blank",
+   113→        prompt: "In 'The cat sat on the mat', the two nouns are cat and ______.",
+   114→        answer: "mat",
+   115→      },
+   116→      {
+   117→        kind: "match",
+   118→        prompt: "Match each noun to what it names!",
+   119→        left: ["Yuki", "park", "balloon"],
+   120→        right: ["a thing", "a person", "a place"],
+   121→        answer: [1, 2, 0],
+   122→      },
+   123→      {
+   124→        kind: "build-sentence",
+   125→        prompt: "Tap the words to build a sentence about a noun find!",
+   126→        words: ["found", "a", "Leo", "shiny", "rock"],
+   127→        answer: "Leo found a shiny rock.",
+   128→      },
+   129→      {
+   130→        kind: "fill-blank",
+   131→        prompt: "Names of people are nouns too. Your own name is a ______.",
+   132→        answer: "noun",
+   133→      },
+   134→      {
+   135→        kind: "short-answer",
+   136→        prompt: "Look around your room and name three nouns you can see.",
+   137→        sampleAnswer: "I can see a book, a lamp, and a door.",
+   138→      },
+   139→    ],
+   140→    challenge: {
+   141→      prompt:
+   142→        "Noun hunt: find three nouns hiding in a kitchen — one person-noun (or pet!), one place-noun, and one thing-noun.",
+   143→      hint: "A pet with a name counts as a person-noun! Look for the big cold box, a sunny spot, a useful drawer…",
+   144→      steps: [
+   145→        "Picture a kitchen (or go look at a real one!).",
+   146→        "Find a person-noun: someone who could be there, like Sam, Mom, or the dog Biscuit.",
+   147→        "Find a place-noun: a spot like the sink, the corner, or the pantry.",
+   148→        "Find a thing-noun: an object like a spoon, a pot, or a fridge magnet.",
+   149→        "Say all three out loud: person, place, thing!",
+   150→      ],
+   151→      answer: "Example: Sam (person), sink (place), spoon (thing).",
+   152→      answerWhy:
+   153→        "Each word NAMES something: a person, a place, and a thing. Naming words are always nouns — even a silly made-up word like 'gigglepot' would be a noun if it named something!",
+   154→    },
+   155→  },
+   156→
+   157→  // -------------------------------------------------------------------------
+   158→  // 2. Action Words (Verbs)
+   159→  // -------------------------------------------------------------------------
+   160→  {
+   161→    id: "english-early-2",
+   162→    title: "Action Words (Verbs)",
+   163→    emoji: "🏃",
+   164→    minutes: 6,
+   165→    intro:
+   166→      "Run! Jump! Giggle! Verbs are the action words that make sentences MOVE. Ready to act some out?",
+   167→    sections: [
+   168→      {
+   169→        heading: "Verbs Are Doing Words",
+   170→        body:
+   171→          "A verb shows what someone or something DOES. If you can do it with your body, it's probably a verb: run, hop, wiggle, sneeze!",
+   172→        example:
+   173→          "In 'The frog hops', 'hops' is the verb — it tells you the frog's action.",
+   174→        tip: "Act the word out. If you can DO it, it's a verb!",
+   175→      },
+   176→      {
+   177→        heading: "Verbs Give Sentences Energy",
+   178→        body:
+   179→          "A sentence without a verb just sits there. 'The dog…' the dog WHAT? Add a verb and — zoom! — the dog barks, runs, or naps. The verb is the engine.",
+   180→        example:
+   181→          "'Kai kicks the ball.' Kicks is the verb. Kai does the action, and the ball goes flying!",
+   182→        tip: "Every sentence needs at least one verb. It's the engine that makes it go!",
+   183→      },
+   184→      {
+   185→        heading: "Even Quiet Verbs Count",
+   186→        body:
+   187→          "Some verbs are noisy: shout, stomp, clap. Some verbs are sleepy: rest, dream, yawn. They're ALL verbs, because they all show what happens.",
+   188→        example:
+   189→          "'The kitten sleeps.' Not much action — but 'sleeps' is still the verb!",
+   190→        tip: "Sleeping, thinking, and giggling are all actions too.",
+   191→      },
+   192→    ],
+   193→    vocab: [
+   194→      { word: "verb", meaning: "An action word — it shows what someone or something does." },
+   195→      { word: "action", meaning: "Doing something, like running, jumping, or singing." },
+   196→      { word: "sentence", meaning: "A group of words that tells a whole idea." },
+   197→    ],
+   198→    funFact:
+   199→      "The word 'run' is a champion verb — the Oxford English Dictionary lists around 645 different ways to use it. No other English word has more!",
+   200→    quiz: [
+   201→      {
+   202→        question: "Which word is a verb?",
+   203→        options: ["table", "sleepy", "jump", "green"],
+   204→        answerIndex: 2,
+   205→        explanation: "You can jump! It's an action — so 'jump' is a verb.",
+   206→        misconceptions: [
+   207→          "A table is a thing you can put books on — it's a noun.",
+   208→          "'Sleepy' describes how you feel — it's a describing word (adjective).",
+   209→          "That's right! Jumping is an action, so 'jump' is a verb.",
+   210→          "'Green' describes a color — it's a describing word, not an action.",
+   211→        ],
+   212→      },
+   213→      {
+   214→        question: "In 'The bird sings a song', which word is the verb?",
+   215→        options: ["bird", "sings", "song", "a"],
+   216→        answerIndex: 1,
+   217→        explanation: "'Sings' shows what the bird does — it's the action word!",
+   218→        misconceptions: [
+   219→          "'Bird' names the animal doing the action — it's a noun.",
+   220→          "Correct! Singing is the action, so 'sings' is the verb.",
+   221→          "'Song' is a thing — a noun. The verb is what the bird DOES.",
+   222→          "'A' is a tiny helper word, not an action.",
+   223→        ],
+   224→      },
+   225→      {
+   226→        question: "Which verb fits? 'Fish ______ in water.'",
+   227→        options: ["bark", "swim", "meow", "fly"],
+   228→        answerIndex: 1,
+   229→        explanation: "Fish swim! 'Swim' is the action that matches a fish.",
+   230→        misconceptions: [
+   231→          "Dogs bark — that action belongs to a dog, not a fish.",
+   232→          "Yes! Fish swim, so 'swim' is the right action word.",
+   233→          "Cats meow — try an action a fish can do!",
+   234→          "Birds fly — a fish would pick a splishier verb.",
+   235→        ],
+   236→      },
+   237→      {
+   238→        question: "Which one is an action word?",
+   239→        options: ["sofa", "purple", "hop", "quiet"],
+   240→        answerIndex: 2,
+   241→        explanation: "Hopping is something you DO — 'hop' is a verb!",
+   242→        misconceptions: [
+   243→          "A sofa is furniture — a thing-noun.",
+   244→          "'Purple' is a color — a describing word.",
+   245→          "Yes! Hopping is an action, so 'hop' is the verb.",
+   246→          "'Quiet' describes how something is — not what it does.",
+   247→        ],
+   248→      },
+   249→    ],
+   250→    worksheet: [
+   251→      {
+   252→        kind: "fill-blank",
+   253→        prompt: "A verb is a ______ word. It shows what someone does.",
+   254→        answer: "doing",
+   255→      },
+   256→      {
+   257→        kind: "build-sentence",
+   258→        prompt: "Tap the words to build a sentence full of action!",
+   259→        words: ["Kai", "kicks", "the", "ball"],
+   260→        answer: "Kai kicks the ball.",
+   261→      },
+   262→      {
+   263→        kind: "match",
+   264→        prompt: "Match each animal to its action!",
+   265→        left: ["bird", "fish", "rabbit"],
+   266→        right: ["hops", "swims", "flies"],
+   267→        answer: [1, 2, 0],
+   268→      },
+   269→      {
+   270→        kind: "fill-blank",
+   271→        prompt: "In 'Sam claps his hands', the verb is ______.",
+   272→        answer: "claps",
+   273→      },
+   274→      {
+   275→        kind: "short-answer",
+   276→        prompt: "Pretend to do your favorite action word, then write the verb.",
+   277→        sampleAnswer: "I love to dance. Dance is my favorite verb!",
+   278→      },
+   279→      {
+   280→        kind: "build-sentence",
+   281→        prompt: "Build one more action sentence!",
+   282→        words: ["hopped", "The", "frog", "away"],
+   283→        answer: "The frog hopped away.",
+   284→      },
+   285→    ],
+   286→  },
+   287→
+   288→  // -------------------------------------------------------------------------
+   289→  // 3. Capital Letters and Full Stops
+   290→  // -------------------------------------------------------------------------
+   291→  {
+   292→    id: "english-early-3",
+   293→    title: "Capital Letters and Full Stops",
+   294→    emoji: "✏️",
+   295→    minutes: 7,
+   296→    intro:
+   297→      "Every sentence needs a strong start and a firm stop — like a race! A capital letter says GO, and a full stop says STOP.",
+   298→    sections: [
+   299→      {
+   300→        heading: "Capital Letters Start the Race",
+   301→        body:
+   302→          "The first word of every sentence gets a capital letter. Names get capitals too: Amina, Kai, Toronto, Friday. Capitals are like little flags that say 'important!'",
+   303→        example: "'the cat naps' needs fixing → 'The cat naps.' Now The is wearing its capital flag!",
+   304→        tip: "Names always get a capital — even your best friend's hamster's name.",
+   305→      },
+   306→      {
+   307→        heading: "Full Stops Bring the Sentence Home",
+   308→        body:
+   309→          "A full stop (you can also call it a period) goes at the very end of a sentence. It tells the reader: this idea is finished, take a breath. A full stop is a tiny dot with a big job.",
+   310→        example: "'I like yaks' → 'I like yaks.' The full stop shows the idea is complete.",
+   311→        tip: "Full stop = the finish line of a sentence.",
+   312→      },
+   313→      {
+   314→        heading: "Check Every Sentence",
+   315→        body:
+   316→          "Great writers check two things on every sentence: Does it START with a capital? Does it END with a full stop? Two checks, and your writing looks sharp!",
+   317→        example:
+   318→          "'yuki and sam ran home' → 'Yuki and Sam ran home.' Capitals for the sentence AND the names!",
+   319→        tip: "When you write your name, give it a capital — you're important!",
+   320→      },
+   321→    ],
+   322→    vocab: [
+   323→      { word: "capital letter", meaning: "The BIG letter that starts a sentence or a name — like A." },
+   324→      { word: "full stop", meaning: "The dot at the end of a sentence. It is also called a period." },
+   325→      { word: "sentence", meaning: "A whole idea in words — it starts with a capital and ends with a full stop." },
+   326→    ],
+   327→    funFact:
+   328→      "Long ago, people wrote with NO spaces between words and no full stops at all! Punctuation was invented to show readers where to breathe.",
+   329→    quiz: [
+   330→      {
+   331→        question: "Which sentence is written correctly?",
+   332→        options: ["the dog is big.", "The dog is big", "The dog is big.", "the Dog is big."],
+   333→        answerIndex: 2,
+   334→        explanation:
+   335→          "It starts with a capital T and ends with a full stop. Perfect sentence!",
+   336→        misconceptions: [
+   337→          "Close! But 'the' needs a capital T at the start of a sentence.",
+   338→          "Almost! The capital is right, but the sentence needs a full stop at the end.",
+   339→          "Yes! Capital letter at the start, full stop at the end.",
+   340→          "'Dog' shouldn't have a capital in the middle, and 'the' should! Only sentence-starters and names get capitals.",
+   341→        ],
+   342→      },
+   343→      {
+   344→        question: "Where does a full stop go?",
+   345→        options: [
+   346→          "At the start of a sentence",
+   347→          "In the middle of a word",
+   348→          "At the end of a sentence",
+   349→          "Next to every noun",
+   350→        ],
+   351→        answerIndex: 2,
+   352→        explanation: "A full stop comes at the very end — it says the sentence is finished!",
+   353→        misconceptions: [
+   354→          "The START of a sentence belongs to the capital letter.",
+   355→          "Never inside a word! The full stop waits at the end.",
+   356→          "Yes! The full stop is the finish line of a sentence.",
+   357→          "Nouns don't need dots — every sentence just needs ONE full stop, at the end.",
+   358→        ],
+   359→      },
+   360→      {
+   361→        question: "Which word needs a capital letter? 'my friend amina lives in perth.'",
+   362→        options: ["my", "friend", "amina", "lives"],
+   363→        answerIndex: 2,
+   364→        explanation:
+   365→          "Amina is a name, and names always get capitals! ('My' also needs one because it starts the sentence.)",
+   366→        misconceptions: [
+   367→          "'My' starts the sentence, so it needs a capital too — but the name is the special one to spot here.",
+   368→          "'Friend' is a normal word in the middle, so it stays lowercase.",
+   369→          "Right! Amina is a name, so it needs a capital A.",
+   370→          "'Lives' is a normal action word in the middle — no capital needed.",
+   371→        ],
+   372→      },
+   373→      {
+   374→        question: "What does a full stop tell you?",
+   375→        options: [
+   376→          "The sentence is finished",
+   377→          "Read louder",
+   378→          "The word is a noun",
+   379→          "Jump to the next word",
+   380→        ],
+   381→        answerIndex: 0,
+   382→        explanation: "A full stop means the idea is complete — time to take a breath!",
+   383→        misconceptions: [
+   384→          "Yes! The full stop shows the sentence is done.",
+   385→          "For loud reading you'd want an exclamation mark — a full stop is calm.",
+   386→          "Full stops don't name words — they just end sentences.",
+   387→          "No jumping! A full stop means STOP and breathe.",
+   388→        ],
+   389→      },
+   390→    ],
+   391→    worksheet: [
+   392→      {
+   393→        kind: "fill-blank",
+   394→        prompt: "Every sentence starts with a ______ letter.",
+   395→        answer: "capital",
+   396→      },
+   397→      {
+   398→        kind: "correct-sentence",
+   399→        prompt: "Fix this sentence and retype it correctly!",
+   400→        sentence: "the cat naps",
+   401→        answer: "The cat naps.",
+   402→        why: "Sentences start with a capital letter (The) and end with a full stop. Two fixes, done!",
+   403→      },
+   404→      {
+   405→        kind: "correct-sentence",
+   406→        prompt: "This one needs three fixes. Retype it correctly!",
+   407→        sentence: "yuki and sam ran home",
+   408→        answer: "Yuki and Sam ran home.",
+   409→        why: "Capital Y for Yuki, capital S for Sam, and a full stop at the end. Names always get capitals!",
+   410→      },
+   411→      {
+   412→        kind: "match",
+   413→        prompt: "Match each piece to its job!",
+   414→        left: ["Capital letter", "Full stop", "Name"],
+   415→        right: ["ends the sentence", "starts the sentence", "always gets a capital"],
+   416→        answer: [1, 0, 2],
+   417→      },
+   418→      {
+   419→        kind: "fill-blank",
+   420→        prompt: "A full stop goes at the ______ of a sentence.",
+   421→        answer: "end",
+   422→      },
+   423→      {
+   424→        kind: "build-sentence",
+   425→        prompt: "Build a silly sentence. Remember: I is always a capital!",
+   426→        words: ["I", "like", "yaks"],
+   427→        answer: "I like yaks.",
+   428→      },
+   429→    ],
+   430→  },
+   431→
+   432→  // -------------------------------------------------------------------------
+   433→  // 4. Describing Words (Adjectives)
+   434→  // -------------------------------------------------------------------------
+   435→  {
+   436→    id: "english-early-4",
+   437→    title: "Describing Words (Adjectives)",
+   438→    emoji: "🌈",
+   439→    minutes: 6,
+   440→    intro:
+   441→      "Is it slimy? Sparkly? Gigantic? Describing words paint pictures with words — let's grab our paintbrushes!",
+   442→    sections: [
+   443→      {
+   444→        heading: "Adjectives Describe",
+   445→        body:
+   446→          "A describing word (the grown-up name is adjective) tells you MORE about a person, place, or thing. Is the puppy big or tiny? Fluffy or smooth? Adjectives tell you!",
+   447→        example: "'The fluffy puppy wags its tail.' Fluffy describes the puppy.",
+   448→        tip: "Adjectives answer: what is it like?",
+   449→      },
+   450→      {
+   451→        heading: "Use Your Senses",
+   452→        body:
+   453→          "Your senses find adjectives everywhere! Eyes see: red, shiny, enormous. Ears hear: loud, quiet, squeaky. Nose smells: stinky, sweet. Tongue tastes: sour, salty. Fingers feel: soft, bumpy, gooey.",
+   454→        example: "A lemon is sour, yellow, and bumpy. Three adjectives from one fruit!",
+   455→        tip: "Can't think of a describing word? Use your senses!",
+   456→      },
+   457→      {
+   458→        heading: "Make Boring Sentences Pop",
+   459→        body:
+   460→          "'The dog ran.' Okay… but which dog? How did it run? Add describing words: 'The soggy dog splashed through the puddles.' WOW! Now you can see it!",
+   461→        example:
+   462→          "'A dragon lived there.' → 'An enormous dragon with purple scales lived there.' WOW! Now you can see it!",
+   463→        tip: "One or two strong describing words beat five weak ones.",
+   464→      },
+   465→    ],
+   466→    vocab: [
+   467→      { word: "adjective", meaning: "A describing word — it tells what something is like." },
+   468→      { word: "describe", meaning: "To say more about something: its color, size, feel, or smell." },
+   469→      { word: "senses", meaning: "Seeing, hearing, smelling, tasting, and touching." },
+   470→    ],
+   471→    funFact:
+   472→      "'Big' has lots of fun cousins: large, huge, giant, enormous, gigantic — and the silliest of all, 'humongous'!",
+   473→    quiz: [
+   474→      {
+   475→        question: "Which word is a describing word?",
+   476→        options: ["run", "fluffy", "kitten", "under"],
+   477→        answerIndex: 1,
+   478→        explanation: "'Fluffy' describes what something feels like — it's an adjective!",
+   479→        misconceptions: [
+   480→          "'Run' is an action — a verb. Describing words tell what something is LIKE.",
+   481→          "Yes! 'Fluffy' describes a kitten, a blanket, or a cloud.",
+   482→          "'Kitten' names an animal — it's a noun.",
+   483→          "'Under' tells where something is — it's a position word, not a describer.",
+   484→        ],
+   485→      },
+   486→      {
+   487→        question: "In 'The giant pizza sat on the table', which word describes the pizza?",
+   488→        options: ["giant", "sat", "table", "the"],
+   489→        answerIndex: 0,
+   490→        explanation: "'Giant' tells you how BIG the pizza is — that's a describing word!",
+   491→        misconceptions: [
+   492→          "Yes! 'Giant' describes the pizza's size.",
+   493→          "'Sat' is the action — the verb.",
+   494→          "'Table' is a thing — a noun, not a describer.",
+   495→          "'The' is a tiny helper word that points at nouns.",
+   496→        ],
+   497→      },
+   498→      {
+   499→        question: "Which describing word fits ice cream best?",
+   500→        options: ["melty", "wooden", "angry", "sandy"],
+   501→        answerIndex: 0,
+   502→        explanation: "Ice cream gets melty in the sun — 'melty' fits perfectly!",
+   503→        misconceptions: [
+   504→          "Yes! Melty is exactly what ice cream does on a warm day.",
+   505→          "Wooden fits a chair or a spoon — not ice cream!",
+   506→          "Ice cream never gets angry — try a taste or temperature word.",
+   507→          "Sandy fits a beach — ice cream wants a cooler word!",
+   508→        ],
+   509→      },
+   510→      {
+   511→        question: "Which word describes how a lemon tastes?",
+   512→        options: ["loud", "sour", "sleepy", "tall"],
+   513→        answerIndex: 1,
+   514→        explanation: "Lemons taste sour! Taste words are describing words.",
+   515→        misconceptions: [
+   516→          "'Loud' describes sound — your ears, not your tongue!",
+   517→          "Yes! Sour is the classic lemon taste.",
+   518→          "'Sleepy' describes how YOU feel — not how a lemon tastes.",
+   519→          "'Tall' describes height — lemons are small and round!",
+   520→        ],
+   521→      },
+   522→    ],
+   523→    worksheet: [
+   524→      {
+   525→        kind: "fill-blank",
+   526→        prompt: "A describing word is called an ______.",
+   527→        answer: "adjective",
+   528→        hint: "It starts with the same letter as 'apple'.",
+   529→      },
+   530→      {
+   531→        kind: "match",
+   532→        prompt: "Match each thing to a describing word that fits!",
+   533→        left: ["lemon", "pillow", "elephant"],
+   534→        right: ["soft", "enormous", "sour"],
+   535→        answer: [2, 0, 1],
+   536→      },
+   537→      {
+   538→        kind: "build-sentence",
+   539→        prompt: "Which kite? The red one! Build the sentence.",
+   540→        words: ["The", "red", "kite", "flies"],
+   541→        answer: "The red kite flies.",
+   542→      },
+   543→      {
+   544→        kind: "fill-blank",
+   545→        prompt: "In 'the shiny coin', the describing word is ______.",
+   546→        answer: "shiny",
+   547→      },
+   548→      {
+   549→        kind: "short-answer",
+   550→        prompt: "Describe your favorite snack with two describing words.",
+   551→        sampleAnswer: "My favorite snack is a warm, cheesy slice of pizza!",
+   552→      },
+   553→      {
+   554→        kind: "build-sentence",
+   555→        prompt: "Build a sentence with a describing word about size!",
+   556→        words: ["A", "tiny", "mouse", "squeaked"],
+   557→        answer: "A tiny mouse squeaked.",
+   558→      },
+   559→    ],
+   560→  },
+   561→
+   562→  // -------------------------------------------------------------------------
+   563→  // 5. Rhyming Words
+   564→  // -------------------------------------------------------------------------
+   565→  {
+   566→    id: "english-early-5",
+   567→    title: "Rhyming Words",
+   568→    emoji: "🎵",
+   569→    minutes: 6,
+   570→    intro:
+   571→      "Cat, hat, mat, bat! Rhyming words are words that sing together at the end. Let's make some word music!",
+   572→    sections: [
+   573→      {
+   574→        heading: "Rhymes Sound Alike at the End",
+   575→        body:
+   576→          "Rhyming words end with the same sounds. Say them out loud: star… car! Cake… snake! Your ears will hear the match — rhyming is a listening game.",
+   577→        example: "'The bee sat on my knee.' Bee and knee rhyme — they share their ending sounds!",
+   578→        tip: "Say the words out loud. If they sound like a mini song, they rhyme!",
+   579→      },
+   580→      {
+   581→        heading: "Word Families",
+   582→        body:
+   583→          "Rhyming words grow in families. The -at family: cat, hat, mat, bat, sat. The -ig family: pig, wig, big, dig. Change the first sound and — poof! — a brand-new rhyme.",
+   584→        example: "Take 'hop'. Swap the h: top, mop, stop, shop. One word, a whole family of rhymes!",
+   585→        tip: "One family, many words: change the first letter, keep the ending.",
+   586→      },
+   587→      {
+   588→        heading: "Make Your Own Rhyme",
+   589→        body:
+   590→          "Pick a word, then say the alphabet slowly until you hear a match. Sun… bun! fun! run! You just made rhymes. Strings of rhymes become poems and songs.",
+   591→        example: "'I saw a frog sitting on a log.' Frog and log — you're basically a poet already!",
+   592→        tip: "Nonsense words rhyme too: 'a frog on a mog'? Silly — but it rhymes!",
+   593→      },
+   594→    ],
+   595→    vocab: [
+   596→      { word: "rhyme", meaning: "Words that end with the same sound, like cat and hat." },
+   597→      { word: "word family", meaning: "A group of words that rhyme, like pig, wig, and big." },
+   598→      { word: "poem", meaning: "Writing made of lines that often rhyme and sound musical." },
+   599→    ],
+   600→    funFact:
+   601→      "Dr. Seuss's friend bet him he couldn't write a book using only 50 different words — so he wrote 'Green Eggs and Ham' and won the bet!",
+   602→    quiz: [
+   603→      {
+   604→        question: "Which word rhymes with 'cat'?",
+   605→        options: ["dog", "hat", "sun", "cup"],
+   606→        answerIndex: 1,
+   607→        explanation: "'Hat' ends with the same -at sound as 'cat' — a perfect rhyme!",
+   608→        misconceptions: [
+   609→          "'Dog' ends with an -og sound — that rhymes with frog and log!",
+   610→          "Yes! Cat… hat — hear the matching ending?",
+   611→          "'Sun' ends with -un — it rhymes with fun and run.",
+   612→          "'Cup' ends with -up — it rhymes with pup and sup.",
+   613→        ],
+   614→      },
+   615→      {
+   616→        question: "Which pair of words rhymes?",
+   617→        options: ["moon–sock", "star–car", "tree–box", "cake–goat"],
+   618→        answerIndex: 1,
+   619→        explanation: "Star and car share the -ar sound — they rhyme!",
+   620→        misconceptions: [
+   621→          "Moon ends in -oon, sock ends in -ock. Different endings!",
+   622→          "Yes! Star… car — the ending sounds match perfectly.",
+   623→          "Tree ends in -ee, box ends in -ox. Listen again — not a match.",
+   624→          "Cake ends in -ake, goat ends in -oat. Close, but the sounds don't match.",
+   625→        ],
+   626→      },
+   627→      {
+   628→        question: "Which word does NOT rhyme with 'hop'?",
+   629→        options: ["top", "mop", "shop", "cup"],
+   630→        answerIndex: 3,
+   631→        explanation: "'Cup' ends with -up, not -op. The others all rhyme with hop!",
+   632→        misconceptions: [
+   633→          "'Top' ends with -op — it rhymes with hop!",
+   634→          "'Mop' ends with -op — a good rhyme.",
+   635→          "'Shop' ends with -op — it rhymes too.",
+   636→          "Yes! 'Cup' ends with -up, so it breaks the -op pattern.",
+   637→        ],
+   638→      },
+   639→      {
+   640→        question: "Finish the rhyme: 'There once was a bee, who sat on my ______.'",
+   641→        options: ["knee", "chair", "shoe", "hat"],
+   642→        answerIndex: 0,
+   643→        explanation: "Bee and knee share the -ee sound — the rhyme is complete!",
+   644→        misconceptions: [
+   645→          "Yes! Bee… knee — the ending sounds match.",
+   646→          "'Chair' makes sense but doesn't rhyme with bee — rhyming needs matching sounds.",
+   647→          "'Shoe' almost sounds like it could work, but it ends in -oo, not -ee.",
+   648→          "'Hat' rhymes with cat and mat — not with bee.",
+   649→        ],
+   650→      },
+   651→    ],
+   652→    worksheet: [
+   653→      {
+   654→        kind: "match",
+   655→        prompt: "Match each word to its rhyming partner!",
+   656→        left: ["star", "cake", "moon"],
+   657→        right: ["spoon", "car", "snake"],
+   658→        answer: [1, 2, 0],
+   659→      },
+   660→      {
+   661→        kind: "fill-blank",
+   662→        prompt: "Words that rhyme end with the same ______.",
+   663→        answer: "sounds",
+   664→      },
+   665→      {
+   666→        kind: "fill-blank",
+   667→        prompt: "Do 'sun' and 'fun' rhyme? Write yes or no.",
+   668→        answer: "yes",
+   669→      },
+   670→      {
+   671→        kind: "fill-blank",
+   672→        prompt: "Do 'box' and 'star' rhyme? Write yes or no.",
+   673→        answer: "no",
+   674→      },
+   675→      {
+   676→        kind: "build-sentence",
+   677→        prompt: "Build a rhyming sentence — the last two words rhyme!",
+   678→        words: ["The", "fox", "sat", "on", "a", "box"],
+   679→        answer: "The fox sat on a box.",
+   680→      },
+   681→      {
+   682→        kind: "short-answer",
+   683→        prompt: "Make up one rhyming pair of your own, like 'goat–boat'.",
+   684→        sampleAnswer: "frog–log! I like to hop like a frog onto a log.",
+   685→      },
+   686→    ],
+   687→  },
+   688→
+   689→  // -------------------------------------------------------------------------
+   690→  // 6. Simple Sentences
+   691→  // -------------------------------------------------------------------------
+   692→  {
+   693→    id: "english-early-6",
+   694→    title: "Simple Sentences",
+   695→    emoji: "🧱",
+   696→    minutes: 7,
+   697→    intro:
+   698→      "Sentences are like LEGO towers: the bricks have to fit together just right, or the whole thing wobbles! Let's build sentences that make sense.",
+   699→    sections: [
+   700→      {
+   701→        heading: "A Sentence Tells Who and What Happens",
+   702→        body:
+   703→          "A real sentence gives you two things: WHO or WHAT the sentence is about, and WHAT happens. 'Leo naps.' Who? Leo. What happens? Napping. That's a whole idea!",
+   704→        example:
+   705→          "'The cat sleeps.' Who or what? The cat. What happens? Sleeping. Complete sentence!",
+   706→        tip: "Every sentence needs a who (or what) AND a what-happens.",
+   707→      },
+   708→      {
+   709→        heading: "Words Must Make Sense Together",
+   710→        body:
+   711→          "Put words in a silly order and the sentence breaks: 'Ball the kicked Leo' — huh? Put them in the right order and everything clicks: 'Leo kicked the ball.' Same words, but now they make sense!",
+   712→        example:
+   713→          "'Sleeps the cat' sounds mixed up. 'The cat sleeps' — now your ears smile!",
+   714→        tip: "Read your sentence out loud. Do your ears smile? It works!",
+   715→      },
+   716→      {
+   717→        heading: "Sentences Work Together Too",
+   718→        body:
+   719→          "When sentences team up, the order matters. 'I planted a seed. I watered it. A flower grew!' — sense made. But 'A flower grew. I planted a seed.' — wait, how did the flower get there? Keep events in an order that makes sense together.",
+   720→        example:
+   721→          "First the sun rises, THEN Leo wakes up. Swap them and the story gets confusing!",
+   722→        tip: "Tell things in order: first, next, last.",
+   723→      },
+   724→    ],
+   725→    vocab: [
+   726→      { word: "sentence", meaning: "A group of words that tells a whole idea." },
+   727→      { word: "complete", meaning: "Finished — nothing missing." },
+   728→      { word: "order", meaning: "The sequence things happen in: first, next, last." },
+   729→    ],
+   730→    funFact:
+   731→      "A sentence can be tiny: 'Go!' is a complete sentence — one word, a capital letter, and it makes perfect sense!",
+   732→    quiz: [
+   733→      {
+   734→        question: "Which one is a real sentence?",
+   735→        options: ["Ball the kicked Leo", "Leo kicked the ball.", "Kicked ball Leo the", "Leo the ball kicked"],
+   736→        answerIndex: 1,
+   737→        explanation: "'Leo kicked the ball.' tells who (Leo) and what happens (kicked) — in an order that makes sense!",
+   738→        misconceptions: [
+   739→          "The words are jumbled! Who kicks the ball? Try putting Leo first.",
+   740→          "Yes! It has a who, a what-happens, a capital, and a full stop.",
+   741→          "Scrambled again! English sentences like the doer up front.",
+   742→          "Almost the right words — but 'Leo the ball kicked' is still tangled up.",
+   743→        ],
+   744→      },
+   745→      {
+   746→        question: "What two things does a simple sentence tell you?",
+   747→        options: [
+   748→          "Who and what happens",
+   749→          "A color and a number",
+   750→          "A rhyme and a song",
+   751→          "A letter and a full stop",
+   752→        ],
+   753→        answerIndex: 0,
+   754→        explanation:
+   755→          "A sentence names a who (or what) and tells what happens. That's what makes it complete!",
+   756→        misconceptions: [
+   757→          "Yes! Who it's about + what happens = a complete sentence.",
+   758→          "Colors and numbers are nice, but sentences don't need them.",
+   759→          "Rhymes are fun, but they don't make a sentence complete.",
+   760→          "A capital and a full stop are the sentence's OUTFIT — the who and what-happens are its heart.",
+   761→        ],
+   762→      },
+   763→      {
+   764→        question: "Which word order makes sense?",
+   765→        options: ["Sleeps the cat", "Cat the sleeps", "The cat sleeps.", "The sleeps cat"],
+   766→        answerIndex: 2,
+   767→        explanation: "'The cat sleeps.' — the who (the cat) comes before the what-happens (sleeps).",
+   768→        misconceptions: [
+   769→          "'Sleeps' up front tangles the sentence — the who usually comes first.",
+   770→          "'Cat the sleeps' is scrambled — 'the' hugs the word it describes.",
+   771→          "Yes! The cat first, then the action. It makes sense!",
+   772→          "'The sleeps cat' puts the action in the wrong spot — cats sleep, sleeps don't cat!",
+   773→        ],
+   774→      },
+   775→      {
+   776→        question: "'The sandwich ate Leo.' Does this sentence make sense?",
+   777→        options: [
+   778→          "No — sandwiches can't eat people!",
+   779→          "Yes — sandwiches are hungry",
+   780→          "No — it needs more adjectives",
+   781→          "Yes — it rhymes",
+   782→        ],
+   783→        answerIndex: 0,
+   784→        explanation:
+   785→          "It's built like a sentence, but the meaning is silly — sandwiches don't eat people. Words must make SENSE together!",
+   786→        misconceptions: [
+   787→          "Right! The words fit together, but the idea is impossible — meaning matters.",
+   788→          "Sandwiches are delicious, not hungry — this sentence mixes up who does what!",
+   789→          "More describing words wouldn't fix it — the ACTION is backwards.",
+   790→          "It doesn't even rhyme — and rhyming was never the goal. Sense is!",
+   791→        ],
+   792→      },
+   793→    ],
+   794→    worksheet: [
+   795→      {
+   796→        kind: "build-sentence",
+   797→        prompt: "Unscramble the words into a sentence that makes sense!",
+   798→        words: ["kicks", "Leo", "the", "ball"],
+   799→        answer: "Leo kicks the ball.",
+   800→      },
+   801→      {
+   802→        kind: "build-sentence",
+   803→        prompt: "One more scramble — build a complete sentence!",
+   804→        words: ["naps", "The", "cat"],
+   805→        answer: "The cat naps.",
+   806→      },
+   807→      {
+   808→        kind: "fill-blank",
+   809→        prompt: "A sentence tells who and what ______.",
+   810→        answer: "happens",
+   811→      },
+   812→      {
+   813→        kind: "fill-blank",
+   814→        prompt: "Does 'The dog walks to school.' make sense? Write yes or no.",
+   815→        answer: "yes",
+   816→      },
+   817→      {
+   818→        kind: "match",
+   819→        prompt: "Match each beginning to its best ending!",
+   820→        left: ["The sun", "Leo ate", "The fish"],
+   821→        right: ["rises in the morning.", "swims in the water.", "a big sandwich."],
+   822→        answer: [0, 2, 1],
+   823→      },
+   824→      {
+   825→        kind: "short-answer",
+   826→        prompt: "Make these words into a sentence that makes sense: 'bus school to the rides Priya'",
+   827→        sampleAnswer: "Priya rides the bus to school.",
+   828→      },
+   829→    ],
+   830→    challenge: {
+   831→      prompt:
+   832→        "Put these three events in an order that makes sense together: (A) Amara watered the seed every day. (B) Amara planted a sunflower seed. (C) A tall sunflower grew!",
+   833→      hint: "Can you water a seed you haven't planted yet? Think about what must happen first.",
+   834→      steps: [
+   835→        "Read all three events slowly.",
+   836→        "Ask: which one starts everything?",
+   837→        "Ask: which one needs time and care before the last one can happen?",
+   838→        "Put them in order: first, next, last.",
+   839→        "Read your order out loud — does it make sense together?",
+   840→      ],
+   841→      answer:
+   842→        "B → A → C: Amara planted a seed, watered it every day, and a tall sunflower grew.",
+   843→      answerWhy:
+   844→        "You can't water a seed before planting it, and a sunflower only grows after planting AND watering. When sentences happen in a sensible order, your whole story makes sense together!",
+   845→    },
+   846→  },
+   847→];
+   848→

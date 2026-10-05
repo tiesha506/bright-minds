@@ -1,23 +1,43 @@
 import type { AgeGroup, Lesson, Subject } from "./types";
-import { literacySubject } from "./literacy";
-import { scienceSubject } from "./science";
-import { lifeSubject } from "./life";
 
-// Mathematics is composed from four age-group files (rewritten in Task 8-4a..8-4d
-// to cover every requested topic and to include multi-method Strategy Labs).
+// Every subject is composed from four age-group files so difficulty, voice and
+// activities can be tuned per group (early 6-8 / primary 9-11 /
+// intermediate 12-13 / teen 14-15).
 import { lessons as mathEarlyLessons } from "./math-early";
 import { lessons as mathPrimaryLessons } from "./math-primary";
 import { lessons as mathIntermediateLessons } from "./math-intermediate";
 import { lessons as mathTeenLessons } from "./math-teen";
 
+import { lessons as englishEarlyLessons } from "./english-early";
+import { lessons as englishPrimaryLessons } from "./english-primary";
+import { lessons as englishIntermediateLessons } from "./english-intermediate";
+import { lessons as englishTeenLessons } from "./english-teen";
+
+import { lessons as scienceEarlyLessons } from "./science-early";
+import { lessons as sciencePrimaryLessons } from "./science-primary";
+import { lessons as scienceIntermediateLessons } from "./science-intermediate";
+import { lessons as scienceTeenLessons } from "./science-teen";
+
+import { lessons as readingEarlyLessons } from "./reading-early";
+import { lessons as readingPrimaryLessons } from "./reading-primary";
+import { lessons as readingIntermediateLessons } from "./reading-intermediate";
+import { lessons as readingTeenLessons } from "./reading-teen";
+
 export * from "./types";
 
-const mathLessons: Record<AgeGroup, Lesson[]> = {
-  early: mathEarlyLessons,
-  primary: mathPrimaryLessons,
-  intermediate: mathIntermediateLessons,
-  teen: mathTeenLessons,
-};
+function compose(parts: {
+  early: Lesson[];
+  primary: Lesson[];
+  intermediate: Lesson[];
+  teen: Lesson[];
+}): Record<AgeGroup, Lesson[]> {
+  return {
+    early: parts.early,
+    primary: parts.primary,
+    intermediate: parts.intermediate,
+    teen: parts.teen,
+  };
+}
 
 const mathSubject: Subject = {
   id: "math",
@@ -30,14 +50,77 @@ const mathSubject: Subject = {
     intermediate: "Crack ratios, integers and equations with real-world math.",
     teen: "Master algebra, functions and data — skills for exams and for life.",
   },
-  lessons: mathLessons,
+  lessons: compose({
+    early: mathEarlyLessons,
+    primary: mathPrimaryLessons,
+    intermediate: mathIntermediateLessons,
+    teen: mathTeenLessons,
+  }),
 };
 
+const englishSubject: Subject = {
+  id: "english",
+  name: "English",
+  emoji: "✏️",
+  gradient: "from-rose-400 to-pink-600",
+  taglines: {
+    early: "Words, sentences and stories — let's play with language!",
+    primary: "Grammar superpowers, spelling tricks and story writing.",
+    intermediate: "Craft powerful sentences, essays and arguments.",
+    teen: "Sharpen grammar, rhetoric and writing for exams and beyond.",
+  },
+  lessons: compose({
+    early: englishEarlyLessons,
+    primary: englishPrimaryLessons,
+    intermediate: englishIntermediateLessons,
+    teen: englishTeenLessons,
+  }),
+};
+
+const scienceSubject: Subject = {
+  id: "science",
+  name: "Science",
+  emoji: "🔬",
+  gradient: "from-emerald-400 to-teal-600",
+  taglines: {
+    early: "Explore animals, plants, weather and wild experiments!",
+    primary: "Solar systems, circuits and the secrets of matter.",
+    intermediate: "Cells, atoms, energy and ecosystems — the real deal.",
+    teen: "Genetics, Newton's laws and inquiry skills for exam success.",
+  },
+  lessons: compose({
+    early: scienceEarlyLessons,
+    primary: sciencePrimaryLessons,
+    intermediate: scienceIntermediateLessons,
+    teen: scienceTeenLessons,
+  }),
+};
+
+const readingSubject: Subject = {
+  id: "reading",
+  name: "Reading",
+  emoji: "📖",
+  gradient: "from-violet-500 to-purple-600",
+  taglines: {
+    early: "Phonics fun and stories made just for you.",
+    primary: "Main ideas, characters and cracking new words.",
+    intermediate: "Inference, themes and thinking between the lines.",
+    teen: "Critique arguments, decode bias and read like a scholar.",
+  },
+  lessons: compose({
+    early: readingEarlyLessons,
+    primary: readingPrimaryLessons,
+    intermediate: readingIntermediateLessons,
+    teen: readingTeenLessons,
+  }),
+};
+
+/** The four major subjects: MATH • ENGLISH • SCIENCE • READING. */
 export const subjects: Subject[] = [
   mathSubject,
-  literacySubject,
+  englishSubject,
   scienceSubject,
-  lifeSubject,
+  readingSubject,
 ];
 
 export const subjectMap: Record<string, Subject> = Object.fromEntries(

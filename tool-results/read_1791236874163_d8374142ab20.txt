@@ -1,0 +1,1138 @@
+     1→// ---------------------------------------------------------------------------
+     2→// BrightMinds — Science, Intermediate Learning (ages 12-13)
+     3→// Seven lessons: classification, atoms & mixtures, speed & energy transfer,
+     4→// ecological relationships, cells, energy stores & conservation, and Earth &
+     5→// space (seasons, tides, Moon). Real vocabulary, real data, real lab skills.
+     6→// ---------------------------------------------------------------------------
+     7→import type { Lesson } from "./types";
+     8→
+     9→export const lessons: Lesson[] = [
+    10→  // -------------------------------------------------------------------------
+    11→  // 1. Biology: classification of living things
+    12→  // -------------------------------------------------------------------------
+    13→  {
+    14→    id: "science-intermediate-1",
+    15→    title: "Classification of Living Things",
+    16→    emoji: "🦁",
+    17→    minutes: 12,
+    18→    intro:
+    19→      "Earth hosts millions of species — so scientists need a filing system. Learn how classification sorts every living thing into its place.",
+    20→    sections: [
+    21→      {
+    22→        heading: "Why classify?",
+    23→        body:
+    24→          "Classification groups living things by shared features so scientists can study, name and find them again. In the 1700s, Carl Linnaeus invented the two-part scientific name we still use: genus + species. A lion is Panthera leo; a human is Homo sapiens. Every species on Earth gets one unique name that scientists in any language can use.",
+    25→        example: "🦁 Panthera leo (lion)  ·  🐯 Panthera tigris (tiger) — same genus, different species",
+    26→        tip: "Two organisms share a species name only if they are the same kind of organism.",
+    27→      },
+    28→      {
+    29→        heading: "The levels, from big to small",
+    30→        body:
+    31→          "Organisms fit into nested levels: kingdom → phylum → class → order → family → genus → species. Each level gets more specific. A house cat walks down from Animalia (kingdom) to Chordata (phylum) to Mammalia (class) to Carnivora (order) to Felidae (family) to Felis (genus) to catus (species). Students remember it with: King Philip Came Over For Good Soup.",
+    32→        example:
+    33→          "🐆 Felidae (all wild and domestic cats) → Panthera (big roaring cats) → leo (lion): each level narrows the group.",
+    34→      },
+    35→      {
+    36→        heading: "The vertebrate classes",
+    37→        body:
+    38→          "Vertebrates are animals with backbones, sorted into five familiar classes. Mammals have hair and feed milk to young. Birds have feathers and hard-shelled eggs. Reptiles have dry scaly skin and cannot make their own body heat. Amphibians live a double life in water and on land with moist skin. Fish breathe through gills with fins and scales.",
+    39→        example: "🦇 bat = mammal (not a bird!)  ·  🐧 penguin = bird (not a fish!)  ·  🐋 whale = mammal (not a fish!)",
+    40→        tip: "A dolphin has no gills or scales — it breathes air and nurses calves: a mammal.",
+    41→      },
+    42→      {
+    43→        heading: "Try it: Build a dichotomous key",
+    44→        body:
+    45→          "1. Collect 6 different leaves (or 6 classroom objects). 2. Write yes/no questions that split the group in half: 'Is it longer than wide? Does it have a jagged edge?' 3. Keep splitting until each item has a unique path. 4. Swap keys with a partner — can they identify every item using only your questions? That branching question path is a dichotomous key, the tool real biologists use.",
+    46→      },
+    47→    ],
+    48→    vocab: [
+    49→      { word: "classification", meaning: "Sorting living things into groups based on shared features." },
+    50→      { word: "species", meaning: "A group of organisms so similar they can breed together to produce fertile offspring." },
+    51→      { word: "vertebrate", meaning: "An animal with a backbone." },
+    52→      { word: "invertebrate", meaning: "An animal without a backbone, like an insect or worm." },
+    53→      { word: "genus", meaning: "The group just above species in the naming system." },
+    54→    ],
+    55→    funFact:
+    56→      "Scientists have named about 1.5 million species, but estimates suggest nearly 9 million exist — new species are formally discovered almost every week!",
+    57→    quiz: [
+    58→      {
+    59→        question: "What is the correct order of classification levels, from broadest to most specific?",
+    60→        options: ["Species → kingdom → genus", "Kingdom → species → genus", "Kingdom → genus → species", "Genus → kingdom → species"],
+    61→        answerIndex: 2,
+    62→        explanation: "Kingdom is the biggest group, then genus narrows it, and species is the most specific level.",
+    63→        misconceptions: [
+    64→          "Species is the smallest, most specific level — it cannot come first from broad to narrow.",
+    65→          "Species and genus are swapped — genus contains several species, not the other way.",
+    66→          "Yes! Kingdom → phylum → class → order → family → genus → species.",
+    67→          "Genus sits inside kingdom, so kingdom must come first.",
+    68→        ],
+    69→      },
+    70→      {
+    71→        question: "In the scientific name Panthera leo, what does leo represent?",
+    72→        options: ["The species", "The kingdom", "The genus", "The phylum"],
+    73→        answerIndex: 0,
+    74→        explanation: "The two-part name is genus + species: Panthera is the genus and leo is the species.",
+    75→        misconceptions: [
+    76→          "Yes! The second word names the species — the lion.",
+    77→          "Kingdom names like Animalia are far too broad to appear in a species name.",
+    78→          "Panthera is the genus. Leo comes second, so it is the species.",
+    79→          "Phyla have names like Chordata — they never appear in binomial names.",
+    80→        ],
+    81→      },
+    82→      {
+    83→        question: "A snake has dry scales and cannot make its own body heat. It is a...",
+    84→        options: ["Amphibian", "Mammal", "Reptile", "Fish"],
+    85→        answerIndex: 2,
+    86→        explanation: "Dry scales plus relying on the environment for body warmth are reptile features.",
+    87→        misconceptions: [
+    88→          "Amphibians have moist, smooth skin — think frogs, not scales.",
+    89→          "Mammals have hair and make their own body heat. Snakes do neither.",
+    90→          "Yes! Scaly skin and external warmth are classic reptile traits.",
+    91→          "Fish breathe with gills in water. A snake breathes air with lungs.",
+    92→        ],
+    93→      },
+    94→      {
+    95→        question: "Insects, worms and octopuses are all...",
+    96→        options: ["Invertebrates", "Vertebrates", "Mammals", "Birds"],
+    97→        answerIndex: 0,
+    98→        explanation: "None of them has a backbone, so all are invertebrates — the largest animal group by far.",
+    99→        misconceptions: [
+   100→          "Yes! No backbone means invertebrate — about 97% of animal species qualify.",
+   101→          "No backbone means no vertebrate status — check for a spine first!",
+   102→          "Mammals all have backbones and hair. Insects have neither.",
+   103→          "Feathers would be required — octopuses are featherless and proud of it.",
+   104→        ],
+   105→      },
+   106→      {
+   107→        question: "Why did Linnaeus's two-part naming system spread so fast?",
+   108→        options: [
+   109→          "It gave every species one name scientists everywhere could use",
+   110→          "It made species names as short as possible",
+   111→          "It proved all species were related",
+   112→          "It replaced the need for specimens",
+   113→        ],
+   114→        answerIndex: 0,
+   115→        explanation: "Before Linnaeus, one species could have many local names. One scientific name ended the confusion.",
+   116→        misconceptions: [
+   117→          "Yes! A single universal name lets a scientist in any country know exactly which organism is meant.",
+   118→          "Some binomials are long! Clarity, not brevity, was the goal.",
+   119→          "Showing evolutionary relationships came later with Darwin — Linnaeus organized names.",
+   120→          "Scientists still collect and study specimens; names alone cannot describe anatomy.",
+   121→        ],
+   122→      },
+   123→    ],
+   124→    worksheet: [
+   125→      {
+   126→        kind: "fill-blank",
+   127→        prompt: "In the scientific name Panthera leo, the word leo names the ______.",
+   128→        answer: "species",
+   129→      },
+   130→      {
+   131→        kind: "match",
+   132→        prompt: "Match each vertebrate class to its feature!",
+   133→        left: ["Mammal", "Bird", "Fish", "Reptile"],
+   134→        right: [
+   135→          "Has feathers and lays hard-shelled eggs",
+   136→          "Has dry scaly skin and cannot make its own body heat",
+   137→          "Has hair or fur and feeds milk to its young",
+   138→          "Lives in water and breathes with gills",
+   139→        ],
+   140→        answer: [2, 0, 3, 1],
+   141→      },
+   142→      {
+   143→        kind: "practice",
+   144→        prompt:
+   145→          "A dichotomous key splits with yes/no questions. How many different specimens can 6 questions tell apart? (Each question doubles the paths: 2 × 2 × 2 × 2 × 2 × 2)",
+   146→        answer: "64",
+   147→        hint: "2 to the power of 6",
+   148→      },
+   149→      {
+   150→        kind: "fill-blank",
+   151→        prompt: "Animals without backbones, like insects and worms, are called ______.",
+   152→        answer: "invertebrates",
+   153→      },
+   154→      {
+   155→        kind: "writing",
+   156→        prompt:
+   157→          "Explain why scientists classify living things. Use the words 'features' and 'species' in your answer.",
+   158→        minWords: 40,
+   159→        sampleAnswer:
+   160→          "Scientists classify living things to organize millions of species into groups based on shared features. Knowing an organism's group lets scientists predict facts about it, communicate clearly across languages, and recognize new species. For example, identifying a bat as a mammal tells us it has fur and feeds milk to its young, even though it flies.",
+   161→      },
+   162→      {
+   163→        kind: "short-answer",
+   164→        prompt: "Why is a mushroom NOT classified as a plant?",
+   165→        sampleAnswer:
+   166→          "Mushrooms are fungi. They have no chlorophyll and cannot make food from sunlight; instead they feed by breaking down dead material. Fungi get their own kingdom.",
+   167→      },
+   168→    ],
+   169→  },
+   170→
+   171→  // -------------------------------------------------------------------------
+   172→  // 2. Chemistry basics: atoms, elements and mixtures
+   173→  // -------------------------------------------------------------------------
+   174→  {
+   175→    id: "science-intermediate-2",
+   176→    title: "Chemistry Basics: Atoms, Elements and Mixtures",
+   177→    emoji: "⚛️",
+   178→    minutes: 13,
+   179→    intro:
+   180→      "Everything you can touch is built from about 100 kinds of building blocks. Meet atoms, elements, compounds and mixtures.",
+   181→    sections: [
+   182→      {
+   183→        heading: "Atoms and elements",
+   184→        body:
+   185→          "An atom is the smallest particle of an element that still behaves like that element. An element is a substance made of only one kind of atom, and each element has a symbol: O for oxygen, Fe for iron, He for helium. All known elements are organized in the periodic table by their properties.",
+   186→        example: "⚛️ hydrogen (H) + ⚛️ hydrogen (H) + ⚛️ oxygen (O) → one water molecule (H₂O)",
+   187→        tip: "Symbols may look odd because they come from Latin names — Fe comes from 'ferrum'.",
+   188→      },
+   189→      {
+   190→        heading: "Compounds vs mixtures",
+   191→        body:
+   192→          "A compound forms when elements chemically bond in a fixed ratio — water is always 2 hydrogens to 1 oxygen, no exceptions. A mixture is substances simply placed together, in any amounts, each keeping its own properties. Mixtures can be separated by physical methods like picking, filtering or using a magnet; compounds need chemical reactions to split.",
+   193→        example: "🥗 salad = mixture (easy to pick apart)  ·  💧 H₂O = compound (bonded tight)",
+   194→      },
+   195→      {
+   196→        heading: "Try it: Separate a kitchen mixture",
+   197→        body:
+   198→          "1. Mix a spoonful of sand with a spoonful of salt — that is a mixture. 2. Use a magnet to check for iron filings if you have some: they fly to the magnet! 3. For sand + salt: stir into warm water so the salt dissolves. 4. Filter through a paper towel: the sand stays behind. 5. Leave the salty water in a shallow dish in a sunny window for a few days — the water evaporates and salt crystals return!",
+   199→      },
+   200→      {
+   201→        heading: "Physical or chemical change?",
+   202→        body:
+   203→          "In a physical change, the substance stays the same — ice melting, paper tearing, salt dissolving. In a chemical change, new substances form with new properties: rusting iron, burning wood, baking bread. Clues for a chemical change include a gas produced, a color change, or energy released as heat and light.",
+   204→        example: "🧊 melted ice can refreeze = physical  ·  🍞 toast can never un-toast = chemical",
+   205→      },
+   206→    ],
+   207→    vocab: [
+   208→      { word: "atom", meaning: "The smallest particle of an element that keeps that element's properties." },
+   209→      { word: "element", meaning: "A substance made of only one kind of atom." },
+   210→      { word: "compound", meaning: "Two or more elements chemically bonded in a fixed ratio." },
+   211→      { word: "mixture", meaning: "Substances combined physically, each keeping its own properties." },
+   212→      { word: "molecule", meaning: "Two or more atoms bonded together, like H₂O." },
+   213→    ],
+   214→    funFact:
+   215→      "Helium was discovered in the Sun before it was found on Earth! In 1868 astronomers spotted its mystery line in sunlight; it took 27 more years to find it in a lab.",
+   216→    quiz: [
+   217→      {
+   218→        question: "What is the smallest particle of an element that still behaves like that element?",
+   219→        options: ["A molecule", "A cell", "A mixture", "An atom"],
+   220→        answerIndex: 3,
+   221→        explanation: "Atoms are the basic units of elements. Cut smaller and it stops behaving like the element.",
+   222→        misconceptions: [
+   223→          "A molecule contains two or more atoms bonded together — it is built from atoms, not smaller than them.",
+   224→          "Cells are the building blocks of living things, far bigger and more complex than atoms.",
+   225→          "A mixture is many substances jumbled together — not a single particle at all!",
+   226→          "Yes! The atom is the smallest unit that still acts like its element.",
+   227→        ],
+   228→      },
+   229→      {
+   230→        question: "Water (H₂O) is an example of a...",
+   231→        options: ["Compound", "Mixture", "Element", "Solution of sand"],
+   232→        answerIndex: 0,
+   233→        explanation: "Hydrogen and oxygen are chemically bonded in a fixed 2:1 ratio — that is a compound.",
+   234→        misconceptions: [
+   235→          "Yes! Fixed ratio + chemical bonds = compound.",
+   236→          "Mixtures have no fixed ratio and can be separated physically. Water cannot.",
+   237→          "Water contains two different elements, so it cannot be a single element.",
+   238→          "Sand does not dissolve into water chemically — irrelevant here, and water is bonded.",
+   239→        ],
+   240→      },
+   241→      {
+   242→        question: "Which of these is a mixture?",
+   243→        options: ["Carbon dioxide (CO₂)", "Air", "Pure gold", "Table salt (NaCl)"],
+   244→        answerIndex: 1,
+   245→        explanation: "Air is nitrogen, oxygen, argon and more simply jumbled together — a mixture you can separate.",
+   246→        misconceptions: [
+   247→          "CO₂ is carbon and oxygen chemically bonded in a fixed ratio — a compound.",
+   248→          "Yes! Air is several gases mixed physically, each keeping its own properties.",
+   249→          "Pure gold is a single element — the opposite of a mixture.",
+   250→          "NaCl is sodium and chlorine bonded in a fixed 1:1 ratio — a compound.",
+   251→        ],
+   252→      },
+   253→      {
+   254→        question: "A bicycle left in the rain develops rust. This is a...",
+   255→        options: ["Physical change", "Reversible change", "Chemical change", "Change of state"],
+   256→        answerIndex: 2,
+   257→        explanation: "Iron reacts with oxygen and water to form a new substance, rust, with new properties.",
+   258→        misconceptions: [
+   259→          "No new substance forms in a physical change — rust is definitely new.",
+   260→          "You cannot turn rust back into shiny iron by cooling or drying it.",
+   261→          "Yes! A new substance formed, so it is a chemical change.",
+   262→          "Changes of state (melting, boiling) keep the same substance. Rusting does not.",
+   263→        ],
+   264→      },
+   265→      {
+   266→        question: "The symbol Fe on the periodic table stands for...",
+   267→        options: ["Fluorine", "Iron", "Francium", "Flerovium"],
+   268→        answerIndex: 1,
+   269→        explanation: "Fe comes from ferrum, the Latin word for iron.",
+   270→        misconceptions: [
+   271→          "Fluorine's symbol is F — a single letter, no room for the 'e'.",
+   272→          "Yes! Fe is iron, from the Latin ferrum.",
+   273→          "Francium is Fr — one of the rarest natural elements.",
+   274→          "Flerovium is Fl, a superheavy synthetic element.",
+   275→        ],
+   276→      },
+   277→    ],
+   278→    worksheet: [
+   279→      {
+   280→        kind: "fill-blank",
+   281→        prompt: "The smallest particle of an element that still behaves like that element is an ______.",
+   282→        answer: "atom",
+   283→      },
+   284→      {
+   285→        kind: "match",
+   286→        prompt: "Match each symbol to its element!",
+   287→        left: ["O", "Fe", "He", "C"],
+   288→        right: ["Carbon", "Iron", "Oxygen", "Helium"],
+   289→        answer: [2, 1, 3, 0],
+   290→      },
+   291→      {
+   292→        kind: "practice",
+   293→        prompt: "One water molecule is H₂O: 2 hydrogen atoms + 1 oxygen atom. How many atoms are in 3 water molecules?",
+   294→        answer: "9",
+   295→        hint: "(2 + 1) × 3",
+   296→      },
+   297→      {
+   298→        kind: "fill-blank",
+   299→        prompt: "Sand and salt stirred together make a ______, which can be separated without a chemical reaction.",
+   300→        answer: "mixture",
+   301→      },
+   302→      {
+   303→        kind: "writing",
+   304→        prompt:
+   305→          "Explain the difference between a compound and a mixture. Include one example of each and how they can be separated.",
+   306→        minWords: 40,
+   307→        sampleAnswer:
+   308→          "A compound is two or more elements chemically bonded in a fixed ratio, like water (H₂O). You cannot separate it by filtering — only a chemical reaction can split it. A mixture is substances placed together physically, like sand and salt. Each keeps its own properties, and you can separate it by dissolving, filtering or using a magnet.",
+   309→      },
+   310→      {
+   311→        kind: "short-answer",
+   312→        prompt: "Is dissolving salt in water a physical or chemical change? How could you prove it?",
+   313→        sampleAnswer:
+   314→          "Physical. Leave the solution in a sunny window and the water evaporates, leaving the salt crystals back again. No new substance was made, so it is reversible — a physical change.",
+   315→      },
+   316→    ],
+   317→  },
+   318→
+   319→  // -------------------------------------------------------------------------
+   320→  // 3. Physics basics: speed, motion and energy transfer
+   321→  // -------------------------------------------------------------------------
+   322→  {
+   323→    id: "science-intermediate-3",
+   324→    title: "Physics Basics: Speed, Motion and Energy Transfer",
+   325→    emoji: "🏎️",
+   326→    minutes: 13,
+   327→    intro:
+   328→      "How fast is fast? Measure it. This lesson turns motion into numbers you can calculate, graph and trust.",
+   329→    sections: [
+   330→      {
+   331→        heading: "Speed = distance ÷ time",
+   332→        body:
+   333→          "Speed tells you how much distance an object covers each second or hour. Calculate it with speed = distance ÷ time. Units matter: meters per second (m/s) for sprints, kilometers per hour (km/h) for cars. A sprinter covering 100 m in 20 s runs at 100 ÷ 20 = 5 m/s.",
+   334→        example: "🚴 Maya rides 60 km in 3 h → speed = 60 ÷ 3 = 20 km/h",
+   335→        tip: "Cover the one you want in the formula triangle: distance on top, speed and time below.",
+   336→      },
+   337→      {
+   338→        heading: "Reading motion on a distance-time graph",
+   339→        body:
+   340→          "Plot distance against time and the line's steepness is the speed. A steep line means fast movement; a gentle slope means slow; a flat horizontal line means the object is stationary — distance is not changing. Two lines' steepness lets you compare racers at a glance.",
+   341→        example: "📈 steep line = fast  ·  📉 gentle line = slow  ·  ➖ flat line = stopped",
+   342→      },
+   343→      {
+   344→        heading: "Energy transfer: from store to store",
+   345→        body:
+   346→          "Energy is never just floating loose — it moves between stores. Your muscles transfer chemical energy into movement and heat. A bat transfers its movement energy into a flying ball. Friction always transfers some energy into heating the surfaces. Nothing is lost: it just changes address.",
+   347→        example: "🍫 food (chemical store) → 🏃 movement + 🔥 heat  ·  🏏 bat → ⚾ ball flies + 🔥 slight warmth",
+   348→      },
+   349→      {
+   350→        heading: "Try it: Time your sprint",
+   351→        body:
+   352→          "1. Measure a 20 m course with a tape measure or meter sticks. 2. Have a partner time you with a phone stopwatch as you sprint it. 3. Repeat 3 times and record all three times. 4. Calculate your average time, then speed = 20 ÷ average time. 5. Compare with a partner — and calculate who covered more meters per second!",
+   353→      },
+   354→    ],
+   355→    vocab: [
+   356→      { word: "speed", meaning: "Distance traveled per unit of time: distance ÷ time." },
+   357→      { word: "average speed", meaning: "Total distance divided by total time for a whole journey." },
+   358→      { word: "distance-time graph", meaning: "A graph where the line's steepness shows speed." },
+   359→      { word: "energy transfer", meaning: "Energy moving from one store or object to another." },
+   360→      { word: "stationary", meaning: "Not moving; distance stays the same." },
+   361→    ],
+   362→    funFact:
+   363→      "A cheetah can sprint at about 30 m/s — but only for around 20-30 seconds. After that, overheating forces it to stop and rest!",
+   364→    quiz: [
+   365→      {
+   366→        question: "A cyclist rides 60 km in 3 hours. What is the average speed?",
+   367→        options: ["180 km/h", "63 km/h", "20 km/h", "30 km/h"],
+   368→        answerIndex: 2,
+   369→        explanation: "Speed = distance ÷ time = 60 km ÷ 3 h = 20 km/h.",
+   370→        misconceptions: [
+   371→          "That multiplies instead of divides — 60 × 3 would be a wild 180 km/h!",
+   372→          "Close, but you do not add a small amount — divide 60 by 3.",
+   373→          "Yes! 60 ÷ 3 = 20 km/h — a steady, realistic cycling pace.",
+   374→          "That would need a 2-hour ride. Check the time: it was 3 hours.",
+   375→        ],
+   376→      },
+   377→      {
+   378→        question: "On a distance-time graph, a flat horizontal line means the object is...",
+   379→        options: ["Stationary", "Moving fast", "Accelerating", "Moving backwards"],
+   380→        answerIndex: 0,
+   381→        explanation: "If distance is not changing as time passes, the object is not moving.",
+   382→        misconceptions: [
+   383→          "Yes! No change in distance means no movement at all.",
+   384→          "Fast movement makes a steep line, not a flat one.",
+   385→          "Acceleration shows as a curve getting steeper, not a flat line.",
+   386→          "Distance-time graphs do not show direction like that — flat simply means stopped.",
+   387→        ],
+   388→      },
+   389→      {
+   390→        question: "Which is a sensible unit for speed?",
+   391→        options: ["m/s", "m", "s", "N"],
+   392→        answerIndex: 0,
+   393→        explanation: "Speed combines distance and time, so its unit is a distance unit over a time unit.",
+   394→        misconceptions: [
+   395→          "Yes! Meters per second (m/s) or kilometers per hour (km/h) both measure speed.",
+   396→          "Meters alone measure distance, not how fast it was covered.",
+   397→          "Seconds measure time. Speed needs distance AND time.",
+   398→          "Newtons measure force — a completely different quantity.",
+   399→        ],
+   400→      },
+   401→      {
+   402→        question: "Rubbing your hands together on a cold day warms them. Where did the heat come from?",
+   403→        options: ["The air around you", "Friction transferred movement energy to heat", "Your bones vibrating", "The heat multiplied from nowhere"],
+   404→        answerIndex: 1,
+   405→        explanation: "Friction between rubbing surfaces transfers movement energy into the thermal store — warmth!",
+   406→        misconceptions: [
+   407→          "Cold air cannot warm your hands — the energy came from your muscles.",
+   408→          "Yes! Friction converts movement energy into heat energy. Nothing is created — it transfers.",
+   409→          "Bones do not vibrate when you rub your hands — muscles supply the energy.",
+   410→          "Energy cannot appear from nowhere — it moved from your movement store to heat.",
+   411→        ],
+   412→      },
+   413→      {
+   414→        question: "A ball rolls 15 m in 5 s. Its speed is...",
+   415→        options: ["75 m/s", "0.33 m/s", "10 m/s", "3 m/s"],
+   416→        answerIndex: 3,
+   417→        explanation: "Speed = 15 m ÷ 5 s = 3 m/s.",
+   418→        misconceptions: [
+   419→          "That multiplies distance by time — try dividing instead.",
+   420→          "That divides time by distance, which is upside-down. Flip it: distance ÷ time.",
+   421→          "Check the numbers again: 15 ÷ 5 = 3, not 10.",
+   422→          "Yes! 15 m ÷ 5 s = 3 m/s.",
+   423→        ],
+   424→      },
+   425→    ],
+   426→    worksheet: [
+   427→      {
+   428→        kind: "fill-blank",
+   429→        prompt: "Speed = distance ÷ ______.",
+   430→        answer: "time",
+   431→      },
+   432→      {
+   433→        kind: "practice",
+   434→        prompt: "A runner covers 120 m in 40 s. What is the speed in m/s?",
+   435→        answer: "3",
+   436→        hint: "120 ÷ 40",
+   437→      },
+   438→      {
+   439→        kind: "practice",
+   440→        prompt: "A car travels at 80 km/h for 2 hours. How far does it travel, in km?",
+   441→        answer: "160",
+   442→        hint: "distance = speed × time",
+   443→      },
+   444→      {
+   445→        kind: "match",
+   446→        prompt: "Match each distance-time graph line to what it shows!",
+   447→        left: ["A steep line", "A flat horizontal line", "A gentler line"],
+   448→        right: ["The object is stationary", "The object is moving slowly", "The object is moving fast"],
+   449→        answer: [2, 0, 1],
+   450→      },
+   451→      {
+   452→        kind: "practice",
+   453→        prompt: "Maya sprints 100 m in 25 s. Her average speed is ______ m/s.",
+   454→        answer: "4",
+   455→        hint: "100 ÷ 25",
+   456→      },
+   457→      {
+   458→        kind: "short-answer",
+   459→        prompt: "Why should you time each sprint three times and average the results?",
+   460→        sampleAnswer:
+   461→          "Human reaction time and small timing errors make each trial slightly different. Averaging three trials reduces the effect of random error and gives a fairer, more reliable speed.",
+   462→      },
+   463→    ],
+   464→  },
+   465→
+   466→  // -------------------------------------------------------------------------
+   467→  // 4. Ecology: relationships in ecosystems
+   468→  // -------------------------------------------------------------------------
+   469→  {
+   470→    id: "science-intermediate-4",
+   471→    title: "Ecology: Relationships in Ecosystems",
+   472→    emoji: "🐝",
+   473→    minutes: 13,
+   474→    intro:
+   475→      "No species lives alone. Meet the partnerships, rivalries and freeloading that shape every ecosystem on Earth.",
+   476→    sections: [
+   477→      {
+   478→        heading: "Ecosystems: living and non-living together",
+   479→        body:
+   480→          "An ecosystem is a community of organisms interacting with each other AND with their non-living surroundings. Ecologists split the factors into biotic (living: plants, animals, bacteria) and abiotic (non-living: sunlight, water, temperature, soil). Change one factor and the whole system can shift.",
+   481→        example: "🌿 biotic: oak, rabbit, fox, fungi  ·  ☀️💧 abiotic: sunlight, rainfall, soil minerals",
+   482→      },
+   483→      {
+   484→        heading: "Symbiosis: living together",
+   485→        body:
+   486→          "Symbiosis describes close relationships between species. In mutualism, both partners win: bees get nectar while flowers get pollinated. In commensalism, one benefits and the other is unaffected. In parasitism, one benefits at the host's expense: fleas feed on dogs.",
+   487→        example: "🐝 ↔️ 🌸 both win = mutualism  ·  🐟 remora hitches a free ride = commensalism  ·  🦟 feeds on host = parasitism",
+   488→      },
+   489→      {
+   490→        heading: "Competition and limiting factors",
+   491→        body:
+   492→          "Organisms compete for resources: food, water, space, light and mates. Competition happens within a species (two foxes for the same rabbit) and between species (weeds vs garden plants). The factors that cap a population's growth are limiting factors — if food or water runs short, population size falls.",
+   493→        example: "🕊️ more nests than good spots → competition → only the best-placed nests raise chicks",
+   494→      },
+   495→      {
+   496→        heading: "Try it: Quadrat population count",
+   497→        body:
+   498→          "1. Make a 1 m × 1 m square from string. 2. Toss it gently onto a lawn or field. 3. Count one species inside the square, like daisies — use the same counting rules as a partner (split edge cases in half). 4. Estimate the whole area's population: daisies per m² × total m². 5. Toss 3 times and average for a better estimate — real ecologists do exactly this!",
+   499→      },
+   500→    ],
+   501→    vocab: [
+   502→      { word: "ecosystem", meaning: "A community of organisms interacting with each other and their environment." },
+   503→      { word: "biotic", meaning: "The living parts of an ecosystem." },
+   504→      { word: "abiotic", meaning: "The non-living parts, like light, water and temperature." },
+   505→      { word: "mutualism", meaning: "A relationship where both organisms benefit." },
+   506→      { word: "parasite", meaning: "An organism that lives on or in a host and harms it." },
+   507→      { word: "population", meaning: "All the individuals of one species in an area." },
+   508→    ],
+   509→    funFact:
+   510→      "Clownfish and sea anemones are mutualism teammates: the anemone's stingers protect the fish, and the fish aggressively chases away anemone-eating butterflyfish!",
+   511→    quiz: [
+   512→      {
+   513→        question: "Bees visit flowers for nectar and carry pollen between plants. This relationship is...",
+   514→        options: ["Parasitism", "Competition", "Mutualism", "Commensalism"],
+   515→        answerIndex: 2,
+   516→        explanation: "Both partners benefit — the bee gets food and the flower gets pollinated.",
+   517→        misconceptions: [
+   518→          "The flower is not harmed by the bee, so this is not parasitism.",
+   519→          "They are helping, not fighting over the same resource.",
+   520→          "Yes! Both organisms gain — the definition of mutualism.",
+   521→          "Commensalism helps only one partner. Here both clearly benefit.",
+   522→        ],
+   523→      },
+   524→      {
+   525→        question: "Which of these is an abiotic factor in a pond ecosystem?",
+   526→        options: ["Algae", "Rainfall", "Frogs", "Bacteria"],
+   527→        answerIndex: 1,
+   528→        explanation: "Abiotic means non-living. Rainfall affects the pond but is not alive.",
+   529→        misconceptions: [
+   530→          "Algae are living organisms — biotic!",
+   531→          "Yes! Rainfall is non-living, so it is an abiotic factor.",
+   532→          "Frogs are very much alive — a classic biotic factor.",
+   533→          "Bacteria are living things, so they count as biotic.",
+   534→        ],
+   535→      },
+   536→      {
+   537→        question: "A flea feeds on a dog's blood, harming the dog. The flea is a...",
+   538→        options: ["Mutualist", "Producer", "Decomposer", "Parasite"],
+   539→        answerIndex: 3,
+   540→        explanation: "A parasite benefits while its host is harmed — exactly the flea-dog relationship.",
+   541→        misconceptions: [
+   542→          "Mutualism helps both partners. The dog clearly gets nothing good here.",
+   543→          "Producers make their own food from sunlight. Fleas feed on hosts!",
+   544→          "Decomposers break down dead material. The dog is alive and not amused.",
+   545→          "Yes! Benefit for one, harm for the host — parasitism.",
+   546→        ],
+   547→      },
+   548→      {
+   549→        question: "Which could be a limiting factor for a deer population in a forest?",
+   550→        options: ["Food shortage in winter", "A harsh drought", "Wolf predation", "All of these"],
+   551→        answerIndex: 3,
+   552→        explanation: "Food, water and predators can each cap how large a population can grow.",
+   553→        misconceptions: [
+   554→          "True, but not the only one — keep reading the options!",
+   555→          "True too! Water shortages shrink populations. Look for the fullest answer.",
+   556→          "Predators limit prey populations as well. There is a better answer.",
+   557→          "Yes! Food, water and predation can all limit a population's size.",
+   558→        ],
+   559→      },
+   560→      {
+   561→        question: "In a 1 m² quadrat you count 8 daisies. The lawn is about 50 m². Your estimate for the whole lawn is...",
+   562→        options: ["58 daisies", "400 daisies", "420 daisies", "42 daisies"],
+   563→        answerIndex: 1,
+   564→        explanation: "8 daisies per m² × 50 m² = 400 daisies — that is how quadrat sampling scales up.",
+   565→        misconceptions: [
+   566→          "Adding gives the wrong scale — multiply the density by the area.",
+   567→          "Yes! 8 × 50 = 400 daisies on the lawn.",
+   568→          "Almost — 8 × 50 is exactly 400, no need to add a margin.",
+   569→          "That divides instead of multiplying. Daisies per m² times area!",
+   570→        ],
+   571→      },
+   572→    ],
+   573→    worksheet: [
+   574→      {
+   575→        kind: "fill-blank",
+   576→        prompt: "Non-living parts of an ecosystem, like sunlight and rainfall, are called ______ factors.",
+   577→        answer: "abiotic",
+   578→      },
+   579→      {
+   580→        kind: "match",
+   581→        prompt: "Match each relationship to its description!",
+   582→        left: ["Mutualism", "Parasitism", "Commensalism", "Competition"],
+   583→        right: [
+   584→          "Both organisms benefit",
+   585→          "Organisms fight over the same resources",
+   586→          "One benefits, the other is unaffected",
+   587→          "One benefits while harming its host",
+   588→        ],
+   589→        answer: [0, 3, 2, 1],
+   590→      },
+   591→      {
+   592→        kind: "practice",
+   593→        prompt: "You count 8 daisies in each of three 1 m² quadrats: 8, 7 and 9. Your lawn is 50 m². Estimate the total number of daisies.",
+   594→        answer: "400",
+   595→        hint: "Average of 8, 7 and 9 is 8 per m², then × 50",
+   596→      },
+   597→      {
+   598→        kind: "fill-blank",
+   599→        prompt: "A flea feeding on a dog is a ______, because it benefits while its host is harmed.",
+   600→        answer: "parasite",
+   601→      },
+   602→      {
+   603→        kind: "writing",
+   604→        prompt:
+   605→          "Choose one example of mutualism. Explain what each partner gives and gets, and why neither would do as well alone.",
+   606→        minWords: 40,
+   607→        sampleAnswer:
+   608→          "Bees and flowers are mutual partners. The flower gives nectar that feeds the bee; the bee carries pollen to other flowers so plants can make seeds. Without bees, many flowering plants could not reproduce; without flowers, bees would lose a major food source. Each partner's gain supports the other, so both populations would shrink if separated.",
+   609→      },
+   610→      {
+   611→        kind: "short-answer",
+   612→        prompt: "Predict two effects on a garden ecosystem if all the bees disappeared.",
+   613→        sampleAnswer:
+   614→          "Flowering plants would produce far fewer seeds and fruits, and animals that eat those fruits or seeds would lose food. Crop pollination would also suffer, reducing harvests for humans.",
+   615→      },
+   616→    ],
+   617→  },
+   618→
+   619→  // -------------------------------------------------------------------------
+   620→  // 5. Cells: the building blocks of life
+   621→  // -------------------------------------------------------------------------
+   622→  {
+   623→    id: "science-intermediate-5",
+   624→    title: "Cells: The Building Blocks of Life",
+   625→    emoji: "🔬",
+   626→    minutes: 14,
+   627→    intro:
+   628→      "You are built from about 30 trillion living bricks, each a busy microscopic factory. Welcome to the cell.",
+   629→    sections: [
+   630→      {
+   631→        heading: "Cell theory",
+   632→        body:
+   633→          "Three big ideas: all living things are made of cells; the cell is the basic unit of life; and all cells come from existing cells. Some organisms are single cells (bacteria, amoebas). Others, like you, are multicellular — trillions of cells cooperating with specialized jobs.",
+   634→        example: "🦠 bacteria: one cell does everything  ·  🧍 human: ~30 trillion cells, each with a specialty",
+   635→      },
+   636→      {
+   637→        heading: "Inside the cell: the organelles",
+   638→        body:
+   639→          "The nucleus stores DNA and acts as the control center. The cell membrane controls what enters and leaves. Cytoplasm is the jelly where reactions happen. Mitochondria release energy from food through respiration. Plant cells add three extras: a rigid cell wall, chloroplasts that capture light, and a large vacuole full of sap for support.",
+   640→        example:
+   641→          "🔍 animal cell: membrane + nucleus + mitochondria  ·  🌿 plant cell adds: cell wall + chloroplasts + big vacuole",
+   642→        tip: "Mitochondria = power stations. Chloroplasts = solar panels. Membrane = security gate.",
+   643→      },
+   644→      {
+   645→        heading: "Specialized cells",
+   646→        body:
+   647→          "Multicellular organisms assign cells specialist roles. Red blood cells lose their nucleus to pack in more hemoglobin for carrying oxygen. Nerve cells grow long, thin extensions to carry signals quickly. Root hair cells stretch out to soak up water. Shape always matches the job.",
+   648→        example: "🩸 red blood cell: doughnut-shaped oxygen taxi  ·  🧠 nerve cell: long wire-like messenger",
+   649→      },
+   650→      {
+   651→        heading: "Try it: Build a model cell",
+   652→        body:
+   653→          "1. Half-fill a strong zip-top bag with clear gelatin (the cytoplasm) — the bag is the membrane. 2. Drop in a grape or plum (the nucleus), a few kidney beans (mitochondria) and green candies or peas (chloroplasts). 3. Seal and place the bag inside a stiff box (cell wall) for the plant-cell version. 4. Label a diagram of your model with each part and its job.",
+   654→      },
+   655→    ],
+   656→    vocab: [
+   657→      { word: "cell", meaning: "The basic unit all living things are made of." },
+   658→      { word: "nucleus", meaning: "The control center of the cell, where DNA is stored." },
+   659→      { word: "cell membrane", meaning: "The boundary that controls what enters and leaves the cell." },
+   660→      { word: "mitochondria", meaning: "Organelles that release energy from food through respiration." },
+   661→      { word: "chloroplast", meaning: "The plant organelle that absorbs light for photosynthesis." },
+   662→    ],
+   663→    funFact:
+   664→      "Your body replaces roughly 3 million cells every second — over 250 billion a day — and most of you is younger than you are!",
+   665→    quiz: [
+   666→      {
+   667→        question: "Which part controls the cell and stores its DNA?",
+   668→        options: ["The cell membrane", "The nucleus", "The cytoplasm", "The cell wall"],
+   669→        answerIndex: 1,
+   670→        explanation: "The nucleus holds the DNA — the instructions that run the whole cell.",
+   671→        misconceptions: [
+   672→          "The membrane guards the border; it does not store DNA.",
+   673→          "Yes! The nucleus is the control center with the genetic instructions.",
+   674→          "Cytoplasm is the jelly where reactions happen, not the control room.",
+   675→          "Only plant cells have a wall, and it provides structure, not control.",
+   676→        ],
+   677→      },
+   678→      {
+   679→        question: "Which structures do plant cells have that animal cells do not?",
+   680→        options: ["Nucleus and membrane", "Mitochondria and cytoplasm", "Cell wall and chloroplasts", "DNA and ribosomes"],
+   681→        answerIndex: 2,
+   682→        explanation: "Cell walls and chloroplasts are plant-only extras; animal cells lack both.",
+   683→        misconceptions: [
+   684→          "Both animal and plant cells have nuclei and membranes.",
+   685→          "Both cell types need mitochondria for energy and cytoplasm for reactions.",
+   686→          "Yes! Only plant cells build a rigid wall and harvest light with chloroplasts.",
+   687→          "All cells store DNA and build proteins — these are shared, not plant-only.",
+   688→        ],
+   689→      },
+   690→      {
+   691→        question: "What do mitochondria do?",
+   692→        options: [
+   693→          "Capture sunlight for photosynthesis",
+   694→          "Release energy from food through respiration",
+   695→          "Store water for support",
+   696→          "Make new cells",
+   697→        ],
+   698→        answerIndex: 1,
+   699→        explanation: "Mitochondria are the power stations: they transfer energy from glucose into a usable form.",
+   700→        misconceptions: [
+   701→          "That is the chloroplast's solar-panel job.",
+   702→          "Yes! Mitochondria power the cell by respiring glucose.",
+   703→          "The big vacuole stores water and keeps plant cells firm.",
+   704→          "New cells come from existing cells dividing — mitochondria supply the energy for it.",
+   705→        ],
+   706→      },
+   707→      {
+   708→        question: "Red blood cells are unusual because they...",
+   709→        options: [
+   710→          "Have no nucleus, to carry more oxygen",
+   711→          "Are the largest cells in the body",
+   712→          "Photosynthesize in sunlight",
+   713→          "Have a cell wall",
+   714→        ],
+   715→        answerIndex: 0,
+   716→        explanation: "Ditching the nucleus frees up space for more hemoglobin, the oxygen-carrying protein.",
+   717→        misconceptions: [
+   718→          "Yes! No nucleus means more room for hemoglobin — a specialist trade-off.",
+   719→          "They are actually tiny — small enough to squeeze through narrow capillaries.",
+   720→          "No human cell photosynthesizes — we are not plants!",
+   721→          "Cell walls are plant structures. Human cells never build them.",
+   722→        ],
+   723→      },
+   724→      {
+   725→        question: "Why do muscle cells contain far more mitochondria than fat cells?",
+   726→        options: [
+   727→          "Muscle cells are larger",
+   728→          "Muscle cells need more energy for contraction",
+   729→          "Fat cells cannot respire",
+   730→          "Mitochondria store fat",
+   731→        ],
+   732→        answerIndex: 1,
+   733→        explanation: "More mitochondria means faster energy release — exactly what hard-working muscles demand.",
+   734→        misconceptions: [
+   735→          "Size is not the driver — energy demand is.",
+   736→          "Yes! Constant contraction needs constant energy, so muscles pack in power stations.",
+   737→          "Fat cells do respire; they just do not need much energy throughput.",
+   738→          "Mitochondria release energy from food — fat storage happens elsewhere in the cell.",
+   739→        ],
+   740→      },
+   741→    ],
+   742→    worksheet: [
+   743→      {
+   744→        kind: "fill-blank",
+   745→        prompt: "The ______ is the control center of the cell and stores the DNA.",
+   746→        answer: "nucleus",
+   747→      },
+   748→      {
+   749→        kind: "match",
+   750→        prompt: "Match each cell part to its job!",
+   751→        left: ["Cell membrane", "Mitochondria", "Chloroplast", "Cell wall"],
+   752→        right: [
+   753→          "Releases energy from food",
+   754→          "Stiff outer layer that keeps plant cells firm",
+   755→          "Controls what enters and leaves the cell",
+   756→          "Absorbs light for photosynthesis",
+   757→        ],
+   758→        answer: [2, 0, 3, 1],
+   759→      },
+   760→      {
+   761→        kind: "practice",
+   762→        prompt: "Your body replaces about 3 million cells each second. How many million cells is that per minute?",
+   763→        answer: "180",
+   764→        hint: "3 × 60",
+   765→      },
+   766→      {
+   767→        kind: "fill-blank",
+   768→        prompt: "Green plant cells contain ______ that capture light energy for photosynthesis.",
+   769→        answer: "chloroplasts",
+   770→      },
+   771→      {
+   772→        kind: "writing",
+   773→        prompt:
+   774→          "Explain why muscle cells contain many more mitochondria than fat cells. Use the words 'energy' and 'respiration'.",
+   775→        minWords: 40,
+   776→        sampleAnswer:
+   777→          "Muscle cells contract constantly and need lots of energy quickly. Mitochondria carry out respiration, releasing energy from glucose, so more mitochondria means more power. Fat cells mostly store energy rather than using it, so they need far fewer mitochondria.",
+   778→      },
+   779→      {
+   780→        kind: "short-answer",
+   781→        prompt: "Why do plant cells keep a firm shape while animal cells are soft and squishy?",
+   782→        sampleAnswer:
+   783→          "Plant cells have a rigid cell wall made of cellulose outside the membrane, plus a water-filled vacuole pressing outward. Together they keep the cell firm. Animal cells have neither.",
+   784→      },
+   785→    ],
+   786→  },
+   787→
+   788→  // -------------------------------------------------------------------------
+   789→  // 6. Energy: kinetic, potential and conservation
+   790→  // -------------------------------------------------------------------------
+   791→  {
+   792→    id: "science-intermediate-6",
+   793→    title: "Energy: Kinetic, Potential and Conservation",
+   794→    emoji: "🎢",
+   795→    minutes: 14,
+   796→    intro:
+   797→      "Energy is the universe's currency — it never vanishes, only changes accounts. Track it through drops, bounces and roller coasters.",
+   798→    sections: [
+   799→      {
+   800→        heading: "Energy stores",
+   801→        body:
+   802→          "Energy waits in stores until it is transferred. Kinetic energy is the store of movement — the faster something moves, the more kinetic energy it has. Gravitational potential energy is the store of height — lift something higher and you fill its store. There are also elastic stores (stretched rubber bands) and chemical stores (food, fuel).",
+   803→        example: "🏃 kinetic: moving  ·  🏔️ gravitational potential: high up  ·  🎯 elastic: stretched  ·  🍫 chemical: food and fuel",
+   804→        tip: "Double an object's speed and its kinetic energy roughly quadruples — speed matters a lot!",
+   805→      },
+   806→      {
+   807→        heading: "Conservation of energy",
+   808→        body:
+   809→          "Energy cannot be created or destroyed — only transferred between stores. A roller coaster car dragged up the first hill fills its gravitational potential store. As it plunges, that store drains into kinetic energy. At the bottom, most of it is kinetic; climbing the next hill converts it back. But friction and air resistance always skim some energy into heat and sound, so every later hill must be lower than the first.",
+   810→        example: "🎢 top of first hill: all GPE → falling: GPE → KE → bottom: mostly KE (plus some heat) → next hill: KE → GPE",
+   811→      },
+   812→      {
+   813→        heading: "Try it: Bouncy ball energy audit",
+   814→        body:
+   815→          "1. Hold a bouncy ball next to a wall and mark the drop height with tape. 2. Drop it (do not throw) and mark how high it rebounds. 3. Repeat 3 times and average your rebound heights. 4. Why is the rebound always lower than the drop? 5. Listen closely during the bounce — that sound is energy leaving the bounce, along with heat that warms the ball and floor a tiny bit.",
+   816→      },
+   817→      {
+   818→        heading: "Energy chains in real life",
+   819→        body:
+   820→          "Follow an energy chain and you can explain almost any event. You eat breakfast (chemical store) → muscles transfer it to movement climbing stairs (gravitational potential store) → you slide down the banister (kinetic) → friction warms your pants (thermal). Every step obeys conservation of energy.",
+   821→        example: "🍫 chemical → 🧗 gravitational potential → 🛝 kinetic → 🔥 thermal + 🔊 sound",
+   822→      },
+   823→    ],
+   824→    vocab: [
+   825→      { word: "kinetic energy", meaning: "The energy store of a moving object." },
+   826→      { word: "gravitational potential energy", meaning: "The energy store of an object raised above the ground." },
+   827→      { word: "conservation of energy", meaning: "Energy cannot be created or destroyed, only transferred." },
+   828→      { word: "energy transfer", meaning: "Energy moving from one store to another." },
+   829→      { word: "elastic potential energy", meaning: "The energy stored in a stretched or squashed object." },
+   830→    ],
+   831→    funFact:
+   832→      "Roller coaster designers rely on conservation of energy: the first hill must be the tallest, because the cars can never climb higher than the energy they started with!",
+   833→    quiz: [
+   834→      {
+   835→        question: "The energy an object has because it is moving is called...",
+   836→        options: ["Gravitational potential energy", "Chemical energy", "Elastic energy", "Kinetic energy"],
+   837→        answerIndex: 3,
+   838→        explanation: "Kinetic energy is the movement store — faster motion means more of it.",
+   839→        misconceptions: [
+   840→          "That is the height store — a still book on a shelf has it, but nothing moving.",
+   841→          "Chemical energy waits in food and fuel, not in motion.",
+   842→          "Elastic energy lives in stretched things, like rubber bands.",
+   843→          "Yes! Kinetic = the energy of movement.",
+   844→        ],
+   845→      },
+   846→      {
+   847→        question: "A book resting on a high shelf has mostly...",
+   848→        options: ["Gravitational potential energy", "Kinetic energy", "Sound energy", "Electrical energy"],
+   849→        answerIndex: 0,
+   850→        explanation: "Height fills the gravitational potential store, ready to convert if the book falls.",
+   851→        misconceptions: [
+   852→          "Yes! Its height gives it gravitational potential energy.",
+   853→          "The book is perfectly still — kinetic energy needs movement.",
+   854→          "No sound is being made while it rests quietly.",
+   855→          "Nothing is plugged in — no electrical store involved.",
+   856→        ],
+   857→      },
+   858→      {
+   859→        question: "As a ball falls toward the ground, its energy...",
+   860→        options: [
+   861→          "Transfers from gravitational potential to kinetic",
+   862→          "Is destroyed when it lands",
+   863→          "Stays in the chemical store",
+   864→          "Transfers from kinetic to gravitational potential",
+   865→        ],
+   866→        answerIndex: 0,
+   867→        explanation: "Height drains into speed: gravitational potential energy converts to kinetic energy as it falls.",
+   868→        misconceptions: [
+   869→          "Yes! Height becomes speed — GPE converts to KE on the way down.",
+   870→          "Energy is never destroyed — it transfers to heat and sound at impact.",
+   871→          "Falling involves no food or fuel — the chemical store is not the star here.",
+   872→          "That is the reverse — it happens when you THROW the ball upward, not as it falls.",
+   873→        ],
+   874→      },
+   875→      {
+   876→        question: "A bouncy ball never rebounds to its original drop height because...",
+   877→        options: [
+   878→          "Some energy transferred to heat and sound",
+   879→          "Energy was destroyed in the bounce",
+   880→          "Gravity gets stronger near the floor",
+   881→          "Balls lose mass when they bounce",
+   882→        ],
+   883→        answerIndex: 0,
+   884→        explanation: "Friction and the 'thud' transfer some energy to thermal and sound stores, leaving less for rebounding.",
+   885→        misconceptions: [
+   886→          "Yes! Energy is conserved — some just leaks into warmth and noise.",
+   887→          "Energy is never destroyed. It moved to other stores instead.",
+   888→          "Gravity is essentially the same over the height of a bounce.",
+   889→          "The ball does not lose matter — only energy changes location.",
+   890→        ],
+   891→      },
+   892→      {
+   893→        question: "A roller coaster's later hills must be lower than the first because...",
+   894→        options: [
+   895→          "Riders prefer it that way",
+   896→          "Friction transfers some energy to heat, so there is less to convert",
+   897→          "Kinetic energy disappears at the bottom",
+   898→          "Gravity weakens after the first hill",
+   899→        ],
+   900→        answerIndex: 1,
+   901→        explanation: "Friction and air resistance keep skimming energy into heat, so the cars cannot climb as high again.",
+   902→        misconceptions: [
+   903→          "Designers follow physics, not just taste — the energy budget decides the height!",
+   904→          "Yes! Energy lost to friction means less available for climbing.",
+   905→          "Kinetic energy is conserved into other stores — it does not simply vanish.",
+   906→          "Gravity does not change along the track — the energy budget is the real constraint.",
+   907→        ],
+   908→      },
+   909→    ],
+   910→    worksheet: [
+   911→      {
+   912→        kind: "fill-blank",
+   913→        prompt: "The energy an object has because it is moving is called ______ energy.",
+   914→        answer: "kinetic",
+   915→      },
+   916→      {
+   917→        kind: "match",
+   918→        prompt: "Match each situation to its main energy store!",
+   919→        left: ["Ball at the top of a hill", "Stretched rubber band", "Chocolate bar", "Rolling ball"],
+   920→        right: ["Chemical energy store", "Elastic potential energy", "Gravitational potential energy", "Kinetic energy"],
+   921→        answer: [2, 1, 0, 3],
+   922→      },
+   923→      {
+   924→        kind: "practice",
+   925→        prompt: "A ball is dropped from 2 m and rebounds to 1.2 m. How many meters of height are 'missing'?",
+   926→        answer: "0.8",
+   927→        hint: "2 − 1.2",
+   928→      },
+   929→      {
+   930→        kind: "fill-blank",
+   931→        prompt: "Energy cannot be created or ______, only transferred between stores.",
+   932→        answer: "destroyed",
+   933→      },
+   934→      {
+   935→        kind: "writing",
+   936→        prompt:
+   937→          "Use a roller coaster to explain conservation of energy. Mention the first hill, the fastest point, and what friction does.",
+   938→        minWords: 40,
+   939→        sampleAnswer:
+   940→          "The car is dragged up the first hill, filling its gravitational potential store. As it falls, that store transfers to kinetic energy, so the car is fastest at the lowest point. It can only climb hills lower than the first, and each hill after is lower, because friction and air resistance transfer some energy to heat and sound.",
+   941→      },
+   942→      {
+   943→        kind: "short-answer",
+   944→        prompt: "Where exactly does the 'missing' energy of a bouncing ball go?",
+   945→        sampleAnswer:
+   946→          "Some transfers to heating the ball and the floor (thermal store), and some becomes the sound you hear. The energy is not destroyed — it just spreads into stores that are not useful for bouncing.",
+   947→      },
+   948→    ],
+   949→    challenge: {
+   950→      prompt:
+   951→        "The Nose Test: tie a small weight to a 1 m string to make a pendulum. With a partner holding the top, pull the weight back to just touching your nose — then release it WITHOUT pushing. Predict: will it swing back and hit you? (Stand still!)",
+   952→      hint: "Think about conservation of energy — and remember friction and air resistance skim a little energy every swing.",
+   953→      steps: [
+   954→        "Tie a washer or small weight to a 1 m string. A partner holds the top end steady.",
+   955→        "Predict out loud: on the swing back, will it touch your nose? Why or why not?",
+   956→        "Pull the weight back until it just touches the tip of your nose, then let go cleanly — do NOT push.",
+   957→        "Stand perfectly still and watch the weight approach on its return swing.",
+   958→        "Repeat twice. Does it ever reach your nose? Explain the pattern.",
+   959→      ],
+   960→      answer: "It swings back close to your nose but never quite touches it — and it stops short a little more each time.",
+   961→      answerWhy:
+   962→        "At your nose the weight has its maximum gravitational potential energy and zero speed. Conservation of energy means it cannot arrive back higher than it started, and air resistance plus friction at the string transfer a little energy to heat each swing — so each return swing falls slightly short. (This is only safe if you release, never push!)",
+   963→    },
+   964→  },
+   965→
+   966→  // -------------------------------------------------------------------------
+   967→  // 7. Earth and space: seasons, tides and the Moon
+   968→  // -------------------------------------------------------------------------
+   969→  {
+   970→    id: "science-intermediate-7",
+   971→    title: "Earth and Space: Seasons, Tides and the Moon",
+   972→    emoji: "🌙",
+   973→    minutes: 14,
+   974→    intro:
+   975→      "Why is it summer in Sydney when New York freezes? And why does the ocean breathe twice a day? Tilt, spin, gravity — let's go.",
+   976→    sections: [
+   977→      {
+   978→        heading: "Seasons come from tilt, not distance",
+   979→        body:
+   980→          "Earth's axis is tilted about 23.5°. When your hemisphere tilts toward the Sun, sunlight strikes it more directly and days are longer — summer. Tilt away, and the same energy spreads over a bigger area with short days — winter. A common myth says seasons come from Earth moving closer to the Sun, but Earth's orbit is nearly circular, and the Southern Hemisphere has summer in December, when Earth is actually closest to the Sun!",
+   981→        example:
+   982→          "🌞 direct rays on tilted-toward hemisphere = summer  ·  🌞 slanted rays on tilted-away hemisphere = winter",
+   983→        tip: "Tilt is the cause. Distance is the myth.",
+   984→      },
+   985→      {
+   986→        heading: "Phases of the Moon",
+   987→        body:
+   988→          "The Moon takes about 29.5 days to complete its cycle of phases. Half the Moon is always lit by the Sun — phases happen because we see different amounts of that lit half as the Moon orbits Earth. New moon: the lit side faces away from us. A week later: first quarter (half visible). Full moon: the whole lit side faces us.",
+   989→        example: "🌑 new → 🌒 crescent → 🌓 first quarter → 🌔 gibbous → 🌕 full → and back down again",
+   990→      },
+   991→      {
+   992→        heading: "Tides: the Moon's gentle grip",
+   993→        body:
+   994→          "The Moon's gravity pulls on Earth's oceans, raising a bulge of water on the side facing the Moon. A second bulge forms on the opposite side. As Earth spins through these bulges, most coastlines get two high tides and two low tides each day. The Sun's gravity adds to it — spring tides (highest) align Sun and Moon; neap tides (smallest) have them at right angles.",
+   995→        example: "🌊 bulge toward Moon → 🌍 Earth spins through it → two high tides a day at most coasts",
+   996→      },
+   997→      {
+   998→        heading: "Try it: Keep a Moon journal",
+   999→        body:
+  1000→          "1. For two weeks, look for the Moon at the same time each evening (and morning, if it is not visible at night). 2. Sketch its shape and note the date and time. 3. Label each phase: crescent, quarter, gibbous, full. 4. Predict the next phase before checking! 5. Bonus: check a tide chart for a nearby coast — do high tides shift about 50 minutes later each day, matching the Moon's motion?",
+  1001→      },
+  1002→    ],
+  1003→    vocab: [
+  1004→      { word: "hemisphere", meaning: "Half of the Earth — northern or southern." },
+  1005→      { word: "phase", meaning: "The shape of the lit part of the Moon we see from Earth." },
+  1006→      { word: "orbit", meaning: "The curved path one object takes around another." },
+  1007→      { word: "tide", meaning: "The regular rise and fall of sea level, mainly caused by the Moon's gravity." },
+  1008→      { word: "axis", meaning: "The imaginary line Earth spins around." },
+  1009→    ],
+  1010→    funFact:
+  1011→      "The Moon is drifting about 3.8 cm farther from Earth every year — about the speed your fingernails grow!",
+  1012→    quiz: [
+  1013→      {
+  1014→        question: "What mainly causes the seasons?",
+  1015→        options: [
+  1016→          "Earth's distance from the Sun changing",
+  1017→          "Earth's tilted axis",
+  1018→          "Cloud cover changing through the year",
+  1019→          "The Moon's phases",
+  1020→        ],
+  1021→        answerIndex: 1,
+  1022→        explanation:
+  1023→          "The 23.5° tilt changes how directly sunlight hits each hemisphere — direct light means summer.",
+  1024→        misconceptions: [
+  1025→          "Common myth! Earth's orbit is nearly circular, and the closest point happens in January.",
+  1026→          "Yes! The tilt decides how directly sunlight strikes each hemisphere.",
+  1027→          "Clouds vary locally. Every hemisphere warms and cools in the same yearly pattern.",
+  1028→          "The Moon's phases are unrelated to seasonal temperature.",
+  1029→        ],
+  1030→      },
+  1031→      {
+  1032→        question: "During a new moon, the Moon appears dark because...",
+  1033→        options: [
+  1034→          "The Moon has stopped existing that night",
+  1035→          "Its lit side faces away from Earth",
+  1036→          "Clouds always cover it",
+  1037→          "It is too far from the Sun to light up",
+  1038→        ],
+  1039→        answerIndex: 1,
+  1040→        explanation: "The Sun still lights half the Moon — we just see the unlit side during a new moon.",
+  1041→        misconceptions: [
+  1042→          "The Moon is still there — it is just between Earth and the Sun with its dark side facing us.",
+  1043→          "Yes! The lit half faces the Sun, away from us, so we see almost nothing.",
+  1044→          "New moons happen in clear weather too — geometry, not clouds, explains the darkness.",
+  1045→          "The Moon is always roughly the same distance from the Sun as Earth is.",
+  1046→        ],
+  1047→      },
+  1048→      {
+  1049→        question: "Tides are mainly caused by...",
+  1050→        options: ["The Moon's gravity pulling the oceans", "Wind pushing waves ashore", "Rain filling the ocean", "Fish swimming in circles"],
+  1051→        answerIndex: 0,
+  1052→        explanation: "The Moon's gravity raises ocean bulges; Earth's spin carries coastlines through them.",
+  1053→        misconceptions: [
+  1054→          "Yes! The Moon's gravity pulls the oceans into two bulges.",
+  1055→          "Wind makes waves, but the steady twice-daily rhythm comes from the Moon.",
+  1056→          "Rivers and rain add water slowly — they cannot raise and lower coasts twice daily.",
+  1057→          "The ocean is far too massive to be moved by fish, charming as the idea is.",
+  1058→        ],
+  1059→      },
+  1060→      {
+  1061→        question: "About how long does it take to go from one full moon to the next?",
+  1062→        options: ["About a week", "About a month", "About a year", "About a day"],
+  1063→        answerIndex: 1,
+  1064→        explanation: "The full cycle of phases takes about 29.5 days — roughly one month (the word comes from 'Moon'!).",
+  1065→        misconceptions: [
+  1066→          "A week only gets you from new moon to first quarter.",
+  1067→          "Yes! About 29.5 days — the origin of the word 'month'.",
+  1068→          "A year is one lap around the Sun. The Moon laps Earth far more often.",
+  1069→          "The Moon needs weeks, not hours, to cycle through its phases.",
+  1070→        ],
+  1071→      },
+  1072→      {
+  1073→        question: "Why is December summer in Australia but winter in the United States?",
+  1074→        options: [
+  1075→          "Australia is closer to the Sun in December",
+  1076→          "The Southern Hemisphere is tilted toward the Sun then",
+  1077→          "Australia has more beaches, so it stays warm",
+  1078→          "The Sun is hotter in December",
+  1079→        ],
+  1080→        answerIndex: 1,
+  1081→        explanation:
+  1082→          "In December the Southern Hemisphere leans toward the Sun, getting direct light and long days — summer.",
+  1083→        misconceptions: [
+  1084→          "Earth is actually closest to the Sun in early January — tilt, not distance, rules the seasons.",
+  1085→          "Yes! Tilted toward the Sun means direct rays and summer for the Southern Hemisphere.",
+  1086→          "Beaches do not create seasons — the whole hemisphere warms together.",
+  1087→          "The Sun's output barely changes — the tilt changes where the light lands.",
+  1088→        ],
+  1089→      },
+  1090→    ],
+  1091→    worksheet: [
+  1092→      {
+  1093→        kind: "fill-blank",
+  1094→        prompt: "Earth's axis is tilted about ______ degrees, which is why we have seasons.",
+  1095→        answer: "23.5",
+  1096→        hint: "Between 23 and 24 — write it with the decimal.",
+  1097→      },
+  1098→      {
+  1099→        kind: "match",
+  1100→        prompt: "Match each term to its meaning!",
+  1101→        left: ["New moon", "Full moon", "High tide", "Orbit"],
+  1102→        right: [
+  1103→          "The whole lit side faces us",
+  1104→          "The path one object takes around another",
+  1105→          "The Moon's dark side faces us",
+  1106→          "The sea rises as the Moon pulls it",
+  1107→        ],
+  1108→        answer: [2, 0, 3, 1],
+  1109→      },
+  1110→      {
+  1111→        kind: "practice",
+  1112→        prompt: "The Moon drifts 3.8 cm farther from Earth each year. How many METERS farther will it be in 1,000 years?",
+  1113→        answer: "38",
+  1114→        hint: "3.8 cm × 1000 = ? cm, then convert to meters",
+  1115→      },
+  1116→      {
+  1117→        kind: "fill-blank",
+  1118→        prompt: "Most coastlines have about ______ high tides every day.",
+  1119→        answer: "two",
+  1120→      },
+  1121→      {
+  1122→        kind: "writing",
+  1123→        prompt:
+  1124→          "Explain why December is summer in Australia but winter in the United States. Mention the tilt, direct sunlight and day length.",
+  1125→        minWords: 40,
+  1126→        sampleAnswer:
+  1127→          "Earth's axis is tilted about 23.5°. In December the Southern Hemisphere leans toward the Sun, so sunlight hits Australia more directly and days are longer — summer. The Northern Hemisphere leans away, so the United States gets slanted, weaker light and short days — winter. Distance from the Sun is not the cause.",
+  1128→      },
+  1129→      {
+  1130→        kind: "short-answer",
+  1131→        prompt: "Why do we always see the same face of the Moon?",
+  1132→        sampleAnswer:
+  1133→          "The Moon is tidally locked: it rotates exactly once for each orbit of Earth, so the same side always points toward us.",
+  1134→      },
+  1135→    ],
+  1136→  },
+  1137→];
+  1138→
