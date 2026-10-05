@@ -3,6 +3,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { ageToGroup } from "@/lib/learning-config";
+import { getLesson } from "@/lib/content";
 import type { AgeGroup, ThemePref } from "@/lib/content/types";
 
 export interface StudentProfile {
@@ -12,6 +13,10 @@ export interface StudentProfile {
   age: number;
   theme: ThemePref;
   ageGroup: AgeGroup;
+  /** Emoji avatar chosen by the student (see shared/avatar). */
+  avatar?: string;
+  /** Avatar bubble colour key. */
+  avatarColor?: string;
   /** Accessibility: preferred base text size. */
   textSize?: TextSize;
 }
@@ -58,6 +63,11 @@ interface StudentState {
   /** Worksheet sets completed (lesson ids or generated sheet keys). */
   worksheetsDone: string[];
   setProfile: (p: StudentProfile) => void;
+  hydrateFromServer: (
+    p: StudentProfile,
+    rows: { subjectId: string; lessonId: string; score: number | null; completedAt: string }[],
+    serverXp?: number
+  ) => void;
   updateProfile: (p: Partial<Omit<StudentProfile, "id">>) => void;
   markLessonRead: (subjectId: string, lessonId: string) => void;
   saveQuizScore: (subjectId: string, lessonId: string, score: number) => void;
@@ -86,12 +96,22 @@ export function levelFromXp(xp: number) {
   return { level, intoLevel, nextAt: 100 };
 }
 
-function syncProfile(p: StudentProfile, xp: number) {
+function syncProfile(p: StudentProfile, xp: number, worksheetsDone?: number) {
   // Best-effort server sync; localStorage remains the source of truth.
   fetch("/api/students", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ ...p, xp }),
+    body: JSON.stringify({ ...p, xp, worksheetsDone }),
+  }).catch(() => undefined);
+}
+
+/** Fire-and-forget activity log (drives parent/teacher "time spent learning"). */
+function logActivity(studentId: string, subjectId: string, minutes: number) {
+  if (minutes <= 0) return;
+  fetch("/api/activity", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ studentId, subjectId, minutes, day: localDate() }),
   }).catch(() => undefined);
 }
 
@@ -134,7 +154,10 @@ export const useStudentStore = create<StudentState>()(
       markWorksheetDone: (key) => {
         const state = get();
         if (state.worksheetsDone.includes(key)) return;
-        set({ worksheetsDone: [...state.worksheetsDone, key].slice(-200) });
+        const worksheetsDone = [...state.worksheetsDone, key].slice(-200);
+        set({ worksheetsDone });
+        if (state.profile)
+          syncProfile(state.profile, state.xp, worksheetsDone.length);
       },
 
       setTextSize: (t) => {
@@ -156,6 +179,33 @@ export const useStudentStore = create<StudentState>()(
       setProfile: (p) => {
         set({ profile: p });
         syncProfile(p, get().xp);
+      },
+
+      /** Used when a child signs in with a code: adopt the server profile and
+       *  merge server-side progress into the local state (best score wins). */
+      hydrateFromServer: (
+        p: StudentProfile,
+        rows: { subjectId: string; lessonId: string; score: number | null; completedAt: string }[],
+        serverXp?: number
+      ) => {
+        const local = get().progress;
+        const merged: Record<string, LessonProgress> = { ...local };
+        for (const row of rows) {
+          const existing = merged[row.lessonId];
+          const rowScore = row.score ?? -1;
+          const localScore = existing?.score ?? -1;
+          if (!existing || rowScore > localScore) {
+            merged[row.lessonId] = {
+              subjectId: row.subjectId,
+              lessonId: row.lessonId,
+              score: row.score,
+              completedAt: row.completedAt,
+            };
+          }
+        }
+        const xp = Math.max(get().xp, serverXp ?? 0);
+        set({ profile: p, progress: merged, xp });
+        syncProfile(p, xp);
       },
 
       updateProfile: (partial) => {
@@ -191,6 +241,8 @@ export const useStudentStore = create<StudentState>()(
         set({ progress: { ...state.progress, [lessonId]: entry }, xp });
         get().touchStreak();
         syncProgress(state.profile.id, entry, xp);
+        const lesson = getLesson(subjectId, lessonId);
+        if (lesson) logActivity(state.profile.id, subjectId, Math.min(lesson.minutes, 25));
       },
 
       saveQuizScore: (subjectId, lessonId, score) => {
@@ -216,6 +268,7 @@ export const useStudentStore = create<StudentState>()(
         set({ progress: { ...state.progress, [lessonId]: entry }, xp });
         get().touchStreak();
         syncProgress(state.profile.id, entry, xp);
+        logActivity(state.profile.id, subjectId, 4);
       },
 
       claimDailyChallenge: () => {

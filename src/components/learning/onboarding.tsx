@@ -10,19 +10,28 @@ import { Badge } from "@/components/ui/badge";
 import { Check, ArrowRight, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AGE_GROUPS, THEMES, ageToGroup } from "@/lib/learning-config";
+import { Avatar, AvatarPicker } from "@/components/shared/avatar";
 import type { AgeGroup, ThemePref } from "@/lib/content/types";
 
 interface OnboardingProps {
-  onDone: (profile: { name: string; age: number; theme: ThemePref }) => void;
+  onDone: (profile: {
+    name: string;
+    age: number;
+    theme: ThemePref;
+    avatar: string;
+    avatarColor: string;
+  }) => void;
 }
 
-const STEPS = ["Name", "Age", "Style", "Ready"];
+const STEPS = ["You", "Age", "Style", "Ready"];
 
 export function Onboarding({ onDone }: OnboardingProps) {
   const [step, setStep] = useState(0);
   const [name, setName] = useState("");
   const [age, setAge] = useState<number | null>(null);
   const [theme, setTheme] = useState<ThemePref | null>(null);
+  const [avatar, setAvatar] = useState("🦊");
+  const [avatarColor, setAvatarColor] = useState("amber");
 
   const nameValid = name.trim().length >= 1 && name.trim().length <= 20;
   const group: AgeGroup | null = age ? ageToGroup(age) : null;
@@ -32,7 +41,7 @@ export function Onboarding({ onDone }: OnboardingProps) {
 
   const finish = () => {
     if (!canFinish) return;
-    onDone({ name: name.trim(), age: age!, theme: theme! });
+    onDone({ name: name.trim(), age: age!, theme: theme!, avatar, avatarColor });
   };
 
   const canFinish = step === 3 && nameValid && age !== null && theme !== null;
@@ -92,7 +101,7 @@ export function Onboarding({ onDone }: OnboardingProps) {
                   transition={{ duration: 0.25 }}
                 >
                   <h2 className="text-2xl font-bold mb-1">Hello there! 👋</h2>
-                  <p className="text-muted-foreground mb-6">What&apos;s your first name?</p>
+                  <p className="text-muted-foreground mb-4">What&apos;s your first name?</p>
                   <Input
                     value={name}
                     onChange={(e) => setName(e.target.value.replace(/[^a-zA-Z\s'-]/g, "").slice(0, 20))}
@@ -105,6 +114,19 @@ export function Onboarding({ onDone }: OnboardingProps) {
                   {name.length > 0 && !nameValid && (
                     <p className="text-destructive text-sm mt-2 text-center">Please enter a name (1–20 characters).</p>
                   )}
+                  <div className="mt-6 border-t pt-5">
+                    <p className="text-sm font-bold mb-1 text-center">Pick your avatar! 🙂</p>
+                    <p className="text-xs text-muted-foreground mb-3 text-center">It will follow you everywhere.</p>
+                    <AvatarPicker
+                      value={avatar}
+                      color={avatarColor}
+                      compact
+                      onChange={(a, c) => {
+                        setAvatar(a);
+                        setAvatarColor(c);
+                      }}
+                    />
+                  </div>
                 </motion.div>
               )}
 
@@ -213,7 +235,7 @@ export function Onboarding({ onDone }: OnboardingProps) {
                   className="text-center"
                 >
                   <div className="w-20 h-20 mx-auto rounded-full bg-secondary flex items-center justify-center text-4xl mb-4">
-                    {AGE_GROUPS[group!].emoji}
+                    <Avatar avatar={avatar} color={avatarColor} size="xl" />
                   </div>
                   <h2 className="text-2xl font-bold mb-1">You&apos;re all set, {name.trim()}!</h2>
                   <p className="text-muted-foreground mb-6">
@@ -222,7 +244,9 @@ export function Onboarding({ onDone }: OnboardingProps) {
                   <div className="rounded-2xl border-2 border-dashed border-primary/30 p-4 text-left space-y-2 bg-secondary/40">
                     <p className="flex justify-between gap-4">
                       <span className="text-muted-foreground">Name</span>
-                      <span className="font-semibold">{name.trim()}</span>
+                      <span className="font-semibold flex items-center gap-1.5">
+                        <Avatar avatar={avatar} color={avatarColor} size="xs" /> {name.trim()}
+                      </span>
                     </p>
                     <p className="flex justify-between gap-4">
                       <span className="text-muted-foreground">Age</span>

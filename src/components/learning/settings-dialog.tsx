@@ -26,6 +26,7 @@ import { Label } from "@/components/ui/label";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { THEMES } from "@/lib/learning-config";
+import { AvatarPicker } from "@/components/shared/avatar";
 import type { ThemePref } from "@/lib/content/types";
 import type { StudentProfile } from "@/lib/student-store";
 
@@ -33,7 +34,13 @@ interface SettingsDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   profile: StudentProfile;
-  onSave: (partial: { name: string; age: number; theme: ThemePref }) => void;
+  onSave: (partial: {
+    name: string;
+    age: number;
+    theme: ThemePref;
+    avatar: string;
+    avatarColor: string;
+  }) => void;
   onSwitchStudent: () => void;
 }
 
@@ -47,6 +54,8 @@ export function SettingsDialog({
   const [name, setName] = useState(profile.name);
   const [age, setAge] = useState(profile.age);
   const [theme, setTheme] = useState<ThemePref>(profile.theme);
+  const [avatar, setAvatar] = useState(profile.avatar ?? "🦊");
+  const [avatarColor, setAvatarColor] = useState(profile.avatarColor ?? "amber");
 
   // Re-sync local state when the dialog opens for a different profile.
   const [lastId, setLastId] = useState(profile.id);
@@ -55,6 +64,8 @@ export function SettingsDialog({
     setName(profile.name);
     setAge(profile.age);
     setTheme(profile.theme);
+    setAvatar(profile.avatar ?? "🦊");
+    setAvatarColor(profile.avatarColor ?? "amber");
   }
 
   const nameValid = name.trim().length >= 1 && name.trim().length <= 20;
@@ -77,6 +88,19 @@ export function SettingsDialog({
               value={name}
               onChange={(e) => setName(e.target.value.replace(/[^a-zA-Z\s'-]/g, "").slice(0, 20))}
               className="rounded-xl"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label>Your avatar</Label>
+            <AvatarPicker
+              value={avatar}
+              color={avatarColor}
+              compact
+              onChange={(a, c) => {
+                setAvatar(a);
+                setAvatarColor(c);
+              }}
             />
           </div>
 
@@ -166,7 +190,7 @@ export function SettingsDialog({
             <Button
               disabled={!nameValid}
               onClick={() => {
-                onSave({ name: name.trim(), age, theme });
+                onSave({ name: name.trim(), age, theme, avatar, avatarColor });
                 onOpenChange(false);
               }}
             >

@@ -30,11 +30,13 @@ import {
   Trophy,
   TrendingUp,
   BookOpen,
+  Bot,
   Zap,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { levelFromXp } from "@/lib/student-store";
 import { AGE_GROUPS } from "@/lib/learning-config";
+import { Avatar } from "@/components/shared/avatar";
 import type { StudentProfile } from "@/lib/student-store";
 
 export type NavKey =
@@ -43,6 +45,7 @@ export type NavKey =
   | "worksheets"
   | "practice"
   | "reading"
+  | "helper"
   | "achievements"
   | "progress";
 
@@ -52,6 +55,7 @@ const NAV_ITEMS: { key: NavKey; label: string; icon: React.ReactNode }[] = [
   { key: "worksheets", label: "Worksheets", icon: <NotebookPen className="w-4 h-4" /> },
   { key: "practice", label: "Practice", icon: <Sparkles className="w-4 h-4" /> },
   { key: "reading", label: "Reading", icon: <BookOpen className="w-4 h-4" /> },
+  { key: "helper", label: "Helper", icon: <Bot className="w-4 h-4" /> },
   { key: "achievements", label: "Achievements", icon: <Trophy className="w-4 h-4" /> },
   { key: "progress", label: "Progress", icon: <TrendingUp className="w-4 h-4" /> },
 ];
@@ -99,9 +103,10 @@ export function AppHeader({
           </div>
           <div className="min-w-0 text-left">
             <p
-              className="font-bold text-lg leading-tight truncate"
+              className="font-bold text-lg leading-tight truncate flex items-center gap-1.5"
               style={{ fontFamily: "var(--font-fredoka)" }}
             >
+              <Avatar avatar={profile.avatar} color={profile.avatarColor} size="xs" />
               BrightMinds
             </p>
             <p className="text-xs text-muted-foreground leading-tight truncate">

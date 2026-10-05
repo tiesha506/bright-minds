@@ -29,11 +29,43 @@ export async function POST(req: NextRequest) {
     }
 
     const xp = typeof body.xp === "number" && body.xp >= 0 ? Math.floor(body.xp) : 0;
+    const worksheetsDone =
+      typeof body.worksheetsDone === "number" && body.worksheetsDone >= 0
+        ? Math.floor(body.worksheetsDone)
+        : undefined;
+    const avatar =
+      typeof body.avatar === "string" && body.avatar.length > 0 && body.avatar.length <= 8
+        ? body.avatar
+        : undefined;
+    const avatarColor =
+      typeof body.avatarColor === "string" &&
+      ["rose", "amber", "emerald", "teal", "violet", "orange"].includes(body.avatarColor)
+        ? body.avatarColor
+        : undefined;
 
     const student = await db.student.upsert({
       where: { id },
-      update: { name: name.trim(), age, theme, ageGroup, xp },
-      create: { id, name: name.trim(), age, theme, ageGroup, xp },
+      update: {
+        name: name.trim(),
+        age,
+        theme,
+        ageGroup,
+        xp,
+        ...(avatar !== undefined ? { avatar } : {}),
+        ...(avatarColor !== undefined ? { avatarColor } : {}),
+        ...(worksheetsDone !== undefined ? { worksheetsDone } : {}),
+      },
+      create: {
+        id,
+        name: name.trim(),
+        age,
+        theme,
+        ageGroup,
+        xp,
+        avatar: avatar ?? "",
+        avatarColor: avatarColor ?? "amber",
+        worksheetsDone: worksheetsDone ?? 0,
+      },
     });
 
     return NextResponse.json({ student });
