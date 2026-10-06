@@ -52,3 +52,20 @@ prompt
 server.log
 # Skills directory
 /skills/
+
+# local runtime database (SQLite) — recreated via `bun run db:push` + /api/auth/demo-seed
+/db/
+*.db
+*.db-journal
+
+# sandbox / working artifacts
+/tool-results/
+/upload/
+/download/
+/tests/
+/agent-ctx/
+
+# environment files (see .env.example)
+.env
+.env.local
+.env.*.local

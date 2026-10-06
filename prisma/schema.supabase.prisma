@@ -1,0 +1,214 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url               = env("DATABASE_URL")
+  // Session-mode connection used for migrations and db push (Supabase)
+  directUrl         = env("DIRECT_URL")
+}
+
+// ------------------------------- Accounts ---------------------------------
+
+model User {
+  id           String         @id @default(cuid())
+  email        String         @unique
+  passwordHash String
+  name         String
+  /// "STUDENT" | "PARENT" | "TEACHER" | "ADMIN"
+  role         String
+  createdAt    DateTime       @default(now())
+  sessions     Session[]
+  children     Student[]
+  classrooms   Classroom[]
+  assignments  Assignment[]
+  activities   CustomActivity[]
+  notifications Notification[]
+}
+
+model Session {
+  token     String   @id
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+// ------------------------------- Learners ---------------------------------
+
+model Student {
+  id         String   @id
+  name       String
+  age        Int
+  theme      String
+  ageGroup   String
+  xp         Int      @default(0)
+  /// How many worksheet sets the student has completed (synced from client).
+  worksheetsDone Int  @default(0)
+  /// Emoji avatar chosen by the student (e.g. "🦊"). Empty = auto.
+  avatar     String   @default("")
+  /// Avatar bubble colour key (rose|amber|emerald|teal|violet|orange).
+  avatarColor String  @default("amber")
+  /// 6-char login code for child accounts (e.g. "AXK-42Q"). Null for guests.
+  loginCode  String?  @unique
+  /// 4-digit PIN for child accounts (plain compare is fine for a demo PIN).
+  pin        String?
+  /// Parent account (User with role PARENT), if any.
+  parentId   String?
+  parent     User?    @relation(fields: [parentId], references: [id], onDelete: SetNull)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  progress   Progress[]
+  seats      ClassroomStudent[]
+  goal       Goal?
+  activity   ActivityLog[]
+  results    AssignmentResult[]
+}
+
+model Progress {
+  id          String   @id @default(cuid())
+  studentId   String
+  student     Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  subjectId   String
+  lessonId    String
+  score       Int?
+  completedAt DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([studentId, lessonId])
+}
+
+/// Minutes learned per subject per local day (for weekly/monthly reports).
+model ActivityLog {
+  id        String @id @default(cuid())
+  studentId String
+  student   Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  day       String // YYYY-MM-DD (local)
+  subjectId String
+  minutes   Int
+  @@unique([studentId, day, subjectId])
+}
+
+// ------------------------------ Classrooms --------------------------------
+
+model Classroom {
+  id         String   @id @default(cuid())
+  name       String
+  gradeLabel String   @default("")
+  teacherId  String
+  teacher    User     @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  seats      ClassroomStudent[]
+  assignments Assignment[]
+  createdAt  DateTime @default(now())
+}
+
+model ClassroomStudent {
+  id          String @id @default(cuid())
+  classroomId String
+  classroom   Classroom @relation(fields: [classroomId], references: [id], onDelete: Cascade)
+  studentId   String
+  student     Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  /// Differentiated group label (e.g. "A", "B", "C" or a custom name). Empty = ungrouped.
+  groupName   String @default("")
+  createdAt   DateTime @default(now())
+
+  @@unique([classroomId, studentId])
+}
+
+// ------------------------------ Assignments -------------------------------
+
+model Assignment {
+  id           String   @id @default(cuid())
+  teacherId    String
+  teacher      User     @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  classroomId  String
+  classroom    Classroom @relation(fields: [classroomId], references: [id], onDelete: Cascade)
+  title        String
+  /// lesson | quiz | worksheet | reading | custom
+  type         String
+  subjectId    String
+  lessonId     String?
+  customActivityId String?
+  /// Age group the work targets: early|primary|intermediate|teen
+  level        String
+  /// mild | standard | tricky
+  difficulty   String   @default("standard")
+  questionCount Int     @default(8)
+  /// YYYY-MM-DD or empty
+  dueDate      String   @default("")
+  instructions String   @default("")
+  /// If set, the assignment targets one differentiated group (null = class/selection).
+  groupName    String?
+  /// JSON array of Student ids when assigning to a selection; "[]" + groupName null = whole class.
+  studentIds   String   @default("[]")
+  createdAt    DateTime @default(now())
+  results      AssignmentResult[]
+}
+
+model AssignmentResult {
+  id           String    @id @default(cuid())
+  assignmentId String
+  assignment   Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  studentId    String
+  student      Student   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  /// assigned | completed
+  status       String    @default("assigned")
+  score        Int?
+  completedAt  DateTime?
+  updatedAt    DateTime  @updatedAt
+
+  @@unique([assignmentId, studentId])
+}
+
+// ------------------------------ Parent tools -------------------------------
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  childId   String?
+  childName String
+  /// completion | score | suggestion | assignment
+  kind      String
+  text      String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Goal {
+  id                String   @id @default(cuid())
+  studentId         String   @unique
+  student           Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  dailyMinutes      Int      @default(15)
+  weeklyLessonTarget Int     @default(3)
+  /// JSON array of prioritised subject ids.
+  prioritySubjects  String   @default("[]")
+  note              String   @default("")
+  updatedAt         DateTime @updatedAt
+}
+
+// --------------------------- Teacher content -------------------------------
+
+model CustomActivity {
+  id         String   @id @default(cuid())
+  teacherId  String
+  teacher    User     @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  title      String
+  /// lesson | worksheet | quiz | reading | vocabulary | math | science
+  type       String
+  subjectId  String
+  ageGroup   String
+  /// draft | private | assigned
+  status     String   @default("draft")
+  /// JSON body of the editable draft content.
+  body       String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+// ------------------------------- Platform ---------------------------------
+
+model PlatformSetting {
+  key   String @id
+  value String
+}
