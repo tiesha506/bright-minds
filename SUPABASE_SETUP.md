@@ -15,26 +15,21 @@ Project ref: **`ydrulncrxftkisnlvgyt`** → `https://ydrulncrxftkisnlvgyt.supaba
 | ① Project URL | ✅ received & verified | project live, Auth service healthy |
 | ② anon key | ✅ received & verified | tested against REST: auth passes (`PGRST205` = tables not yet created, as expected) |
 | ③ service_role key | ✅ received | stored **only** in gitignored `.env`; never committed |
-| ④ Session pooler URL (:5432) | ⏳ **pending** | see §1.2-A below |
-| ⑤ Transaction pooler URL (:6543) | ⏳ **pending** | see §1.2-B below |
-| ⑥ DB password | ⏳ **pending** | see §1.2-C below |
+| ④ Session pooler URL (:5432) | ✅ received | region: **us-west-2** — TCP verified reachable |
+| ⑤ Transaction pooler URL (:6543) | ✅ received | region: **us-west-2** — TCP verified reachable |
+| ⑥ DB password | ⏳ **pending** | the last missing piece — see §1.2-C |
 
-> Once ④⑤⑥ arrive: `cp prisma/schema.supabase.prisma prisma/schema.prisma` → set the two env vars → `npx prisma db push` → seed. Done.
+> Once ⑥ arrives: run `./scripts/migrate-to-supabase.sh "<DB_PASSWORD>"` (repo script — swaps schema, rewrites `.env`, runs `prisma db push`, regenerates client), then seed. Done.
 
-### 1.2-A Get the Session pooler URL (DIRECT_URL, port 5432)
-1. Open **https://supabase.com/dashboard/project/ydrulncrxftkisnlvgyt/settings/database**
-2. Scroll to **"Connect to your database"** / **Connection string**.
-3. Click the **Session pooler** tab (it shows port **`5432`**).
-4. Copy the URI — it looks like
-   `postgresql://postgres.ydrulncrxftkisnlvgyt:[YOUR-PASSWORD]@aws-0-XX-XXXX-N.pooler.supabase.com:5432/postgres`
+### 1.2-A Get the Session pooler URL (DIRECT_URL, port 5432) — ✅ DONE
+`postgresql://postgres.ydrulncrxftkisnlvgyt:[YOUR-PASSWORD]@aws-0-us-west-2.pooler.supabase.com:5432/postgres`
 
-### 1.2-B Get the Transaction pooler URL (DATABASE_URL, port 6543)
-1. Same page, click the **Transaction pooler** tab (port **`6543`**).
-2. Copy that URI (same shape, port 6543). This one gets `?pgbouncer=true&connection_limit=1` appended — I'll handle that.
+### 1.2-B Get the Transaction pooler URL (DATABASE_URL, port 6543) — ✅ DONE
+`postgresql://postgres.ydrulncrxftkisnlvgyt:[YOUR-PASSWORD]@aws-0-us-west-2.pooler.supabase.com:6543/postgres` + `?pgbouncer=true&connection_limit=1` (script appends automatically)
 
-### 1.2-C Database password
-- The password was chosen when the project was created. If you don't remember it, on the same Database settings page click **"Reset database password"**, generate one, **copy it immediately** (it's shown once), and use it in both URLs from ① and ②.
-- Then just paste me: **the two URIs as-is** (with `[YOUR-PASSWORD]` still in them is fine, plus the password separately) — or the two URIs with the password already filled in. I'll do the rest.
+### 1.2-C Database password — ⏳ PENDING
+- On **https://supabase.com/dashboard/project/ydrulncrxftkisnlvgyt/settings/database** click **"Reset database password"** → Generate → **copy it immediately** (shown once).
+- Then either paste the password to the developer, or run the migration script yourself.
 
 ---
 
