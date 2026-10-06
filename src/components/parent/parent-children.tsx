@@ -45,7 +45,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Avatar, AvatarPicker } from "@/components/shared/avatar";
+import { Avatar, AvatarPicker, AvatarPhotoEditor } from "@/components/shared/avatar";
 import { api } from "@/lib/api";
 import { THEMES } from "@/lib/learning-config";
 import type { ChildSummary } from "@/lib/parent-types";
@@ -67,9 +67,10 @@ interface ChildForm {
   theme: string;
   avatar: string;
   avatarColor: string;
+  photoUrl: string | null;
 }
 
-const EMPTY_FORM: ChildForm = { name: "", age: "8", theme: "neutral", avatar: "🦊", avatarColor: "amber" };
+const EMPTY_FORM: ChildForm = { name: "", age: "8", theme: "neutral", avatar: "🦊", avatarColor: "amber", photoUrl: null };
 
 export function ParentChildren({
   kids,
@@ -105,6 +106,7 @@ export function ParentChildren({
         theme: editing.theme,
         avatar: editing.avatar || "🦊",
         avatarColor: editing.avatarColor || "amber",
+        photoUrl: editing.photoUrl || null,
       });
     }
   }, [editing]);
@@ -147,6 +149,7 @@ export function ParentChildren({
           theme: form.theme,
           avatar: form.avatar,
           avatarColor: form.avatarColor,
+          photoUrl: form.photoUrl,
         },
       });
       setEditing(null);
@@ -215,7 +218,7 @@ export function ParentChildren({
               <CardHeader className="pb-2">
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-center gap-3">
-                    <Avatar avatar={kid.avatar} color={kid.avatarColor} size="lg" />
+                    <Avatar avatar={kid.avatar} color={kid.avatarColor} photoUrl={kid.photoUrl} size="lg" />
                     <div>
                       <CardTitle className="text-lg leading-tight">{kid.name}</CardTitle>
                       <CardDescription className="mt-0.5">
@@ -329,7 +332,7 @@ export function ParentChildren({
               Changing the age keeps lessons at the right level automatically.
             </DialogDescription>
           </DialogHeader>
-          {editing && <ChildFormFields form={form} onChange={setForm} />}
+          {editing && <ChildFormFields form={form} onChange={setForm} studentId={editing.id} />}
           <DialogFooter>
             <Button variant="outline" onClick={() => setEditing(null)} disabled={saving}>
               Cancel
@@ -425,12 +428,32 @@ export function ParentChildren({
 function ChildFormFields({
   form,
   onChange,
+  studentId,
 }: {
   form: ChildForm;
   onChange: (f: ChildForm) => void;
+  /** Present in edit mode — enables the profile-photo upload. */
+  studentId?: string;
 }) {
   return (
     <div className="space-y-4">
+      {studentId && (
+        <div className="space-y-1.5">
+          <Label>Profile photo</Label>
+          <AvatarPhotoEditor
+            targetType="student"
+            targetId={studentId}
+            photoUrl={form.photoUrl}
+            avatar={form.avatar}
+            color={form.avatarColor}
+            name={form.name}
+            onChanged={(photoUrl) => onChange({ ...form, photoUrl })}
+          />
+          <p className="text-xs text-muted-foreground">
+            Shown on their dashboard instead of the emoji avatar.
+          </p>
+        </div>
+      )}
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-1.5">
           <Label htmlFor="child-name">Name</Label>

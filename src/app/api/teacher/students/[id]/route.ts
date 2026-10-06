@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import { requireTeacher, accessibleStudent, aggregateStudents, dayKey, dayLabel } from "../../_server";
+import { cleanPhotoUrl } from "@/lib/server/photo";
 import { getLesson, getLessons } from "@/lib/content";
 import type { AgeGroup } from "@/lib/content/types";
 import { SUBJECT_IDS, SUBJECT_LABELS, READING_SKILLS, ageGroupForAge } from "@/lib/teacher-types";
@@ -134,6 +135,7 @@ export async function GET(req: Request, { params }: RouteContext) {
       ageGroup,
       avatar: student.avatar,
       avatarColor: student.avatarColor,
+      photoUrl: student.photoUrl,
       loginCode: student.loginCode,
       worksheetsDone: student.worksheetsDone,
       xp: student.xp,
@@ -154,4 +156,35 @@ export async function GET(req: Request, { params }: RouteContext) {
     quizAvg: agg.quizAvg === null ? null : Math.round(agg.quizAvg),
     readingAvg: agg.readingAvg === null ? null : Math.round(agg.readingAvg),
   });
+}
+
+/**
+ * PATCH /api/teacher/students/[id] — update limited profile fields for a
+ * student in one of the teacher's classrooms. Body: { photoUrl?: string|null }
+ */
+export async function PATCH(req: Request, { params }: RouteContext) {
+  const auth = await requireTeacher(req);
+  if (auth instanceof Response) return auth;
+
+  const { id } = await params;
+  const found = await accessibleStudent(auth.id, id);
+  if (!found) {
+    return Response.json({ error: "Student not found in your classrooms" }, { status: 404 });
+  }
+
+  const body = await req.json().catch(() => ({}));
+  if (body?.photoUrl === undefined) {
+    return Response.json({ error: "Nothing to update." }, { status: 400 });
+  }
+  const photo = cleanPhotoUrl(body.photoUrl, process.env.NEXT_PUBLIC_SUPABASE_URL);
+  if (photo === null) {
+    return Response.json({ error: "Invalid photo." }, { status: 400 });
+  }
+
+  const updated = await db.student.update({
+    where: { id: found.student.id },
+    data: { photoUrl: photo },
+    select: { id: true, photoUrl: true },
+  });
+  return Response.json({ ok: true, student: updated });
 }

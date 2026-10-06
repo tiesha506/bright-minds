@@ -57,6 +57,7 @@ export async function POST(req: NextRequest) {
         ageGroup: student.ageGroup,
         avatar: student.avatar,
         avatarColor: student.avatarColor,
+        photoUrl: student.photoUrl,
         xp: student.xp,
       },
     });

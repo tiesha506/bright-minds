@@ -26,7 +26,7 @@ import { Label } from "@/components/ui/label";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { THEMES } from "@/lib/learning-config";
-import { AvatarPicker } from "@/components/shared/avatar";
+import { AvatarPicker, AvatarPhotoEditor } from "@/components/shared/avatar";
 import type { ThemePref } from "@/lib/content/types";
 import type { StudentProfile } from "@/lib/student-store";
 
@@ -40,6 +40,7 @@ interface SettingsDialogProps {
     theme: ThemePref;
     avatar: string;
     avatarColor: string;
+    photoUrl: string | null;
   }) => void;
   onSwitchStudent: () => void;
 }
@@ -56,6 +57,7 @@ export function SettingsDialog({
   const [theme, setTheme] = useState<ThemePref>(profile.theme);
   const [avatar, setAvatar] = useState(profile.avatar ?? "🦊");
   const [avatarColor, setAvatarColor] = useState(profile.avatarColor ?? "amber");
+  const [photoUrl, setPhotoUrl] = useState(profile.photoUrl ?? null);
 
   // Re-sync local state when the dialog opens for a different profile.
   const [lastId, setLastId] = useState(profile.id);
@@ -66,6 +68,7 @@ export function SettingsDialog({
     setTheme(profile.theme);
     setAvatar(profile.avatar ?? "🦊");
     setAvatarColor(profile.avatarColor ?? "amber");
+    setPhotoUrl(profile.photoUrl ?? null);
   }
 
   const nameValid = name.trim().length >= 1 && name.trim().length <= 20;
@@ -81,6 +84,22 @@ export function SettingsDialog({
         </DialogHeader>
 
         <div className="space-y-5 py-2">
+          <div className="space-y-2">
+            <Label>Profile photo</Label>
+            <AvatarPhotoEditor
+              targetType="student"
+              targetId={profile.id}
+              photoUrl={photoUrl}
+              avatar={avatar}
+              color={avatarColor}
+              name={profile.name}
+              onChanged={(url) => setPhotoUrl(url)}
+            />
+            <p className="text-xs text-muted-foreground">
+              Optional — a grown-up can also add one for you.
+            </p>
+          </div>
+
           <div className="space-y-2">
             <Label htmlFor="settings-name">First name</Label>
             <Input
@@ -190,7 +209,7 @@ export function SettingsDialog({
             <Button
               disabled={!nameValid}
               onClick={() => {
-                onSave({ name: name.trim(), age, theme, avatar, avatarColor });
+                onSave({ name: name.trim(), age, theme, avatar, avatarColor, photoUrl });
                 onOpenChange(false);
               }}
             >

@@ -130,7 +130,7 @@ function DashboardWithData({ child, onGo }: { child: ChildSummary; onGo: (s: Par
           aria-hidden
         />
         <div className="relative flex flex-wrap items-center gap-4 sm:gap-5">
-          <Avatar avatar={profile.avatar} color={profile.avatarColor} size="xl" />
+          <Avatar avatar={profile.avatar} color={profile.avatarColor} photoUrl={profile.photoUrl} size="xl" />
           <div className="min-w-0 flex-1">
             <h1 id="child-overview-title" className="text-2xl font-extrabold tracking-tight sm:text-3xl">
               {firstName}&apos;s Learning Overview

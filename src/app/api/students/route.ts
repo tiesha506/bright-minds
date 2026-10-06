@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { cleanPhotoUrl } from "@/lib/server/photo";
 
 const VALID_THEMES = new Set(["pink", "blue", "neutral"]);
 const VALID_GROUPS = new Set(["early", "primary", "intermediate", "teen"]);
@@ -42,6 +43,13 @@ export async function POST(req: NextRequest) {
       ["rose", "amber", "emerald", "teal", "violet", "orange"].includes(body.avatarColor)
         ? body.avatarColor
         : undefined;
+    const photoUrl =
+      body.photoUrl !== undefined
+        ? cleanPhotoUrl(body.photoUrl, process.env.NEXT_PUBLIC_SUPABASE_URL)
+        : undefined;
+    if (photoUrl === null) {
+      return NextResponse.json({ error: "Invalid photo" }, { status: 400 });
+    }
 
     const student = await db.student.upsert({
       where: { id },
@@ -53,6 +61,7 @@ export async function POST(req: NextRequest) {
         xp,
         ...(avatar !== undefined ? { avatar } : {}),
         ...(avatarColor !== undefined ? { avatarColor } : {}),
+        ...(photoUrl !== undefined ? { photoUrl } : {}),
         ...(worksheetsDone !== undefined ? { worksheetsDone } : {}),
       },
       create: {

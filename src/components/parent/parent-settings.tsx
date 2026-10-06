@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { KeyRound, LogOut, ShieldCheck, User } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -12,7 +13,10 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Avatar } from "@/components/shared/avatar";
+import { Avatar, AvatarPhotoEditor } from "@/components/shared/avatar";
+import { api } from "@/lib/api";
+import { useAuthStore } from "@/lib/auth-store";
+import { useToast } from "@/hooks/use-toast";
 import type { AuthUser } from "@/lib/auth-store";
 import type { ChildSummary } from "@/lib/parent-types";
 import { SectionHeader, levelLabel } from "./parent-ui";
@@ -33,6 +37,38 @@ export function ParentSettings({
   onSelectChild: (childId: string) => void;
   onSignOut: () => void;
 }) {
+  const { toast } = useToast();
+  const setSession = useAuthStore((s) => s.setSession);
+  const token = useAuthStore((s) => s.token);
+  const [photoUrl, setPhotoUrl] = useState(user.photoUrl ?? null);
+  const [name, setName] = useState(user.name);
+  const [savingProfile, setSavingProfile] = useState(false);
+
+  async function saveProfile(nextPhoto: string | null, nextName?: string) {
+    if (!token) return;
+    setSavingProfile(true);
+    try {
+      const body: { photoUrl?: string | null; name?: string } = { photoUrl: nextPhoto };
+      if (nextName !== undefined) body.name = nextName;
+      const data = await api<{
+        ok: boolean;
+        user: { id: string; name: string; photoUrl: string };
+      }>("/api/auth/profile", { method: "PATCH", body });
+      setPhotoUrl(data.user.photoUrl || null);
+      setName(data.user.name);
+      // Keep the rest of the app (header etc.) in sync.
+      if (token) setSession({ ...user, name: data.user.name, photoUrl: data.user.photoUrl || undefined }, token);
+      toast({ title: "Profile updated ✅", description: "Your photo and details are saved." });
+    } catch (err) {
+      toast({
+        title: "Couldn't update your profile",
+        description: err instanceof Error ? err.message : "Please try again.",
+      });
+    } finally {
+      setSavingProfile(false);
+    }
+  }
+
   return (
     <div className="space-y-6">
       <SectionHeader title="Settings" subtitle="Your account, your children's codes, your data." />
@@ -44,12 +80,29 @@ export function ParentSettings({
             <CardTitle className="flex items-center gap-2 text-lg">
               <User className="h-5 w-5 text-rose-500" aria-hidden /> Account
             </CardTitle>
-            <CardDescription>Managed by BrightMinds — contact support to change.</CardDescription>
+            <CardDescription>Your profile photo shows next to your name in the app.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
+            <AvatarPhotoEditor
+              targetType="user"
+              photoUrl={photoUrl}
+              name={name}
+              onChanged={(url) => saveProfile(url)}
+            />
             <div className="space-y-1.5">
               <Label htmlFor="parent-name">Your name</Label>
-              <Input id="parent-name" value={user.name} readOnly className="bg-muted/50" />
+              <Input
+                id="parent-name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                onBlur={() => {
+                  const trimmed = name.trim();
+                  if (trimmed && trimmed !== user.name && trimmed.length >= 2) {
+                    saveProfile(photoUrl, trimmed);
+                  }
+                }}
+                disabled={savingProfile}
+              />
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="parent-email">Email</Label>
@@ -99,7 +152,7 @@ export function ParentSettings({
                       aria-label={`Open ${kid.name}'s dashboard`}
                     >
                       <span className="flex items-center gap-3">
-                        <Avatar avatar={kid.avatar} color={kid.avatarColor} size="sm" />
+                        <Avatar avatar={kid.avatar} color={kid.avatarColor} photoUrl={kid.photoUrl} size="sm" />
                         <span>
                           <span className="block text-sm font-bold">{kid.name}</span>
                           <span className="block text-xs text-muted-foreground">

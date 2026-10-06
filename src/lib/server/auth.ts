@@ -26,6 +26,7 @@ export interface SessionUser {
   email: string;
   name: string;
   role: Role;
+  photoUrl?: string;
 }
 
 export async function createSession(userId: string): Promise<string> {
@@ -54,6 +55,7 @@ export async function getSessionUser(req: Request): Promise<SessionUser | null> 
     email: session.user.email,
     name: session.user.name,
     role: session.user.role as Role,
+    photoUrl: session.user.photoUrl,
   };
 }
 

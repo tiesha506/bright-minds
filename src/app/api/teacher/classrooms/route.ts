@@ -31,6 +31,7 @@ export async function GET(req: Request) {
       ageGroup: seat.student.ageGroup,
       avatar: seat.student.avatar,
       avatarColor: seat.student.avatarColor,
+      photoUrl: seat.student.photoUrl,
       loginCode: seat.student.loginCode,
       groupName: seat.groupName,
       avg: agg?.avg ?? null,

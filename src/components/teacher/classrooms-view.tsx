@@ -505,7 +505,7 @@ function ClassroomDetail({
                       <tr key={s.seatId} className="border-b border-slate-50 last:border-0">
                         <td className="px-4 py-2.5">
                           <span className="flex items-center gap-2">
-                            <Avatar avatar={s.avatar} color={s.avatarColor} size="xs" />
+                            <Avatar avatar={s.avatar} color={s.avatarColor} photoUrl={s.photoUrl} size="xs" />
                             <span className="font-semibold">{s.name}</span>
                             <span className="text-xs text-slate-400">({s.age})</span>
                           </span>

@@ -8,7 +8,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Search, ChevronRight } from "lucide-react";
 import { api } from "@/lib/api";
 import type { AuthUser } from "@/lib/auth-store";
-import { Avatar } from "@/components/shared/avatar";
+import { Avatar, AvatarPhotoEditor } from "@/components/shared/avatar";
 import { BarRow, MiniBars, SparkLine, SUBJECT_COLORS } from "@/components/shared/charts";
 import {
   Loading,
@@ -85,7 +85,7 @@ function StudentProfileDialog({
           <DialogTitle className="flex items-center gap-3 pr-6">
             {data && (
               <>
-                <Avatar avatar={data.student.avatar} color={data.student.avatarColor} size="md" />
+                <Avatar avatar={data.student.avatar} color={data.student.avatarColor} photoUrl={data.student.photoUrl} size="md" />
                 <span className="min-w-0 flex-1 truncate">{data.student.name}</span>
                 <span className="text-xs font-normal text-slate-400">
                   {data.student.age} yrs · {AGE_GROUP_LABELS[data.student.ageGroup]}
@@ -100,6 +100,36 @@ function StudentProfileDialog({
 
         {data && (
           <div className="space-y-4">
+            {/* Profile photo (optional — stored in Supabase Storage) */}
+            <Panel title="Profile photo" bodyClassName="p-4">
+              <AvatarPhotoEditor
+                targetType="student"
+                targetId={data.student.id}
+                photoUrl={data.student.photoUrl}
+                avatar={data.student.avatar}
+                color={data.student.avatarColor}
+                name={data.student.name}
+                onChanged={(url) => {
+                  const photo = url ?? "";
+                  api(`/api/teacher/students/${data.student.id}`, {
+                    method: "PATCH",
+                    body: { photoUrl: photo || null },
+                  })
+                    .then(() =>
+                      setData((d) =>
+                        d ? { ...d, student: { ...d.student, photoUrl: photo } } : d
+                      )
+                    )
+                    .catch((e) =>
+                      alert(e instanceof Error ? e.message : "Could not save the photo.")
+                    );
+                }}
+              />
+              <p className="mt-2 text-xs text-slate-400">
+                With a parent&apos;s okay — shown on the student&apos;s dashboard instead of the emoji avatar.
+              </p>
+            </Panel>
+
             {/* Meta */}
             <div className="flex flex-wrap items-center gap-1.5">
               {data.classrooms.map((c) => (
@@ -332,7 +362,7 @@ export function StudentsView({ user }: { user: AuthUser }) {
                       >
                         <td className="px-4 py-2.5">
                           <span className="flex items-center gap-2">
-                            <Avatar avatar={s.avatar} color={s.avatarColor} size="xs" />
+                            <Avatar avatar={s.avatar} color={s.avatarColor} photoUrl={s.photoUrl} size="xs" />
                             <span className="font-semibold">{s.name}</span>
                           </span>
                         </td>

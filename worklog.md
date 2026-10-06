@@ -440,3 +440,22 @@ Work Log:
 
 Stage Summary:
 - BrightMinds now runs entirely on Supabase Postgres: 13 tables, RLS hardened, connected teacher→student→parent loop live (classrooms, assignments, results, notifications). Remaining known TODOs: deploy to a host near us-west-2 (pooler latency from the distant sandbox is high but functional); rotate the PAT/service_role/password shared in chat.
+
+---
+Task ID: 15
+Agent: orchestrator (Z.ai Code)
+Task: Replace the dashboard cat with the student's chosen avatar/photo; add photo uploads for students (by parent/teacher/self) and for parent/teacher own profiles.
+
+Work Log:
+- Prisma: added photoUrl (String, default "") to User and Student; db push on Supabase Postgres; client regenerated; dev server restarted with env-sourced launch.
+- Created Supabase Storage bucket "avatars" (public read, 2MB limit) via service_role REST.
+- New route POST /api/upload/avatar (multipart): validates jpeg/png/webp + 2MB, permission matrix enforced server-side (user→self; student→ self STUDENT | own child PARENT | seated student TEACHER | ADMIN), uploads to fixed path students/<id>.jpg or users/<id>.jpg with x-upsert (no orphans), returns cache-busted public URL.
+- New route PATCH /api/auth/profile (own name + photoUrl, URL restricted to the app's avatars bucket).
+- Extended PATCH/GET payloads with photoUrl: /api/students, /api/parent/children (+[childId]), /api/teacher/students/[id] (+new PATCH), /api/teacher/classrooms (+detail), seatsForTeacher mapping + SeatWithStudent type, /api/student/bootstrap, /api/auth/me, /api/auth/student-login, /api/parent/overview, /api/parent/report.
+- shared/avatar.tsx: Avatar now renders photo (photoUrl) over emoji with new hero size; uploadAvatarPhoto() client helper (canvas center-crop 256px JPEG q0.85 → multipart POST); AvatarPhotoEditor (preview + Add/Change/Remove buttons, busy state).
+- UI: dashboard hero shows photo ?? emoji avatar ?? mascot fallback (student-app now passes full profile incl. photoUrl — found via browser check that it stripped fields); student settings dialog gains photo editor; parent My Children edit dialog gains per-child photo editor + PATCH; parent Settings gains own profile card (photo + name via /api/auth/profile, store kept in sync); teacher Settings gains own-photo editor; teacher Students profile dialog gains photo panel with PATCH; all Avatar call sites across parent/teacher/learning pass photoUrl.
+- Browser E2E: parent dashboard shows Alex's uploaded photo; student dashboard hero shows the photo instead of the cat; teacher uploaded own photo through the REAL file input (canvas resize → storage → profile PATCH → UI updated); teacher student dialog shows Aisha's photo panel + photo; permission matrix curl-verified (teacher own student 200, unknown student 404, non-bucket URL rejected 400, parent own child 200).
+- tsc + lint clean for project scope; dev.log clean.
+
+Stage Summary:
+- Profiles now photo-capable end-to-end on Supabase Storage: student hero replaces the cat with the picked avatar/photo; parents & teachers can upload photos for their students and themselves; every surface (student settings, parent children/settings, teacher students/settings, headers, dashboards, reports) renders the photo with emoji fallback. Secrets rotation reminder still stands.

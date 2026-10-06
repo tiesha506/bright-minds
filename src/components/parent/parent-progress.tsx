@@ -111,7 +111,7 @@ export function ChildSwitcher({
         {kids.map((k) => (
           <SelectItem key={k.id} value={k.id}>
             <span className="flex items-center gap-2">
-              <Avatar avatar={k.avatar} color={k.avatarColor} size="xs" />
+              <Avatar avatar={k.avatar} color={k.avatarColor} photoUrl={k.photoUrl} size="xs" />
               {k.name}
             </span>
           </SelectItem>

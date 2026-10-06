@@ -33,7 +33,7 @@ export function ReportView({ data }: { data: ReportResponse }) {
       {/* ----------------------------- header ------------------------------ */}
       <div className="flex flex-wrap items-center justify-between gap-4 border-b pb-5">
         <div className="flex items-center gap-3">
-          <Avatar avatar={profile.avatar} color={profile.avatarColor} size="lg" />
+          <Avatar avatar={profile.avatar} color={profile.avatarColor} photoUrl={profile.photoUrl} size="lg" />
           <div>
             <h2 className="text-xl font-extrabold tracking-tight sm:text-2xl">
               {profile.name} — Learning Report

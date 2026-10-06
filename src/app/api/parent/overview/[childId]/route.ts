@@ -201,6 +201,7 @@ export async function GET(req: Request, ctx: RouteContext) {
         ageGroup: child.ageGroup,
         avatar: child.avatar,
         avatarColor: child.avatarColor,
+        photoUrl: child.photoUrl,
         xp: child.xp,
       },
       goal,

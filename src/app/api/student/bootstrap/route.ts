@@ -38,6 +38,7 @@ export async function GET(req: Request) {
       ageGroup: student.ageGroup,
       avatar: student.avatar,
       avatarColor: student.avatarColor,
+      photoUrl: student.photoUrl,
       xp: student.xp,
     },
     progress: student.progress.map((p) => ({

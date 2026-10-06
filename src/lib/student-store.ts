@@ -15,6 +15,8 @@ export interface StudentProfile {
   ageGroup: AgeGroup;
   /** Emoji avatar chosen by the student (see shared/avatar). */
   avatar?: string;
+  /** Profile photo URL (Supabase Storage) — wins over the emoji when set. */
+  photoUrl?: string;
   /** Avatar bubble colour key. */
   avatarColor?: string;
   /** Accessibility: preferred base text size. */

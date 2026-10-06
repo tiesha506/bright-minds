@@ -34,6 +34,7 @@ function buildSummary(
     ageGroup: string;
     avatar: string;
     avatarColor: string;
+    photoUrl: string;
     theme: string;
     xp: number;
     loginCode: string | null;
@@ -76,6 +77,7 @@ function buildSummary(
     ageGroup: student.ageGroup,
     avatar: student.avatar,
     avatarColor: student.avatarColor,
+    photoUrl: student.photoUrl,
     theme: student.theme,
     xp: student.xp,
     loginCode: student.loginCode,

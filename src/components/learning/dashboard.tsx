@@ -15,12 +15,20 @@ import { cn } from "@/lib/utils";
 import { AGE_GROUPS, groupStyle } from "@/lib/learning-config";
 import { subjects, totalLessonsFor, getDailyChallenge } from "@/lib/content";
 import type { AgeGroup } from "@/lib/content/types";
+import { Avatar } from "@/components/shared/avatar";
 import type { LessonProgress } from "@/lib/student-store";
 import { levelFromXp } from "@/lib/student-store";
 import { evaluateAchievements, ACHIEVEMENTS } from "@/lib/achievements";
 
 interface DashboardProps {
-  profile: { name: string; ageGroup: AgeGroup; age: number };
+  profile: {
+    name: string;
+    ageGroup: AgeGroup;
+    age: number;
+    avatar?: string;
+    avatarColor?: string;
+    photoUrl?: string;
+  };
   xp: number;
   progress: Record<string, LessonProgress>;
   onOpenSubject: (subjectId: string) => void;
@@ -81,9 +89,21 @@ export function Dashboard({
         <div className="absolute right-10 bottom-[-30px] w-24 h-24 rounded-full bg-white/10" aria-hidden />
         <div className="relative flex flex-col sm:flex-row sm:items-center gap-5">
           {(style.showMascotEverywhere || true) && (
-            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white/20 border-4 border-white/40 overflow-hidden shrink-0 mx-auto sm:mx-0">
-              { }
-              <img src="/images/mascot.png" alt="Your learning buddy" className="w-full h-full object-cover" />
+            <div className="mx-auto shrink-0 sm:mx-0">
+              {profile.photoUrl || profile.avatar ? (
+                <Avatar
+                  avatar={profile.avatar}
+                  color={profile.avatarColor}
+                  photoUrl={profile.photoUrl}
+                  name={profile.name}
+                  size="hero"
+                  className="ring-4 ring-white/40"
+                />
+              ) : (
+                <div className="h-20 w-20 sm:h-24 sm:w-24 rounded-full bg-white/20 border-4 border-white/40 overflow-hidden">
+                  <img src="/images/mascot.png" alt="Your learning buddy" className="w-full h-full object-cover" />
+                </div>
+              )}
             </div>
           )}
           <div className="flex-1 text-center sm:text-left">

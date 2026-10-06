@@ -10,6 +10,8 @@ export interface AuthUser {
   email: string;
   name: string;
   role: Role;
+  /** Profile photo URL (Supabase Storage) — parents/teachers can upload one. */
+  photoUrl?: string;
 }
 
 /** When role === STUDENT, the child's server profile rides along so the
@@ -22,6 +24,7 @@ export interface AuthStudent {
   ageGroup: string;
   avatar?: string;
   avatarColor?: string;
+  photoUrl?: string;
   xp?: number;
 }
 

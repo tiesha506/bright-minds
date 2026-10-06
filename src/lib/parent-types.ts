@@ -11,6 +11,7 @@ export interface ChildSummary {
   ageGroup: string; // early | primary | intermediate | teen
   avatar: string;
   avatarColor: string;
+  photoUrl: string;
   theme: string; // pink | blue | neutral
   xp: number;
   /** Parents need these to set the child's device up. */
@@ -104,6 +105,7 @@ export interface OverviewResponse {
     ageGroup: string;
     avatar: string;
     avatarColor: string;
+    photoUrl: string;
     xp: number;
   };
   goal: GoalData;
@@ -152,6 +154,7 @@ export interface ReportResponse {
     ageGroup: string;
     avatar: string;
     avatarColor: string;
+    photoUrl: string;
   };
   range: "week" | "month";
   /** Inclusive range the report covers (YYYY-MM-DD). */
@@ -181,6 +184,7 @@ export interface UpdateChildInput {
   age?: number;
   avatar?: string;
   avatarColor?: string;
+  photoUrl?: string | null;
   theme?: string;
   goal?: {
     dailyMinutes?: number;

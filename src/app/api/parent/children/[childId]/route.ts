@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { cleanPhotoUrl } from "@/lib/server/photo";
 import {
   AVATAR_COLOR_KEYS,
   THEME_IDS,
@@ -38,6 +39,7 @@ export async function PATCH(req: Request, ctx: RouteContext) {
       avatar?: string;
       avatarColor?: string;
       theme?: string;
+      photoUrl?: string;
     } = {};
 
     if (body?.name !== undefined) {
@@ -68,6 +70,13 @@ export async function PATCH(req: Request, ctx: RouteContext) {
         return Response.json({ error: "Invalid colour." }, { status: 400 });
       }
       data.avatarColor = color;
+    }
+    if (body?.photoUrl !== undefined) {
+      const photo = cleanPhotoUrl(body.photoUrl, process.env.NEXT_PUBLIC_SUPABASE_URL);
+      if (photo === null) {
+        return Response.json({ error: "Invalid photo." }, { status: 400 });
+      }
+      data.photoUrl = photo;
     }
     if (body?.theme !== undefined) {
       const theme = cleanEnum(body.theme, THEME_IDS);
@@ -146,6 +155,7 @@ export async function PATCH(req: Request, ctx: RouteContext) {
         ageGroup: updated.ageGroup,
         avatar: updated.avatar,
         avatarColor: updated.avatarColor,
+        photoUrl: updated.photoUrl,
         theme: updated.theme,
       },
     });

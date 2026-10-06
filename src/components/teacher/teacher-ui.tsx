@@ -408,7 +408,7 @@ export function AssignDialog({
                         })
                       }
                     />
-                    <Avatar avatar={s.avatar} color={s.avatarColor} size="xs" />
+                    <Avatar avatar={s.avatar} color={s.avatarColor} photoUrl={s.photoUrl} size="xs" />
                     <span className="flex-1 truncate font-medium">{s.name}</span>
                     {s.groupName && (
                       <span className="text-xs text-slate-400">Group {s.groupName}</span>

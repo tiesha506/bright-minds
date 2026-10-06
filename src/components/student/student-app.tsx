@@ -109,6 +109,7 @@ export function StudentApp() {
         ageGroup: string;
         avatar: string;
         avatarColor: string;
+        photoUrl?: string;
         xp: number;
       };
       progress: {
@@ -128,6 +129,7 @@ export function StudentApp() {
             ageGroup: data.student.ageGroup as AgeGroup,
             avatar: data.student.avatar || authStudent.avatar,
             avatarColor: data.student.avatarColor || authStudent.avatarColor,
+            photoUrl: data.student.photoUrl ?? authStudent.photoUrl ?? undefined,
           },
           data.progress,
           data.student.xp
@@ -281,7 +283,14 @@ export function StudentApp() {
           {view.name === "dashboard" && (
             <div className="space-y-6">
               <Dashboard
-                profile={{ name: profile.name, ageGroup: profile.ageGroup, age: profile.age }}
+                profile={{
+                  name: profile.name,
+                  ageGroup: profile.ageGroup,
+                  age: profile.age,
+                  avatar: profile.avatar,
+                  avatarColor: profile.avatarColor,
+                  photoUrl: profile.photoUrl,
+                }}
                 xp={xp}
                 progress={progress}
                 onOpenSubject={(subjectId) => setView({ name: "subject", subjectId })}
@@ -410,7 +419,7 @@ export function StudentApp() {
           onOpenChange={setSettingsOpen}
           profile={profile}
           onSave={(partial) => {
-            updateProfile(partial);
+            updateProfile({ ...partial, photoUrl: partial.photoUrl ?? undefined });
             toast({
               title: "Settings saved ✅",
               description: "Your learning space has been updated.",

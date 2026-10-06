@@ -15,6 +15,7 @@ export async function GET(req: Request) {
         age: true,
         avatar: true,
         avatarColor: true,
+        photoUrl: true,
         ageGroup: true,
       },
       orderBy: { createdAt: "asc" },

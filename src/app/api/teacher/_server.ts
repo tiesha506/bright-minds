@@ -127,6 +127,7 @@ export interface SeatWithStudent {
     ageGroup: string;
     avatar: string;
     avatarColor: string;
+    photoUrl: string;
     loginCode: string | null;
   };
   classroomId: string;
@@ -149,6 +150,7 @@ export async function seatsForTeacher(teacherId: string): Promise<SeatWithStuden
       ageGroup: s.student.ageGroup,
       avatar: s.student.avatar,
       avatarColor: s.student.avatarColor,
+      photoUrl: s.student.photoUrl,
       loginCode: s.student.loginCode,
     },
     classroomId: s.classroom.id,

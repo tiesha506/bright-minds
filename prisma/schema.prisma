@@ -18,6 +18,8 @@ model User {
   name         String
   /// "STUDENT" | "PARENT" | "TEACHER" | "ADMIN"
   role         String
+  /// Public URL of the profile photo in Supabase Storage. Empty = none.
+  photoUrl     String         @default("")
   createdAt    DateTime       @default(now())
   sessions     Session[]
   children     Student[]
@@ -47,6 +49,8 @@ model Student {
   worksheetsDone Int  @default(0)
   /// Emoji avatar chosen by the student (e.g. "🦊"). Empty = auto.
   avatar     String   @default("")
+  /// Public URL of the student's profile photo in Supabase Storage. Empty = none.
+  photoUrl   String   @default("")
   /// Avatar bubble colour key (rose|amber|emerald|teal|violet|orange).
   avatarColor String  @default("amber")
   /// 6-char login code for child accounts (e.g. "AXK-42Q"). Null for guests.

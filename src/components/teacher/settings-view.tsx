@@ -4,10 +4,12 @@
 // Settings — teacher info, classroom shortcuts, privacy note, sign out.
 // ---------------------------------------------------------------------------
 
+import { useState } from "react";
 import { LogOut, School, ShieldCheck } from "lucide-react";
 import { api } from "@/lib/api";
 import { useAuthStore } from "@/lib/auth-store";
 import type { AuthUser } from "@/lib/auth-store";
+import { AvatarPhotoEditor } from "@/components/shared/avatar";
 import {
   Loading,
   ErrorNote,
@@ -30,6 +32,28 @@ export function SettingsView({
     []
   );
 
+  const [photoUrl, setPhotoUrl] = useState<string | null>(user.photoUrl ?? null);
+  const [savingPhoto, setSavingPhoto] = useState(false);
+
+  async function savePhoto(url: string | null) {
+    setSavingPhoto(true);
+    try {
+      await api("/api/auth/profile", { method: "PATCH", body: { photoUrl: url } });
+      setPhotoUrl(url);
+      // Keep the session store in sync so headers pick the photo up.
+      const token = useAuthStore.getState().token;
+      if (token) {
+        useAuthStore
+          .getState()
+          .setSession({ ...user, photoUrl: url ?? undefined }, token);
+      }
+    } catch {
+      alert("Could not save your photo. Please try again.");
+    } finally {
+      setSavingPhoto(false);
+    }
+  }
+
   const signOut = async () => {
     try {
       await api("/api/auth/logout", { method: "POST" });
@@ -44,6 +68,17 @@ export function SettingsView({
       <PageHeader emoji="⚙️" title="Settings" subtitle="Your account, shortcuts and privacy." />
 
       <Panel title="Teacher information">
+        <div className="mb-4 flex items-center justify-between gap-3 rounded-lg border border-slate-200 bg-slate-50/60 px-3 py-3">
+          <AvatarPhotoEditor
+            targetType="user"
+            photoUrl={photoUrl}
+            name={user.name}
+            onChanged={savePhoto}
+          />
+          {savingPhoto && (
+            <span className="text-xs text-slate-400" role="status">Saving…</span>
+          )}
+        </div>
         <dl className="grid gap-3 sm:grid-cols-2">
           <div className="rounded-lg border border-slate-200 bg-slate-50/60 px-3 py-2">
             <dt className="text-[10px] font-bold uppercase tracking-wide text-slate-400">Name</dt>
@@ -63,8 +98,7 @@ export function SettingsView({
           </div>
         </dl>
         <p className="mt-2 text-xs text-slate-400">
-          Name and email are managed by your school&rsquo;s BrightMinds administrator and are
-          read-only here.
+          Email is managed by your school&rsquo;s BrightMinds administrator and is read-only here.
         </p>
       </Panel>
 

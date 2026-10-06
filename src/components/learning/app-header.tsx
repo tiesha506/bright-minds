@@ -106,7 +106,7 @@ export function AppHeader({
               className="font-bold text-lg leading-tight truncate flex items-center gap-1.5"
               style={{ fontFamily: "var(--font-fredoka)" }}
             >
-              <Avatar avatar={profile.avatar} color={profile.avatarColor} size="xs" />
+              <Avatar avatar={profile.avatar} color={profile.avatarColor} photoUrl={profile.photoUrl} size="xs" />
               BrightMinds
             </p>
             <p className="text-xs text-muted-foreground leading-tight truncate">

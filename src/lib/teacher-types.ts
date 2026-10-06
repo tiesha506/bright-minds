@@ -152,6 +152,7 @@ export interface RosterEntry {
   ageGroup: string;
   avatar: string;
   avatarColor: string;
+  photoUrl: string;
   loginCode: string | null;
   groupName: string;
   avg: number | null;
@@ -225,6 +226,7 @@ export interface TeacherStudentProfile {
     ageGroup: AgeGroup;
     avatar: string;
     avatarColor: string;
+    photoUrl: string;
     loginCode: string | null;
     worksheetsDone: number;
     xp: number;
