@@ -3,8 +3,10 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url               = env("DATABASE_URL")
+  // Session-mode connection used for migrations and db push (Supabase)
+  directUrl         = env("DIRECT_URL")
 }
 
 // ------------------------------- Accounts ---------------------------------
