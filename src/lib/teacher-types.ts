@@ -340,6 +340,7 @@ export type TeacherNavKey =
   | "classrooms"
   | "assignments"
   | "content"
+  | "upload"
   | "analytics"
   | "reading"
   | "helper"

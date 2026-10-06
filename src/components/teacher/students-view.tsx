@@ -10,6 +10,7 @@ import { api } from "@/lib/api";
 import type { AuthUser } from "@/lib/auth-store";
 import { Avatar, AvatarPhotoEditor } from "@/components/shared/avatar";
 import { BarRow, MiniBars, SparkLine, SUBJECT_COLORS } from "@/components/shared/charts";
+import { TeacherStatusPanel } from "@/components/teacher/status-panel";
 import {
   Loading,
   ErrorNote,
@@ -286,7 +287,6 @@ function StudentProfileDialog({
 }
 
 export function StudentsView({ user }: { user: AuthUser }) {
-  void user;
   const { data, error, loading } = useFetch<TeacherClassroomList>(
     () => api<TeacherClassroomList>("/api/teacher/classrooms"),
     []
@@ -307,12 +307,15 @@ export function StudentsView({ user }: { user: AuthUser }) {
   }, [data, query]);
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5" data-tour="students">
       <PageHeader
         emoji="👩‍🎓"
         title="Students"
         subtitle="Every student across your classrooms. Click a row for the full profile."
       />
+
+      {/* Live online/offline status for your students (auto-refreshes). */}
+      <TeacherStatusPanel user={user} />
 
       <div className="relative no-print">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" aria-hidden />

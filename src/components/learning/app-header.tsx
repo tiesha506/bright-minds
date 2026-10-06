@@ -18,6 +18,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
+  Award,
   ChevronUp,
   Flame,
   Home,
@@ -31,14 +32,19 @@ import {
   TrendingUp,
   BookOpen,
   Bot,
+  FileText,
   Zap,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { levelFromXp } from "@/lib/student-store";
 import { AGE_GROUPS } from "@/lib/learning-config";
 import { Avatar } from "@/components/shared/avatar";
+import { ThemeToggle } from "@/components/shared/theme-toggle";
+import { HelpButton } from "@/components/shared/howto-guides";
 import type { StudentProfile } from "@/lib/student-store";
 
+// Nav keys "reports" and "certificates" were added for the reports /
+// certificates sections (wired in student-app.tsx).
 export type NavKey =
   | "home"
   | "subjects"
@@ -47,7 +53,9 @@ export type NavKey =
   | "reading"
   | "helper"
   | "achievements"
-  | "progress";
+  | "progress"
+  | "reports"
+  | "certificates";
 
 const NAV_ITEMS: { key: NavKey; label: string; icon: React.ReactNode }[] = [
   { key: "home", label: "Home", icon: <Home className="w-4 h-4" /> },
@@ -58,7 +66,16 @@ const NAV_ITEMS: { key: NavKey; label: string; icon: React.ReactNode }[] = [
   { key: "helper", label: "Helper", icon: <Bot className="w-4 h-4" /> },
   { key: "achievements", label: "Achievements", icon: <Trophy className="w-4 h-4" /> },
   { key: "progress", label: "Progress", icon: <TrendingUp className="w-4 h-4" /> },
+  { key: "reports", label: "My Reports", icon: <FileText className="w-4 h-4" /> },
+  { key: "certificates", label: "Certificates", icon: <Award className="w-4 h-4" /> },
 ];
+
+/** Nav buttons the guided tour highlights (guided-tour data-tour keys). */
+const NAV_TOUR_KEY: Partial<Record<NavKey, string>> = {
+  subjects: "subjects",
+  progress: "progress",
+  certificates: "certificates",
+};
 
 interface AppHeaderProps {
   profile: StudentProfile;
@@ -115,25 +132,33 @@ export function AppHeader({
           </div>
         </button>
 
-        {/* Desktop nav */}
+        {/* Desktop nav — icon buttons (labels live in tooltips, aria-labels and
+            the mobile sheet; 10 labeled buttons would overflow the xl header). */}
         <nav aria-label="Main" className="hidden xl:flex items-center gap-0.5">
           {NAV_ITEMS.map((item) => (
             <Button
               key={item.key}
               variant={active === item.key ? "secondary" : "ghost"}
-              size="sm"
+              size="icon"
               onClick={go(item.key)}
-              className="rounded-full gap-1.5 font-semibold"
+              className="rounded-full"
+              aria-label={item.label}
+              title={item.label}
               aria-current={active === item.key ? "page" : undefined}
+              data-tour={NAV_TOUR_KEY[item.key]}
             >
               {item.icon}
-              <span>{item.label}</span>
             </Button>
           ))}
         </nav>
 
         {/* Right cluster */}
         <div className="flex items-center gap-1.5 sm:gap-2">
+          {/* Appearance + help — large screens (mobile uses the top strip in StudentApp). */}
+          <div className="hidden items-center gap-1.5 lg:flex no-print">
+            <HelpButton role="student" label="Help" />
+            <ThemeToggle />
+          </div>
           <Button
             variant="outline"
             size="icon"
@@ -194,6 +219,7 @@ export function AppHeader({
                     type="button"
                     onClick={go(item.key)}
                     aria-current={active === item.key ? "page" : undefined}
+                    data-tour={NAV_TOUR_KEY[item.key]}
                     className={cn(
                       "w-full flex items-center gap-3 rounded-xl px-3 py-3 text-left font-semibold transition-colors",
                       active === item.key

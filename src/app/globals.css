@@ -252,3 +252,96 @@
 .pb-safe {
   padding-bottom: max(1rem, env(safe-area-inset-bottom));
 }
+
+/* ===========================================================================
+   APPEARANCE MODES (Task 17-E) — appended, do not restructure above.
+   next-themes sets `class="dark"` or `class="eye-friendly"` on <html>.
+   The app shells also paint `.theme-pink/.theme-blue/.theme-neutral` on an
+   inner wrapper, so each mode below also re-declares variables at that level
+   (html.dark .theme-*) to make the global mode always win over inner accents.
+   =========================================================================== */
+
+/* ---------- Dark mode — warm charcoal, softened (no pure black, low glare) -- */
+html.dark,
+html.dark .theme-pink,
+html.dark .theme-blue,
+html.dark .theme-neutral {
+  --radius: 1rem;
+  --background: oklch(0.215 0.012 80);
+  --foreground: oklch(0.93 0.012 90);
+  --card: oklch(0.258 0.014 80);
+  --card-foreground: oklch(0.93 0.012 90);
+  --popover: oklch(0.258 0.014 80);
+  --popover-foreground: oklch(0.93 0.012 90);
+  --primary: oklch(0.74 0.1 172);
+  --primary-foreground: oklch(0.19 0.03 172);
+  --secondary: oklch(0.3 0.018 85);
+  --secondary-foreground: oklch(0.9 0.015 90);
+  --muted: oklch(0.28 0.014 80);
+  --muted-foreground: oklch(0.72 0.015 90);
+  --accent: oklch(0.32 0.028 145);
+  --accent-foreground: oklch(0.92 0.02 135);
+  --destructive: oklch(0.66 0.18 25);
+  --border: oklch(0.32 0.014 80);
+  --input: oklch(0.33 0.014 80);
+  --ring: oklch(0.56 0.07 172);
+  --chart-1: oklch(0.74 0.1 172);
+  --chart-2: oklch(0.72 0.12 60);
+  --chart-3: oklch(0.7 0.1 340);
+  --chart-4: oklch(0.68 0.09 140);
+  --chart-5: oklch(0.7 0.09 300);
+  --sidebar: oklch(0.24 0.013 80);
+  --sidebar-foreground: oklch(0.93 0.012 90);
+  --sidebar-primary: oklch(0.74 0.1 172);
+  --sidebar-primary-foreground: oklch(0.19 0.03 172);
+  --sidebar-accent: oklch(0.3 0.018 85);
+  --sidebar-accent-foreground: oklch(0.9 0.015 90);
+  --sidebar-border: oklch(0.32 0.014 80);
+  --sidebar-ring: oklch(0.56 0.07 172);
+}
+
+/* ---------- Eye-Friendly mode — soft cream + warm gray + gentle teal ---------
+   Low-glare reading mode: no pure white backgrounds, no neon, muted contrast. */
+html.eye-friendly,
+html.eye-friendly .theme-pink,
+html.eye-friendly .theme-blue,
+html.eye-friendly .theme-neutral,
+.theme-eye-friendly {
+  --radius: 1rem;
+  --background: oklch(0.967 0.016 85);        /* soft cream (#faf6ef-ish) */
+  --foreground: oklch(0.36 0.02 100);          /* warm gray, softened black */
+  --card: oklch(0.982 0.012 88);               /* slightly warm, never #fff */
+  --card-foreground: oklch(0.36 0.02 100);
+  --popover: oklch(0.982 0.012 88);
+  --popover-foreground: oklch(0.36 0.02 100);
+  --primary: oklch(0.56 0.085 165);            /* gentle teal/green */
+  --primary-foreground: oklch(0.98 0.012 165);
+  --secondary: oklch(0.925 0.028 130);         /* soft warm green */
+  --secondary-foreground: oklch(0.36 0.045 155);
+  --muted: oklch(0.935 0.018 100);             /* soft green-gray */
+  --muted-foreground: oklch(0.47 0.025 110);
+  --accent: oklch(0.915 0.038 120);            /* warm sage */
+  --accent-foreground: oklch(0.33 0.045 150);
+  --destructive: oklch(0.55 0.15 27);
+  --border: oklch(0.885 0.022 100);
+  --input: oklch(0.9 0.022 100);
+  --ring: oklch(0.6 0.07 165);
+  --chart-1: oklch(0.56 0.085 165);
+  --chart-2: oklch(0.68 0.09 85);
+  --chart-3: oklch(0.62 0.07 340);
+  --chart-4: oklch(0.55 0.07 140);
+  --chart-5: oklch(0.6 0.07 300);
+  --sidebar: oklch(0.96 0.016 85);
+  --sidebar-foreground: oklch(0.36 0.02 100);
+  --sidebar-primary: oklch(0.56 0.085 165);
+  --sidebar-primary-foreground: oklch(0.98 0.012 165);
+  --sidebar-accent: oklch(0.925 0.028 130);
+  --sidebar-accent-foreground: oklch(0.36 0.045 155);
+  --sidebar-border: oklch(0.885 0.022 100);
+  --sidebar-ring: oklch(0.6 0.07 165);
+}
+
+/* Eye-friendly images get a whisper of warmth so bright screenshots don't glare */
+html.eye-friendly img {
+  filter: sepia(0.06) saturate(0.94) brightness(0.99);
+}

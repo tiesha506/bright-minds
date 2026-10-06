@@ -25,12 +25,6 @@ export function PublicSite() {
   const [authDialog, setAuthDialog] = useState<"login" | "signup" | null>(null);
   const [signupRole, setSignupRole] = useState<"PARENT" | "TEACHER">("PARENT");
 
-  // Fire-and-forget, idempotent demo seeding so the "Try the demo" panel
-  // works the moment someone opens the login card.
-  useEffect(() => {
-    fetch("/api/auth/demo-seed", { method: "POST" }).catch(() => {});
-  }, []);
-
   const openLogin = useCallback(() => setAuthDialog("login"), []);
 
   const openSignup = useCallback((role: "PARENT" | "TEACHER" = "PARENT") => {

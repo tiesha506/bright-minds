@@ -48,6 +48,37 @@ type DeleteTarget =
   | { kind: "user"; id: string; name: string; extra: string }
   | { kind: "student"; id: string; name: string; extra: string };
 
+/** Online = lastSeenAt within the last 5 minutes (maintained by the auth layer). */
+function lastSeenLabel(iso: string | null): { online: boolean; text: string } {
+  if (!iso) return { online: false, text: "Never" };
+  const ts = new Date(iso).getTime();
+  if (Number.isNaN(ts)) return { online: false, text: "Never" };
+  const diff = Date.now() - ts;
+  if (diff < 5 * 60 * 1000) return { online: true, text: "Online" };
+  const mins = Math.floor(diff / 60000);
+  if (mins < 60) return { online: false, text: `${Math.max(1, mins)}m ago` };
+  const hours = Math.floor(mins / 60);
+  if (hours < 24) return { online: false, text: `${hours}h ago` };
+  const days = Math.floor(hours / 24);
+  if (days < 30) return { online: false, text: `${days}d ago` };
+  return { online: false, text: fmtDate(iso) };
+}
+
+function LastSeenCell({ iso }: { iso: string | null }) {
+  const { online, text } = lastSeenLabel(iso);
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      <span
+        aria-hidden
+        className={`h-2 w-2 rounded-full ${online ? "bg-emerald-500" : "bg-zinc-300"}`}
+      />
+      <span className={online ? "font-semibold text-emerald-700" : "text-zinc-500"}>
+        {text}
+      </span>
+    </span>
+  );
+}
+
 function TableSkeleton({ rows }: { rows: number }) {
   return (
     <div className="space-y-2 p-4">
@@ -268,6 +299,7 @@ export function UsersSection({ currentUser }: { currentUser: AuthUser }) {
                   <th className="px-4 py-3">Name</th>
                   <th className="px-4 py-3">Email</th>
                   <th className="px-4 py-3">Role</th>
+                  <th className="px-4 py-3">Last seen</th>
                   <th className="px-4 py-3">Joined</th>
                   <th className="px-4 py-3">Linked</th>
                   <th className="px-4 py-3 text-right">Actions</th>
@@ -289,6 +321,9 @@ export function UsersSection({ currentUser }: { currentUser: AuthUser }) {
                       <td className="px-4 py-2.5 text-zinc-600">{u.email}</td>
                       <td className="px-4 py-2.5">
                         <RoleBadge role={u.role} />
+                      </td>
+                      <td className="px-4 py-2.5">
+                        <LastSeenCell iso={u.lastSeenAt} />
                       </td>
                       <td className="px-4 py-2.5 text-zinc-500">{fmtDate(u.createdAt)}</td>
                       <td className="px-4 py-2.5 text-zinc-600">

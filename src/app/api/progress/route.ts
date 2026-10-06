@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getLesson } from "@/lib/content";
+import { ensureMilestoneCertificates } from "@/lib/server/certificates";
 
 /**
  * POST /api/progress — upsert a lesson progress entry and sync XP.
@@ -149,6 +150,10 @@ export async function POST(req: NextRequest) {
       // Progress is saved; connected side effects must never break the request.
       console.error("progress side-effects failed", sideEffectError);
     }
+
+    // Fire-and-forget: award any milestone certificates the student just earned
+    // (first assignment, worksheet counts, XP, reading) — never blocks the reply.
+    ensureMilestoneCertificates(studentId).catch(() => {});
 
     return NextResponse.json({ entry });
   } catch (err) {

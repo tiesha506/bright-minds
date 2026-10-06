@@ -89,7 +89,7 @@ export function AnalyticsView({ user }: { user: AuthUser }) {
   const o = overviewReq.data;
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5" data-tour="analytics">
       <PageHeader
         emoji="📊"
         title="Analytics"

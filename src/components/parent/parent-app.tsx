@@ -19,6 +19,11 @@ import { api } from "@/lib/api";
 import { useAuthStore, type AuthUser } from "@/lib/auth-store";
 import type { ChildSummary, NotificationItem, NotificationsResponse } from "@/lib/parent-types";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "@/components/shared/theme-toggle";
+import { HelpButton } from "@/components/shared/howto-guides";
+import { GuidedTour } from "@/components/shared/guided-tour";
+import { RemindersPanel } from "@/components/shared/reminders-panel";
+import { ParentReportsPanel } from "@/components/parent/reports-panel";
 import { ErrorState, PageSkeleton } from "./parent-ui";
 import { ParentDashboard } from "./parent-dashboard";
 import { ParentChildren } from "./parent-children";
@@ -192,6 +197,11 @@ export function ParentApp({ user }: { user: AuthUser }) {
               <p className="text-sm font-bold">{user.name}</p>
               <p className="text-xs text-muted-foreground">{user.email}</p>
             </div>
+            {/* Appearance + help — hidden on very small screens to keep the bar tidy. */}
+            <div className="hidden items-center gap-1.5 sm:flex no-print">
+              <HelpButton role="parent" />
+              <ThemeToggle />
+            </div>
             <Button
               variant="outline"
               onClick={signOut}
@@ -293,30 +303,42 @@ export function ParentApp({ user }: { user: AuthUser }) {
           ) : (
             <>
               {section === "dashboard" && (
-                <ParentDashboard child={selectedChild} onGo={go} />
+                <div className="space-y-6" data-tour="dashboard">
+                  <ParentDashboard child={selectedChild} onGo={go} />
+                  <RemindersPanel user={user} variant="pro" />
+                </div>
               )}
               {section === "children" && (
-                <ParentChildren
-                  kids={children ?? []}
-                  loading={childrenLoading}
-                  error={childrenError}
-                  onReload={loadChildren}
-                  onSelect={(id) => openChild(id, "dashboard")}
-                />
+                <div data-tour="children">
+                  <ParentChildren
+                    kids={children ?? []}
+                    loading={childrenLoading}
+                    error={childrenError}
+                    onReload={loadChildren}
+                    onSelect={(id) => openChild(id, "dashboard")}
+                  />
+                </div>
               )}
               {section === "progress" && (
-                <ChildProgressView
-                  kids={children ?? []}
-                  selectedChild={selectedChild}
-                  onSelect={(id) => setSelectedChildId(id)}
-                />
+                <div data-tour="progress">
+                  <ChildProgressView
+                    kids={children ?? []}
+                    selectedChild={selectedChild}
+                    onSelect={(id) => setSelectedChildId(id)}
+                  />
+                </div>
               )}
               {section === "reports" && (
-                <ParentReports
-                  kids={children ?? []}
-                  selectedChild={selectedChild}
-                  onSelect={(id) => setSelectedChildId(id)}
-                />
+                <div className="space-y-10" data-tour="reports">
+                  {/* Private report documents shared by the teacher. */}
+                  <ParentReportsPanel />
+                  {/* Printable learning summary. */}
+                  <ParentReports
+                    kids={children ?? []}
+                    selectedChild={selectedChild}
+                    onSelect={(id) => setSelectedChildId(id)}
+                  />
+                </div>
               )}
               {section === "goals" && (
                 <ParentGoals
@@ -337,12 +359,14 @@ export function ParentApp({ user }: { user: AuthUser }) {
                 />
               )}
               {section === "settings" && (
-                <ParentSettings
-                  user={user}
-                  kids={children ?? []}
-                  onSelectChild={(id) => openChild(id, "dashboard")}
-                  onSignOut={signOut}
-                />
+                <div data-tour="settings">
+                  <ParentSettings
+                    user={user}
+                    kids={children ?? []}
+                    onSelectChild={(id) => openChild(id, "dashboard")}
+                    onSignOut={signOut}
+                  />
+                </div>
               )}
             </>
           )}
@@ -381,6 +405,9 @@ export function ParentApp({ user }: { user: AuthUser }) {
           </p>
         </div>
       </footer>
+
+      {/* One-time guided tour (auto-plays once per parent). */}
+      <GuidedTour role="parent" userId={user.id} />
     </div>
   );
 }

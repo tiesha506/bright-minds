@@ -14,6 +14,10 @@ import { useAuthStore } from "@/lib/auth-store";
 import type { AuthUser } from "@/lib/auth-store";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { ThemeToggle } from "@/components/shared/theme-toggle";
+import { HelpButton } from "@/components/shared/howto-guides";
+import { GuidedTour } from "@/components/shared/guided-tour";
+import { ContentUploadView } from "@/components/teacher/content-upload-view";
 import type { TeacherNavKey } from "@/lib/teacher-types";
 import { DashboardView } from "@/components/teacher/dashboard-view";
 import { StudentsView } from "@/components/teacher/students-view";
@@ -32,12 +36,24 @@ const NAV: { key: TeacherNavKey; emoji: string; label: string }[] = [
   { key: "classrooms", emoji: "🏫", label: "Classrooms" },
   { key: "assignments", emoji: "📝", label: "Assignments" },
   { key: "content", emoji: "📚", label: "Content" },
+  { key: "upload", emoji: "📤", label: "Upload Content" },
   { key: "analytics", emoji: "📊", label: "Analytics" },
   { key: "reading", emoji: "📖", label: "Reading Support" },
   { key: "helper", emoji: "🤖", label: "Teacher Helper" },
   { key: "reports", emoji: "📄", label: "Reports" },
   { key: "settings", emoji: "⚙️", label: "Settings" },
 ];
+
+/** Nav buttons the guided tour highlights (guided-tour data-tour keys). */
+const NAV_TOUR_KEY: Partial<Record<TeacherNavKey, string>> = {
+  dashboard: "dashboard",
+  students: "students",
+  classrooms: "classrooms",
+  assignments: "assignments",
+  content: "content",
+  analytics: "analytics",
+  reports: "reports",
+};
 
 function NavButtons({
   active,
@@ -59,6 +75,7 @@ function NavButtons({
             onAfterNavigate?.();
           }}
           aria-current={active === item.key ? "page" : undefined}
+          data-tour={NAV_TOUR_KEY[item.key]}
           className={cn(
             "flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors",
             active === item.key
@@ -129,6 +146,11 @@ export function TeacherApp({ user }: { user: AuthUser }) {
           <span className="hidden truncate text-sm font-semibold text-slate-700 sm:inline">
             {user.name}
           </span>
+          {/* Appearance + help — hidden on very small screens to keep the bar tidy. */}
+          <div className="hidden items-center gap-1.5 sm:flex no-print">
+            <ThemeToggle />
+            <HelpButton role="teacher" />
+          </div>
           <Button
             variant="outline"
             size="sm"
@@ -155,6 +177,7 @@ export function TeacherApp({ user }: { user: AuthUser }) {
             {active === "classrooms" && <ClassroomsView user={user} />}
             {active === "assignments" && <AssignmentsView user={user} />}
             {active === "content" && <ContentView user={user} />}
+            {active === "upload" && <ContentUploadView user={user} />}
             {active === "analytics" && <AnalyticsView user={user} />}
             {active === "reading" && <ReadingSupportView user={user} />}
             {active === "helper" && <HelperView user={user} />}
@@ -163,6 +186,9 @@ export function TeacherApp({ user }: { user: AuthUser }) {
           </div>
         </main>
       </div>
+
+      {/* One-time guided tour (auto-plays once per teacher). */}
+      <GuidedTour role="teacher" userId={user.id} />
 
       {/* ------------------------- Sticky footer --------------------------- */}
       <footer className="mt-auto border-t border-slate-200 bg-white pb-safe no-print">

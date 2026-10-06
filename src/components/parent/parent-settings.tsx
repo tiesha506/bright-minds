@@ -14,6 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarPhotoEditor } from "@/components/shared/avatar";
+import { AppearanceSettings } from "@/components/shared/appearance-settings";
 import { api } from "@/lib/api";
 import { useAuthStore } from "@/lib/auth-store";
 import { useToast } from "@/hooks/use-toast";
@@ -172,6 +173,9 @@ export function ParentSettings({
           </CardContent>
         </Card>
       </div>
+
+      {/* Appearance — Light / Dark / Eye-Friendly for this device. */}
+      <AppearanceSettings />
 
       {/* ---------------------------- privacy ----------------------------- */}
       <Card className="rounded-2xl border-emerald-200 bg-emerald-50/60">

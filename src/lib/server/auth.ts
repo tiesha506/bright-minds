@@ -50,6 +50,17 @@ export async function getSessionUser(req: Request): Promise<SessionUser | null> 
     include: { user: true },
   });
   if (!session) return null;
+
+  // Heartbeat for real online/offline status — fire-and-forget, throttled to
+  // once per minute per user to avoid a write on every single request.
+  const now = Date.now();
+  const last = session.user.lastSeenAt?.getTime() ?? 0;
+  if (now - last > 60_000) {
+    db.user
+      .update({ where: { id: session.user.id }, data: { lastSeenAt: new Date() } })
+      .catch(() => {});
+  }
+
   return {
     id: session.user.id,
     email: session.user.email,

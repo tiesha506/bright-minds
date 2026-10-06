@@ -447,7 +447,7 @@ export function AssignmentsView({ user }: { user: AuthUser }) {
   const [created, setCreated] = useState(0);
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5" data-tour="assignments">
       <PageHeader
         emoji="📝"
         title="Assignments"

@@ -3,13 +3,11 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
 import {
-  ChevronDown,
   GraduationCap,
   HeartHandshake,
   Loader2,
   LogIn,
   UserPlus,
-  Wand2,
 } from "lucide-react";
 import { api } from "@/lib/api";
 import { useAuthStore, type AuthStudent, type AuthUser } from "@/lib/auth-store";
@@ -17,11 +15,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
 import {
   Dialog,
   DialogContent,
@@ -58,117 +51,6 @@ function ErrorText({ children }: { children: string }) {
     <p role="alert" className="text-sm font-medium text-rose-600">
       {children}
     </p>
-  );
-}
-
-/* ------------------------------ DEMO PANEL ------------------------------ */
-
-const DEMO_EMAIL_ROWS = [
-  {
-    emoji: "👨‍👩‍👧",
-    role: "Parent",
-    creds: "parent@demo.com · demo1234",
-    email: "parent@demo.com",
-    password: "demo1234",
-  },
-  {
-    emoji: "🍎",
-    role: "Teacher",
-    creds: "teacher@demo.com · demo1234",
-    email: "teacher@demo.com",
-    password: "demo1234",
-  },
-  {
-    emoji: "🛠️",
-    role: "Admin",
-    creds: "admin@brightminds.app · admin1234",
-    email: "admin@brightminds.app",
-    password: "admin1234",
-  },
-];
-
-/** Collapsible "Try the demo" panel with one-click form fillers. */
-function DemoPanel({
-  onFillEmail,
-  onFillStudent,
-}: {
-  onFillEmail: (email: string, password: string) => void;
-  onFillStudent: () => void;
-}) {
-  const [open, setOpen] = useState(false);
-  return (
-    <Collapsible open={open} onOpenChange={setOpen}>
-      <div className="rounded-2xl border border-amber-200 bg-amber-50/70">
-        <CollapsibleTrigger asChild>
-          <button
-            type="button"
-            className="flex w-full items-center justify-between px-4 py-3 text-left text-sm font-semibold text-amber-900"
-            aria-expanded={open}
-          >
-            <span className="flex items-center gap-2">
-              <Wand2 className="h-4 w-4" aria-hidden />
-              Try the demo
-              <span className="font-normal text-amber-700">
-                — one click, fully seeded accounts
-              </span>
-            </span>
-            <ChevronDown
-              aria-hidden
-              className={cn("h-4 w-4 shrink-0 transition-transform", open && "rotate-180")}
-            />
-          </button>
-        </CollapsibleTrigger>
-        <CollapsibleContent>
-          <ul className="space-y-1.5 px-3 pb-3">
-            {DEMO_EMAIL_ROWS.map((row) => (
-              <li
-                key={row.role}
-                className="flex items-center justify-between gap-2 rounded-xl bg-white/80 px-3 py-2"
-              >
-                <div className="min-w-0 text-xs">
-                  <p className="font-bold text-neutral-900">
-                    <span aria-hidden className="mr-1">{row.emoji}</span>
-                    {row.role}
-                  </p>
-                  <p className="truncate font-mono text-[11px] text-neutral-500">
-                    {row.creds}
-                  </p>
-                </div>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  className="h-7 shrink-0 rounded-full px-3 text-xs"
-                  onClick={() => onFillEmail(row.email, row.password)}
-                >
-                  Fill
-                </Button>
-              </li>
-            ))}
-            <li className="flex items-center justify-between gap-2 rounded-xl bg-white/80 px-3 py-2">
-              <div className="min-w-0 text-xs">
-                <p className="font-bold text-neutral-900">
-                  <span aria-hidden className="mr-1">🦊</span>
-                  Student (Alex)
-                </p>
-                <p className="truncate font-mono text-[11px] text-neutral-500">
-                  code DEMO-2026 · PIN 8246
-                </p>
-              </div>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                className="h-7 shrink-0 rounded-full px-3 text-xs"
-                onClick={onFillStudent}
-              >
-                Fill
-              </Button>
-            </li>
-          </ul>
-        </CollapsibleContent>
-      </div>
-    </Collapsible>
   );
 }
 
@@ -251,20 +133,6 @@ export function LoginDialog({
     }
   }
 
-  function fillEmail(demoEmail: string, demoPassword: string) {
-    setTab("email");
-    setEmail(demoEmail);
-    setPassword(demoPassword);
-    setEmailError(null);
-  }
-
-  function fillStudent() {
-    setTab("student");
-    setCode("DEMO-2026");
-    setPin("8246");
-    setStudentError(null);
-  }
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="rounded-3xl border-neutral-200 p-6 sm:max-w-md">
@@ -300,8 +168,9 @@ export function LoginDialog({
                 <Label htmlFor="login-email">Email</Label>
                 <Input
                   id="login-email"
-                  type="email"
-                  autoComplete="email"
+                  type="text"
+                  inputMode="email"
+                  autoComplete="username"
                   placeholder="you@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -383,8 +252,6 @@ export function LoginDialog({
             </form>
           </TabsContent>
         </Tabs>
-
-        <DemoPanel onFillEmail={fillEmail} onFillStudent={fillStudent} />
 
         <p className="text-center text-sm text-neutral-500">
           New to BrightMinds?{" "}

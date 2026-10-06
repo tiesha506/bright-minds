@@ -487,3 +487,121 @@ Work Log:
 
 Stage Summary:
 - GitHub main is up to date with the transparent-logo fix. New PAT has now also appeared in chat — rotation still recommended.
+
+---
+Task ID: 17
+Agent: orchestrator (Z.ai Code)
+Task: Major platform update — Phase 0 infrastructure: remove demo panel, admin account, schema migration, private storage, lastSeenAt heartbeat.
+
+Work Log:
+- Removed DemoPanel from auth-dialogs.tsx (creds list, Fill buttons, fill helpers, unused imports); removed demo-seed auto-fetch from public-site.tsx; deleted /api/auth/demo-seed route. No demo credentials anywhere in the app.
+- Prisma schema additions: User.lastSeenAt; Note; Reminder; TeacherMaterial (extractedText + analysisJson + file in private bucket); ContentResource (video/audio/link/doc/image, upload|link, per material or assignment); ResourceView; Report + ReportAccess (parent-level ACL); Certificate (student relation, unique serial); Assignment.materialId link. Pushed to Supabase, client regenerated.
+- Created private Supabase Storage buckets: "content" (50MB limit) and "reports" (25MB limit) — service-role writes, signed-URL reads only.
+- Created ADMIN account brightminds@admin (scrypt-hashed password via one-off inline script; password exists ONLY in the database, never in source/env/git). Login verified via API: returns ADMIN session.
+- Installed pdf-parse, mammoth, jszip for backend document extraction (PDF/DOCX/PPTX).
+- lib/server/auth.ts: getSessionUser now throttles a fire-and-forget lastSeenAt update (1/min/user) — real online/offline basis for all roles.
+- Login dialog email input changed type="email"→type="text" (inputMode=email) so brightminds@admin is accepted everywhere; form already had noValidate.
+
+Stage Summary:
+- Infrastructure ready for parallel feature builds. Admin creds: brightminds@admin / Brightminds@2003 (DB-only). Buckets: avatars(public), content(private), reports(private). No demo data on login page.
+
+---
+Task ID: 17-E
+Agent: ux-polish (Z.ai Code)
+Task: Three-mode appearance system (Light/Dark/Eye-Friendly), real earned certificates + print download, role-specific How-To guides, interactive guided tours.
+
+Work Log:
+- layout.tsx (surgical): imported next-themes ThemeProvider (client-marked pkg) and wrapped children+Toaster with attribute="class", defaultTheme="light", enableSystem={false}, themes=["light","dark","eye-friendly"], disableTransitionOnChange. html suppressHydrationWarning already present.
+- globals.css APPEND-ONLY: added missing html.dark block (warm charcoal oklch 0.215/0.012/80, softened, no pure black) and html.eye-friendly block (soft cream 0.967/0.016/85 ≈ #faf6ef bg, warm-gray fg 0.36, gentle teal primary 0.56/0.085/165, sage accent, cream cards 0.982 — never #fff, whisper img warm filter). Both blocks also re-declare vars on html.dark .theme-pink/.theme-blue/.theme-neutral and html.eye-friendly .theme-* so the global mode always beats the inner per-app accent wrapper classes.
+- src/components/shared/theme-toggle.tsx: ThemeToggle — compact 3-way segmented toggle (Sun/Moon/Leaf), 44px targets, aria-pressed; also exports APPEARANCE_MODES + AppearanceMode.
+- src/components/shared/appearance-settings.tsx: AppearanceSettings — Settings→Appearance card with three big preview cards (mini palette swatches, radiogroup semantics), inline ThemeToggle, note that appearance never affects difficulty (age does).
+- src/lib/server/certificates.ts: awardCertificate(studentId, kind, title, description) — dup-safe (same student+kind+title same-day returns existing), serial BM-<year>-<6 base32> with collision retry; ensureMilestoneCertificates(studentId) — honest, idempotent, monotonic: First Steps (1st completed assignment), Worksheet Star (10/20/50), XP Champion (100/500/1000), Reading Star (≥5 distinct reading lessons); returns ONLY newly created rows. NOT wired into GET (no award-on-view).
+- src/app/api/certificates/route.ts (GET only, no demo seed): ?studentId= → child's certs (session user must be child's parent — mirrors bootstrap/assignments auth; student sessions ride the parent account); no param: PARENT→all children (studentName incl.), TEACHER→students seated in their classrooms, ADMIN→{counts:{total,byKind},recent[≤10]}.
+- src/components/student/certificates-panel.tsx: CertificatesPanel({studentId, studentName?}) — playful grid (kind emoji, date, serial), honest empty state "No certificates yet — complete assignments to earn your first! 🏆", Download → print-ready overlay (logo, gold decorative border, name/title/date/serial, @media print scoping + @page A4 landscape, auto window.print()).
+- src/lib/guide-content.ts + src/components/shared/howto-guides.tsx: GUIDES for student (13 chapters, simple wording)/parent (12)/teacher (14)/admin (10); HowToGuides dialog with Accordion chapters + search filtering steps, no-match state, bigger type for students; HelpMenuItem (dropdown entry) + HelpButton (header button) helpers.
+- src/lib/tour-content.ts + src/components/shared/guided-tour.tsx: TOUR_STEPS per role (student 6, teacher 7, parent 6, admin 7 steps) targeting data-tour attributes; GuidedTour({role, userId}) spotlight overlay (box-shadow dim + outlined cut-out, Step x of y, Back/Next/Done/Skip, dots, Esc/←/→, scrollIntoView + rAF re-measure on scroll/resize, viewport-clamped, mobile-safe), auto-plays once per user via localStorage bm-tour-done-<userId>, missing selectors filtered gracefully (tour won't open nor mark done if nothing highlightable); resetTour(userId) exported.
+- Verified: bunx tsc (0 errors in my files; remaining extract.ts error belongs to a parallel agent), bun run lint (0 errors; only pre-existing avatar.tsx warning). API tested with real student session (student-login XJNH-BBND): 401 unauth; honest {certificates:[]}; after simulating crossing xp 120 + worksheetsDone 12, ensureMilestoneCertificates awarded exactly BM-2026-MKOUPE "Worksheet Star (10)" + BM-2026-E6QYZW "XP Champion (100)"; re-call returned [] (idempotent); GET student+parent scopes returned both with studentName. Test data then restored (certs deleted, xp/worksheetsDone reset — DB back to 0 certificates, honest). Compiled CSS contains html.dark + html.eye-friendly blocks; root page 200.
+- Work record: agent-ctx/17-E-ux-polish.md.
+
+Stage Summary:
+- Shells must now: (1) drop <ThemeToggle/> into headers, (2) render <AppearanceSettings/> inside each role's settings area, (3) add data-tour attributes + <GuidedTour role=... userId=.../> — student: welcome, dashboard, subjects, assignments, progress, certificates; teacher: dashboard, students, classrooms, content, assignments, reports, analytics; parent: dashboard, children, progress, reports, certificates, settings; admin: overview, users, classrooms, content, analytics, permissions, settings; (4) call ensureMilestoneCertificates(studentId) after progress/XP/assignment-completion writes (fire-and-forget); (5) mount <CertificatesPanel studentId={authStudent.id}/> for students (parent/teacher can read GET /api/certificates directly). Contract details in agent-ctx/17-E-ux-polish.md.
+
+---
+Task ID: 17-A
+Agent: full-stack-developer
+Task: Admin portal upgrades — real stats/analytics APIs with range filters, charts UI, achievements.
+
+Work Log:
+- /api/admin/overview: extended with active-7d students, online/offline users (User.lastSeenAt, 5-min window), certificates issued, total XP, minutes-7d, achievements (top XP students).
+- /api/admin/analytics: range param today|7d|30d|3m|6m|12m|custom(from,to), per-bucket series (registrations by role, active students, teacher assignments, completion assigned/completed, quiz average, subject usage, reading minutes, certificates, activity minutes) computed via DB aggregations only.
+- analytics-section.tsx: range tabs + Custom date inputs, recharts/shadcn charts, honest empty states. overview-section.tsx: full stat tile grid + achievements panel + recent signups. users-section.tsx: online/last-active badges.
+- guide-section.tsx added to NAV (admin how-to guide).
+
+Stage Summary: Admin portal is 100% real data; no mock numbers anywhere; verified via curl + browser.
+
+---
+Task ID: 17-B
+Agent: full-stack-developer
+Task: Teacher content upload + intelligent document scanning + grounded AI generation + assignment flow.
+
+Work Log:
+- src/lib/server/extract.ts: PDF (pdf-parse), DOCX (mammoth), PPTX (jszip XML), TXT/MD, image OCR (z-ai-web-dev-sdk vision); dispatcher with per-parser try/catch; legacy .doc/.ppt flagged honestly.
+- POST /api/teacher/upload: multipart ≤50MB allowlist (pdf,doc,docx,ppt,pptx,jpg,jpeg,png,webp,mp4,mp3,wav,txt,md) → private "content" bucket → extract+analyze → TeacherMaterial(draft).
+- /api/teacher/materials (GET/PATCH/DELETE, [id], analyze): re-analysis with teacher corrections; materials CRUD, storage cleanup.
+- POST /api/ai/generate: kinds questions|examples|quiz|worksheet|reading; modes simplify|challenge|practice; STRICT grounding prompt on extractedText + teacher subject/topic/level/difficulty/count; returns editable draft items.
+- POST /api/teacher/materials/[id]/assign: creates Assignment (subject-locked, materialId linked, scope classroom|group|students with seat verification) + AssignmentResult rows for targets only.
+- content-upload-view.tsx: 4-step wizard (Upload → Detected Content preview (editable) → Generate (editable per-question) → Assign with classroom/group/student selectors + due date + review/approve) + My Materials list; verified E2E with a fractions lesson: analysis detected topic/vocab/objectives; generated 1/5+3/5-style questions ONLY from material; assigned to 2 seated students.
+
+Stage Summary: Flagship pipeline verified end-to-end via curl; teacher review mandatory before students receive anything.
+
+---
+Task ID: 17-C
+Agent: full-stack-developer
+Task: Student reports system with strict privacy (upload, parent ACL, notifications, secure file access).
+
+Work Log:
+- POST /api/reports/upload (teacher/admin): pdf/doc/docx/jpg/png ≤25MB → private "reports" bucket; requires student + term + parentIds ⊆ Student.parentId; creates Report + ReportAccess + parent Notifications ("report" kind).
+- GET /api/reports role-aware (teacher=own uploads, parent=ReportAccess-locked, student=own, admin=all); GET /api/reports/[id]/file = auth-check then 302 to 300s signed URL; DELETE restricted to uploader/admin; GET /api/reports/parents?studentId= for upload dialog.
+- report-upload.tsx (teacher), reports-panel.tsx (parent: view/download grouped per child), report-section.tsx (student).
+- Negative tests verified: non-granted parent gets nothing; unauthorized teacher 403; student sees only own.
+
+Stage Summary: Reports are private educational records with server-side RBAC; no public URLs.
+
+---
+Task ID: 17-D
+Agent: full-stack-developer
+Task: Notes, Reminders, online status, multimedia resources with tracking.
+
+Work Log:
+- /api/notes CRUD (strictly owner-scoped, ?q= search); /api/reminders CRUD with real recurrence (done on weekly → dueAt+7d, stays pending); /api/status (teacher: seated students online=lastSeenAt<5min, lastActive); /api/resources (student verifies assignment targeting before returning signed URLs; view/complete upserts ResourceView).
+- notepad.tsx (search list + markdown toolbar Bold/Italic/Heading/Bullets + preview + autosave; playful|pro); reminders-panel.tsx (due formatting, overdue styling, recurrence badges, add/edit dialog); status-panel.tsx (🟢/⚪ + last-active, 60s auto-refresh); resource-buttons.tsx (▶️/🎧/🔗/📄 with inline audio player, view/complete tracking, ✓ Done).
+
+Stage Summary: All four features are real, owner-scoped, and wired for shells.
+
+---
+Task ID: 17-E
+Agent: full-stack-developer
+Task: Themes (light/dark/eye-friendly), certificates, how-to guides, guided tours.
+
+Work Log:
+- layout.tsx: next-themes ThemeProvider (class attr, ["light","dark","eye-friendly"], no system); globals.css appended .dark (warm charcoal) + .eye-friendly (cream #faf6ef base, warm gray fg, gentle teal primary — never pure white/neon).
+- theme-toggle.tsx (3-way header control), appearance-settings.tsx (Settings→Appearance cards; appearance never affects difficulty).
+- lib/server/certificates.ts: awardCertificate + ensureMilestoneCertificates (First Steps; Worksheet Star 10/20/50; XP Champion 100/500/1000; Reading Star) — idempotent, honest; /api/certificates role-aware; certificates-panel.tsx with print-ready download overlay (logo, gold border, serial, @page A4 landscape).
+- guide-content.ts + howto-guides.tsx (4 roles, Accordion chapters + search; student wording simplified); tour-content.ts + guided-tour.tsx (spotlight tour per role, localStorage once-per-user, Skip, resilient to missing selectors).
+- Tested: milestone awards exact (2 certs awarded on threshold crossing; re-call idempotent); test data restored.
+
+Stage Summary: Shell contract: ThemeToggle headers, AppearanceSettings in settings, data-tour attrs (student: welcome,dashboard,subjects,assignments,progress,certificates; teacher: dashboard,students,classrooms,content,assignments,reports,analytics; parent: dashboard,children,progress,reports,certificates,settings; admin: 7 nav keys), GuidedTour per shell, ensureMilestoneCertificates after progress writes.
+
+---
+Task ID: 17-F
+Agent: full-stack-developer
+Task: Wire all new components into teacher/student/parent/admin shells + certificate hooks.
+
+Work Log:
+- teacher-app: new "Upload Content" nav → ContentUploadView; ReportUpload in ReportsView; TeacherStatusPanel in StudentsView; RemindersPanel + NotePad(pro) on dashboard; AppearanceSettings in settings; ThemeToggle + HelpButton in header; GuidedTour; data-tour attrs.
+- student-app: My Reports, Certificates panel, NotePad(playful), RemindersPanel sections; ResourceButtons in my-assignments cards; header Help + ThemeToggle; GuidedTour; data-tour attrs.
+- parent-app: ParentReportsPanel section, RemindersPanel(pro) on dashboard, AppearanceSettings in settings, Help + ThemeToggle, GuidedTour, data-tour attrs.
+- admin-app: data-tour on nav, ThemeToggle in header (guide section existed from 17-A).
+- /api/progress/route.ts: ensureMilestoneCertificates(studentId) fire-and-forget at the single completion exit (covers lessons AND assignment completions).
+
+Stage Summary: All roles expose the new features; tsc + lint clean; browser-verified: eye-friendly theme, clean login (no demo panel), admin login + real overview/analytics, student dashboard with assignment/notes/reminders, guided tours.

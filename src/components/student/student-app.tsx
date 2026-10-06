@@ -19,6 +19,14 @@ import { SettingsDialog } from "@/components/learning/settings-dialog";
 import { DailyChallengeDialog } from "@/components/learning/daily-challenge-dialog";
 import { LearningHelperView } from "@/components/student/learning-helper";
 import { MyAssignments } from "@/components/student/my-assignments";
+import { StudentReportsSection } from "@/components/student/report-section";
+import { CertificatesPanel } from "@/components/student/certificates-panel";
+import { NotePad } from "@/components/shared/notepad";
+import { RemindersPanel } from "@/components/shared/reminders-panel";
+import { ThemeToggle } from "@/components/shared/theme-toggle";
+import { HelpButton } from "@/components/shared/howto-guides";
+import { GuidedTour } from "@/components/shared/guided-tour";
+import { Card, CardContent } from "@/components/ui/card";
 import { useStudentStore } from "@/lib/student-store";
 import { useAuthStore } from "@/lib/auth-store";
 import { api } from "@/lib/api";
@@ -37,7 +45,9 @@ type View =
   | { name: "practice" }
   | { name: "helper" }
   | { name: "achievements" }
-  | { name: "progress" };
+  | { name: "progress" }
+  | { name: "reports" }
+  | { name: "certificates" };
 
 /** The nav's "Reading" entry opens the dedicated Reading subject. */
 const READING_SUBJECT_ID = "reading";
@@ -61,6 +71,10 @@ function activeNavKey(view: View): NavKey {
       return "achievements";
     case "progress":
       return "progress";
+    case "reports":
+      return "reports";
+    case "certificates":
+      return "certificates";
   }
 }
 
@@ -179,6 +193,12 @@ export function StudentApp() {
       case "progress":
         setView({ name: "progress" });
         break;
+      case "reports":
+        setView({ name: "reports" });
+        break;
+      case "certificates":
+        setView({ name: "certificates" });
+        break;
     }
   }, []);
 
@@ -268,6 +288,12 @@ export function StudentApp() {
   return (
     <div className={themeClass}>
       <div className="min-h-screen flex flex-col bg-background text-foreground">
+        {/* Appearance + help for small screens (lg+ shows them inside the header). */}
+        <div className="mx-auto flex w-full max-w-6xl items-center justify-end gap-2 px-4 pt-2 lg:hidden no-print">
+          <HelpButton role="student" label="Help" />
+          <ThemeToggle />
+        </div>
+
         <AppHeader
           profile={profile}
           xp={xp}
@@ -281,31 +307,42 @@ export function StudentApp() {
 
         <main className="flex-1 w-full max-w-6xl mx-auto px-4 py-6 sm:py-8">
           {view.name === "dashboard" && (
-            <div className="space-y-6">
-              <Dashboard
-                profile={{
-                  name: profile.name,
-                  ageGroup: profile.ageGroup,
-                  age: profile.age,
-                  avatar: profile.avatar,
-                  avatarColor: profile.avatarColor,
-                  photoUrl: profile.photoUrl,
-                }}
-                xp={xp}
-                progress={progress}
-                onOpenSubject={(subjectId) => setView({ name: "subject", subjectId })}
-                onOpenLesson={(subjectId, lessonId) =>
-                  setView({ name: "lesson", subjectId, lessonId })
-                }
-                onOpenAchievements={() => setView({ name: "achievements" })}
-                onOpenDailyChallenge={() => setDailyOpen(true)}
-                dailyChallengeDone={dailyDone}
-              />
-              <MyAssignments
-                onOpenLesson={(subjectId, lessonId) =>
-                  setView({ name: "lesson", subjectId, lessonId })
-                }
-              />
+            <div className="space-y-6" data-tour="dashboard">
+              <div data-tour="welcome">
+                <Dashboard
+                  profile={{
+                    name: profile.name,
+                    ageGroup: profile.ageGroup,
+                    age: profile.age,
+                    avatar: profile.avatar,
+                    avatarColor: profile.avatarColor,
+                    photoUrl: profile.photoUrl,
+                  }}
+                  xp={xp}
+                  progress={progress}
+                  onOpenSubject={(subjectId) => setView({ name: "subject", subjectId })}
+                  onOpenLesson={(subjectId, lessonId) =>
+                    setView({ name: "lesson", subjectId, lessonId })
+                  }
+                  onOpenAchievements={() => setView({ name: "achievements" })}
+                  onOpenDailyChallenge={() => setDailyOpen(true)}
+                  dailyChallengeDone={dailyDone}
+                />
+              </div>
+              <div data-tour="assignments">
+                <MyAssignments
+                  onOpenLesson={(subjectId, lessonId) =>
+                    setView({ name: "lesson", subjectId, lessonId })
+                  }
+                />
+              </div>
+              {/* Notes + reminders — signed-in children only (needs an account to save). */}
+              {authUser && authStudent && (
+                <div className="grid gap-4 md:grid-cols-2">
+                  <NotePad user={authUser} variant="playful" />
+                  <RemindersPanel user={authUser} variant="playful" />
+                </div>
+              )}
             </div>
           )}
 
@@ -400,6 +437,31 @@ export function StudentApp() {
               onOpenAchievements={() => setView({ name: "achievements" })}
             />
           )}
+
+          {view.name === "reports" && <StudentReportsSection />}
+
+          {view.name === "certificates" &&
+            (authStudent ? (
+              <div data-tour="certificates">
+                <CertificatesPanel
+                  studentId={authStudent.id}
+                  studentName={authStudent.name}
+                />
+              </div>
+            ) : (
+              <Card className="rounded-3xl border-dashed">
+                <CardContent className="flex flex-col items-center gap-2 p-8 text-center">
+                  <span className="text-4xl" aria-hidden>
+                    🏆
+                  </span>
+                  <p className="font-bold">Certificates live in your account</p>
+                  <p className="max-w-sm text-sm text-muted-foreground">
+                    Sign in with your code (ask your family for the &quot;Child sign
+                    in&quot; code) to earn and print gold certificates!
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
         </main>
 
         <AppFooter />
@@ -441,6 +503,11 @@ export function StudentApp() {
             }
           }}
         />
+
+        {/* One-time guided tour (auto-plays once per signed-in child). */}
+        {authUser && authStudent && (
+          <GuidedTour role="student" userId={authStudent.id} />
+        )}
       </div>
     </div>
   );

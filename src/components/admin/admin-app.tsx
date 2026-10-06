@@ -7,6 +7,9 @@ import { api } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "@/components/shared/theme-toggle";
+import { HelpButton } from "@/components/shared/howto-guides";
+import { GuidedTour } from "@/components/shared/guided-tour";
 import { OverviewSection } from "@/components/admin/overview-section";
 import { UsersSection } from "@/components/admin/users-section";
 import { ClassroomsSection } from "@/components/admin/classrooms-section";
@@ -14,6 +17,7 @@ import { ContentSection } from "@/components/admin/content-section";
 import { AnalyticsSection } from "@/components/admin/analytics-section";
 import { PermissionsSection } from "@/components/admin/permissions-section";
 import { SettingsSection } from "@/components/admin/settings-section";
+import { GuideSection } from "@/components/admin/guide-section";
 
 const NAV = [
   { key: "overview", label: "Overview" },
@@ -23,6 +27,7 @@ const NAV = [
   { key: "analytics", label: "Analytics" },
   { key: "permissions", label: "Permissions" },
   { key: "settings", label: "Settings" },
+  { key: "guide", label: "Guide" },
 ] as const;
 
 type NavKey = (typeof NAV)[number]["key"];
@@ -59,6 +64,11 @@ export function AdminApp({ user }: { user: AuthUser }) {
             </div>
           </div>
           <div className="flex items-center gap-3">
+            {/* Appearance + help — hidden on very small screens to keep the bar tidy. */}
+            <div className="hidden items-center gap-1.5 sm:flex no-print">
+              <ThemeToggle />
+              <HelpButton role="admin" />
+            </div>
             <div className="hidden text-right sm:block">
               <p className="text-sm font-semibold leading-tight">{user.name}</p>
               <p className="text-xs leading-tight text-zinc-500">{user.email}</p>
@@ -87,6 +97,7 @@ export function AdminApp({ user }: { user: AuthUser }) {
                 type="button"
                 aria-current={section === n.key ? "page" : undefined}
                 onClick={() => setSection(n.key)}
+                data-tour={n.key === "guide" ? undefined : n.key}
                 className={cn(
                   "rounded-md px-3 py-1.5 text-sm font-semibold transition-colors",
                   section === n.key
@@ -109,7 +120,11 @@ export function AdminApp({ user }: { user: AuthUser }) {
         {section === "analytics" && <AnalyticsSection />}
         {section === "permissions" && <PermissionsSection />}
         {section === "settings" && <SettingsSection />}
+        {section === "guide" && <GuideSection />}
       </main>
+
+      {/* One-time guided tour (auto-plays once per admin). */}
+      <GuidedTour role="admin" userId={user.id} />
 
       <footer className="mt-auto border-t border-zinc-200 bg-white">
         <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-1 px-4 py-3 text-xs text-zinc-500 sm:flex-row">

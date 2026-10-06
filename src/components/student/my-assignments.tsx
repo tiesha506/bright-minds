@@ -9,6 +9,7 @@ import { ClipboardList, CalendarClock, CheckCircle2, AlertCircle } from "lucide-
 import { useAuthStore } from "@/lib/auth-store";
 import { useStudentStore } from "@/lib/student-store";
 import { api } from "@/lib/api";
+import { ResourceButtons } from "@/components/student/resource-buttons";
 
 const SUBJECT_LABEL: Record<string, string> = {
   math: "Math",
@@ -108,43 +109,47 @@ export function MyAssignments({ onOpenLesson }: { onOpenLesson: (subjectId: stri
             {[...todo, ...done].slice(0, 6).map((a) => (
               <div
                 key={a.id}
-                className="flex flex-wrap items-center gap-2 rounded-xl border bg-muted/30 px-3 py-2.5"
+                className="rounded-xl border bg-muted/30 px-3 py-2.5"
               >
-                <span className="text-xl" aria-hidden>
-                  {a.lessonEmoji ?? "📌"}
-                </span>
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-bold">{a.title}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {TYPE_LABEL[a.type] ?? a.type}
-                    {a.lessonTitle ? ` · ${a.lessonTitle}` : ""}
-                    {SUBJECT_LABEL[a.subjectId] ? ` · ${SUBJECT_LABEL[a.subjectId]}` : ""}
-                    {a.dueDate ? ` · due ${a.dueDate}` : ""}
-                  </p>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-xl" aria-hidden>
+                    {a.lessonEmoji ?? "📌"}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-bold">{a.title}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {TYPE_LABEL[a.type] ?? a.type}
+                      {a.lessonTitle ? ` · ${a.lessonTitle}` : ""}
+                      {SUBJECT_LABEL[a.subjectId] ? ` · ${SUBJECT_LABEL[a.subjectId]}` : ""}
+                      {a.dueDate ? ` · due ${a.dueDate}` : ""}
+                    </p>
+                  </div>
+                  {a.status === "completed" ? (
+                    <Badge className="gap-1 bg-emerald-100 text-emerald-800 hover:bg-emerald-100">
+                      <CheckCircle2 className="h-3 w-3" />
+                      {a.score !== null ? `${a.score}%` : "Done"}
+                    </Badge>
+                  ) : a.overdue ? (
+                    <Badge className="gap-1 bg-amber-100 text-amber-800 hover:bg-amber-100">
+                      <AlertCircle className="h-3 w-3" /> Overdue
+                    </Badge>
+                  ) : (
+                    <Badge variant="secondary" className="gap-1">
+                      <CalendarClock className="h-3 w-3" /> To do
+                    </Badge>
+                  )}
+                  {a.lessonId && a.status !== "completed" && (
+                    <Button
+                      size="sm"
+                      className="rounded-full"
+                      onClick={() => onOpenLesson(a.subjectId, a.lessonId!)}
+                    >
+                      Start
+                    </Button>
+                  )}
                 </div>
-                {a.status === "completed" ? (
-                  <Badge className="gap-1 bg-emerald-100 text-emerald-800 hover:bg-emerald-100">
-                    <CheckCircle2 className="h-3 w-3" />
-                    {a.score !== null ? `${a.score}%` : "Done"}
-                  </Badge>
-                ) : a.overdue ? (
-                  <Badge className="gap-1 bg-amber-100 text-amber-800 hover:bg-amber-100">
-                    <AlertCircle className="h-3 w-3" /> Overdue
-                  </Badge>
-                ) : (
-                  <Badge variant="secondary" className="gap-1">
-                    <CalendarClock className="h-3 w-3" /> To do
-                  </Badge>
-                )}
-                {a.lessonId && a.status !== "completed" && (
-                  <Button
-                    size="sm"
-                    className="rounded-full"
-                    onClick={() => onOpenLesson(a.subjectId, a.lessonId!)}
-                  >
-                    Start
-                  </Button>
-                )}
+                {/* Videos, audio, docs & links the teacher attached to this assignment. */}
+                <ResourceButtons assignmentId={a.id} />
               </div>
             ))}
           </div>

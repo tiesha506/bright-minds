@@ -21,6 +21,7 @@ import {
 } from "@/components/teacher/teacher-ui";
 import { SUBJECT_IDS, SUBJECT_LABELS } from "@/lib/teacher-types";
 import type { ClassReport } from "@/lib/teacher-types";
+import { ReportUpload } from "@/components/teacher/report-upload";
 import { Button } from "@/components/ui/button";
 
 interface ClassroomOption {
@@ -30,7 +31,6 @@ interface ClassroomOption {
 }
 
 export function ReportsView({ user }: { user: AuthUser }) {
-  void user;
   const [classroomOptions, setClassroomOptions] = useState<ClassroomOption[] | null>(null);
   const [classroomId, setClassroomId] = useState("");
   const [report, setReport] = useState<ClassReport | null>(null);
@@ -79,7 +79,7 @@ export function ReportsView({ user }: { user: AuthUser }) {
   const print = () => window.print();
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5" data-tour="reports">
       <PageHeader
         emoji="📄"
         title="Reports"
@@ -97,6 +97,11 @@ export function ReportsView({ user }: { user: AuthUser }) {
           )
         }
       />
+
+      {/* Student Reports — private uploads shared with individual parents. */}
+      <section aria-label="Student Reports" className="no-print">
+        <ReportUpload user={user} />
+      </section>
 
       {!loading && classroomOptions && classroomOptions.length > 1 && (
         <div className="max-w-xs no-print">

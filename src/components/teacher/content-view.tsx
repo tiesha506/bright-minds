@@ -419,7 +419,7 @@ export function ContentView({ user }: { user: AuthUser }) {
   };
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5" data-tour="content">
       <PageHeader
         emoji="📚"
         title="Content"

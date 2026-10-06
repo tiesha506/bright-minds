@@ -72,6 +72,7 @@ export async function GET(req: NextRequest) {
     email: u.email,
     role: u.role as AdminRole,
     createdAt: u.createdAt.toISOString(),
+    lastSeenAt: u.lastSeenAt ? u.lastSeenAt.toISOString() : null,
     childrenCount: childrenByParent.get(u.id) ?? 0,
     classroomCount: classroomsByTeacher.get(u.id) ?? 0,
   }));

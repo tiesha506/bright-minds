@@ -9,6 +9,8 @@ import { Users, TrendingUp, ClipboardCheck, LifeBuoy, Brain, BookOpen, Flame, Ac
 import { api } from "@/lib/api";
 import type { AuthUser } from "@/lib/auth-store";
 import { StatTile, BarRow, MiniBars, SUBJECT_COLORS } from "@/components/shared/charts";
+import { RemindersPanel } from "@/components/shared/reminders-panel";
+import { NotePad } from "@/components/shared/notepad";
 import { Loading, ErrorNote, Panel, PageHeader, useFetch } from "@/components/teacher/teacher-ui";
 import { SUBJECT_LABELS } from "@/lib/teacher-types";
 import type { TeacherNavKey } from "@/lib/teacher-types";
@@ -32,10 +34,9 @@ export function DashboardView({
     () => api<TeacherOverview>("/api/teacher/overview"),
     []
   );
-  void user;
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5" data-tour="dashboard">
       <PageHeader
         emoji="🏠"
         title="Class Overview"
@@ -209,6 +210,12 @@ export function DashboardView({
                 </p>
               </Panel>
             </div>
+          </div>
+
+          {/* Reminders + Note Pad — personal teacher toolkit. */}
+          <div className="grid gap-4 lg:grid-cols-2">
+            <RemindersPanel user={user} variant="pro" />
+            <NotePad user={user} variant="pro" />
           </div>
         </>
       )}

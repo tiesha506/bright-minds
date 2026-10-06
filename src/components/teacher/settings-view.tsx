@@ -10,6 +10,7 @@ import { api } from "@/lib/api";
 import { useAuthStore } from "@/lib/auth-store";
 import type { AuthUser } from "@/lib/auth-store";
 import { AvatarPhotoEditor } from "@/components/shared/avatar";
+import { AppearanceSettings } from "@/components/shared/appearance-settings";
 import {
   Loading,
   ErrorNote,
@@ -101,6 +102,9 @@ export function SettingsView({
           Email is managed by your school&rsquo;s BrightMinds administrator and is read-only here.
         </p>
       </Panel>
+
+      {/* Appearance — Light / Dark / Eye-Friendly for this device. */}
+      <AppearanceSettings />
 
       <Panel
         title="Your classrooms"

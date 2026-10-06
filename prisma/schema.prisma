@@ -20,6 +20,8 @@ model User {
   role         String
   /// Public URL of the profile photo in Supabase Storage. Empty = none.
   photoUrl     String         @default("")
+  /// Last time this user made an authenticated API request (for online status).
+  lastSeenAt   DateTime?
   createdAt    DateTime       @default(now())
   sessions     Session[]
   children     Student[]
@@ -27,6 +29,12 @@ model User {
   assignments  Assignment[]
   activities   CustomActivity[]
   notifications Notification[]
+  notes        Note[]
+  reminders    Reminder[]
+  materials    TeacherMaterial[]
+  reportUploads Report[] @relation("reportUploads")
+  reportAccess  ReportAccess[] @relation("reportAccess")
+  resources    ContentResource[]
 }
 
 model Session {
@@ -67,6 +75,7 @@ model Student {
   goal       Goal?
   activity   ActivityLog[]
   results    AssignmentResult[]
+  certificates Certificate[]
 }
 
 model Progress {
@@ -147,6 +156,9 @@ model Assignment {
   studentIds   String   @default("[]")
   createdAt    DateTime @default(now())
   results      AssignmentResult[]
+  resources    ContentResource[]
+  material     TeacherMaterial? @relation(fields: [materialId], references: [id], onDelete: SetNull)
+  materialId   String?
 }
 
 model AssignmentResult {
@@ -208,6 +220,146 @@ model CustomActivity {
   body       String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+}
+
+/// An uploaded lesson document (PDF/image/doc/etc.) with its extracted text
+/// and AI analysis. The extracted text is the primary source for generating
+/// questions — the AI must stay grounded in it.
+model TeacherMaterial {
+  id            String   @id @default(cuid())
+  teacherId     String
+  teacher       User     @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  title         String
+  /// math | english | science | reading (teacher-selected, enforced)
+  subjectId     String
+  topic         String   @default("")
+  /// Raw text extracted from the document (OCR for images, parser for PDFs).
+  extractedText String   @default("")
+  /// JSON: { objectives[], concepts[], vocabulary[], questions[], difficulty, summary }
+  analysisJson  String   @default("{}")
+  /// Original file stored in the private "content" bucket (empty for link-only).
+  fileKey       String   @default("")
+  fileName      String   @default("")
+  mimeType      String   @default("")
+  /// draft | ready
+  status        String   @default("draft")
+  assignments   Assignment[]
+  resources     ContentResource[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+/// Multimedia attached to a material or directly to an assignment:
+/// uploaded video/audio/doc/image or an external video/audio/site link.
+model ContentResource {
+  id           String   @id @default(cuid())
+  /// video | audio | link | doc | image | file
+  kind         String
+  /// upload | link
+  source       String
+  title        String
+  /// External URL when source=link; empty for uploads (use fileKey).
+  url          String   @default("")
+  /// Storage key in the private "content" bucket when source=upload.
+  fileKey      String   @default("")
+  fileName     String   @default("")
+  mimeType     String   @default("")
+  teacherId    String
+  teacher      User     @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  materialId   String?
+  material     TeacherMaterial? @relation(fields: [materialId], references: [id], onDelete: Cascade)
+  assignmentId String?
+  assignment   Assignment? @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  views        ResourceView[]
+  createdAt    DateTime @default(now())
+}
+
+/// Tracks a student opening/completing a learning resource.
+model ResourceView {
+  id          String    @id @default(cuid())
+  resourceId  String
+  resource    ContentResource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  studentId   String
+  openedAt    DateTime  @default(now())
+  completedAt DateTime?
+
+  @@unique([resourceId, studentId])
+}
+
+// ------------------------------ Student reports -----------------------------
+
+/// Private educational record uploaded by a teacher for one student.
+model Report {
+  id          String   @id @default(cuid())
+  studentId   String
+  uploadedById String
+  uploader    User     @relation("reportUploads", fields: [uploadedById], references: [id], onDelete: Cascade)
+  /// e.g. "Term 1"
+  term        String   @default("")
+  description String   @default("")
+  /// Storage key in the private "reports" bucket.
+  fileKey     String
+  fileName    String
+  mimeType    String   @default("")
+  access      ReportAccess[]
+  createdAt   DateTime @default(now())
+}
+
+/// Which parent/guardian accounts may access a report (teacher-selected).
+model ReportAccess {
+  id           String @id @default(cuid())
+  reportId     String
+  report       Report @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  parentUserId String
+  parent       User   @relation("reportAccess", fields: [parentUserId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+
+  @@unique([reportId, parentUserId])
+}
+
+// --------------------------- Notes & reminders ------------------------------
+
+/// Private note (student Note Pad, teacher planning pad). Never shared by default.
+model Note {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String   @default("Untitled note")
+  /// Lightweight markdown-ish content (bold/italic/headings/bullets).
+  content   String   @default("")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+/// Personal reminder with optional recurrence.
+model Reminder {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  /// ISO datetime (local to the user).
+  dueAt     DateTime
+  /// none | daily | weekly | monthly
+  repeat    String   @default("none")
+  notes     String   @default("")
+  done      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+// ------------------------------ Certificates --------------------------------
+
+/// A certificate earned by a student (downloadable/printable).
+model Certificate {
+  id          String   @id @default(cuid())
+  studentId   String
+  student     Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  serial      String   @unique
+  /// e.g. "Fractions Champion" / "Reading Star"
+  title       String
+  /// lesson | assignment | streak | level | custom
+  kind        String
+  description String   @default("")
+  earnedAt    DateTime @default(now())
 }
 
 // ------------------------------- Platform ---------------------------------

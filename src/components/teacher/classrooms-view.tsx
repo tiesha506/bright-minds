@@ -636,7 +636,7 @@ export function ClassroomsView({ user }: { user: AuthUser }) {
   }
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5" data-tour="classrooms">
       <PageHeader
         emoji="🏫"
         title="Classrooms"
