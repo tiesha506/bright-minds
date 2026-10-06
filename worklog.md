@@ -475,3 +475,15 @@ Work Log:
 
 Stage Summary:
 - Logo now renders directly on any background (cream hero, white header, dark mode) with true transparency and intact artwork. Fix is reproducible via scripts/fix_logo_transparency.py. Push pending user-provided credential.
+
+---
+Task ID: 16-b
+Agent: orchestrator (Z.ai Code)
+Task: Complete the pending push of Task 16 with user-provided PAT.
+
+Work Log:
+- Pushed main via explicit URL (token used inline only, not persisted to disk/config): f241091..c9396e5.
+- Fetched to sync origin/main tracking ref; verified origin/main = c9396e5 (includes 1bd5411 logo fix), working tree clean.
+
+Stage Summary:
+- GitHub main is up to date with the transparent-logo fix. New PAT has now also appeared in chat — rotation still recommended.
