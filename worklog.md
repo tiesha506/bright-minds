@@ -459,3 +459,19 @@ Work Log:
 
 Stage Summary:
 - Profiles now photo-capable end-to-end on Supabase Storage: student hero replaces the cat with the picked avatar/photo; parents & teachers can upload photos for their students and themselves; every surface (student settings, parent children/settings, teacher students/settings, headers, dashboards, reports) renders the photo with emoji fallback. Secrets rotation reminder still stands.
+
+---
+Task ID: 16
+Agent: orchestrator (Z.ai Code)
+Task: Remove the baked-in checkerboard/grid background from public/logo.png so the logo displays with a truly transparent background; push updated code to GitHub.
+
+Work Log:
+- Diagnosed public/logo.png: RGB (no alpha) 1254x1254 with the fake "transparency" checkerboard rendered as real pixels (gray ~236,238,238 + white ~253,253,253 squares, ~19-20px cells).
+- Wrote scripts/fix_logo_transparency.py (numpy/scipy/PIL): gray squares removed by tight color mask; white checker cells separated from real artwork whites (book pages, text outline, eye highlights) by eroding the white mask 2px to break anti-alias bridges, then 4-connected component labeling + area<=1200px + distance-to-gray<=8px test; checker-cell seams consumed by 5 rounds of constrained growth into neutral low-sat pixels; pinhole closing; alpha MinFilter(3) + GaussianBlur(0.8) feather; saved optimized RGBA PNG.
+- Iterated twice: first pass left 892 white checker cells (fixed via distance-transform test), second pass cleaned seam specks; verified via cream/dark/magenta composite renders + zoomed browser screenshot of the landing page (header + hero both clean).
+- Confirmed favicon (layout.tsx icon) uses same logo.png so it's fixed everywhere (landing, all app headers, parent/teacher/admin, onboarding).
+- bunx tsc --noEmit: no project errors (only pre-existing examples//skills/ noise); bun run lint: 0 errors (1 pre-existing warning); dev server 200, landing page verified via agent-browser.
+- Committed 1bd5411. Push blocked: PAT not persisted anywhere on disk (only in prior chat context that was summarized away) — needs token from user.
+
+Stage Summary:
+- Logo now renders directly on any background (cream hero, white header, dark mode) with true transparency and intact artwork. Fix is reproducible via scripts/fix_logo_transparency.py. Push pending user-provided credential.
