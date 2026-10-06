@@ -392,3 +392,20 @@ Work Log:
 
 Stage Summary:
 - Repo sanitized and committed (no secrets, no runtime artifacts, proper README/.env.example). Remote origin set to github.com/tiesha506/bright-minds; push needs the user's GitHub PAT. Supabase migration is pre-packaged: schema.supabase.prisma + SUPABASE_SETUP.md + .env.example — only connection strings are missing.
+
+---
+Task ID: 12
+Agent: orchestrator (Z.ai Code)
+Task: Use the user's GitHub PAT to push the repo; receive Supabase API keys; guide user through obtaining DB connection strings.
+
+Work Log:
+- Push attempt #1 rejected (remote had an "Initial commit" with a 2-line README). Fetched remote, merged with --allow-unrelated-histories, resolved README add/add conflict keeping the full BrightMinds README, pushed successfully (d536e0c..5411ef9).
+- Verified via GitHub API: repo public, main tip updated, all key files present (src/, prisma/, README.md, SUPABASE_SETUP.md...). Untracked remaining sandbox artifacts .verify/ and .zscripts/ (screenshots/scripts from earlier auto-commits).
+- Verified Supabase project ydrulncrxftkisnlvgyt: /auth/v1/health 200 (GoTrue healthy); REST root 401 for anon (locked introspection endpoint — expected on new projects); data endpoint /rest/v1/User with anon key returns PGRST205 "table not found" proving the anon key authenticates correctly and tables are pending migration. Publishable key also present.
+- Stored project URL + anon key + service_role key + publishable key ONLY in the gitignored local .env (never committed). Local SQLite DATABASE_URL preserved for dev.
+- DNS probe for pooler region failed (project behind Cloudflare; regional pooler hosts are shared infra) — user must copy the exact strings from dashboard.
+- Updated SUPABASE_SETUP.md with a Live Status section (items 1-3 done, 4-6 pending) and precise click-paths (dashboard settings/database → Session pooler :5432 / Transaction pooler :6543 tabs; Reset database password). Committed and pushed (5411ef9..54c298e).
+- SECURITY: advised user to rotate the GitHub PAT and Supabase service_role key after setup since both were shared in plaintext chat.
+
+Stage Summary:
+- Full codebase live on github.com/tiesha506/bright-minds (public, main). Supabase phase 1 complete (project + keys verified, stored safely). Remaining: session-pooler URL, transaction-pooler URL, DB password — then schema swap + prisma db push + seed finishes the serverless migration.
