@@ -409,3 +409,18 @@ Work Log:
 
 Stage Summary:
 - Full codebase live on github.com/tiesha506/bright-minds (public, main). Supabase phase 1 complete (project + keys verified, stored safely). Remaining: session-pooler URL, transaction-pooler URL, DB password — then schema swap + prisma db push + seed finishes the serverless migration.
+
+---
+Task ID: 13
+Agent: orchestrator (Z.ai Code)
+Task: Receive Supabase pooler URLs (items 4-5), stage the full migration, identify the remaining piece (item 6: DB password).
+
+Work Log:
+- User delivered both pooler URIs with [YOUR-PASSWORD] placeholder; region extracted: aws-0-us-west-2.pooler.supabase.com.
+- TCP-verified both ports from the sandbox: 5432 OPEN, 6543 OPEN — migration can run from here.
+- Created scripts/migrate-to-supabase.sh (committed, no secrets): URL-encodes password, swaps schema.supabase.prisma → schema.prisma, rewrites .env (DATABASE_URL :6543 + pgbouncer params, DIRECT_URL :5432), runs prisma db push + generate. Dry-tested the .env rewrite on a temp copy — correct output, idempotent.
+- Updated local gitignored .env with region-filled commented URLs (placeholders kept until password arrives).
+- Updated SUPABASE_SETUP.md live-status table: items ①-⑤ done, ⑥ pending; committed + pushed (0c099ce..3084784).
+
+Stage Summary:
+- Everything staged for a one-command migration. Sole blocker: the Supabase DB password (user was shown the exact Reset database password path). Once provided: run script → seed → verify app on Supabase → final push.
