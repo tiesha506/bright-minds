@@ -6,20 +6,25 @@ The app already talks to the database exclusively through **server-side Prisma**
 
 ---
 
-## 0. Live status
+## 0. Live status — ✅ MIGRATION COMPLETE
 
-Project ref: **`ydrulncrxftkisnlvgyt`** → `https://ydrulncrxftkisnlvgyt.supabase.co`
+Project ref: **`ydrulncrxftkisnlvgyt`** → `https://ydrulncrxftkisnlvgyt.supabase.co` (region `us-west-2`)
 
 | Item | Status | Notes |
 | --- | --- | --- |
-| ① Project URL | ✅ received & verified | project live, Auth service healthy |
-| ② anon key | ✅ received & verified | tested against REST: auth passes (`PGRST205` = tables not yet created, as expected) |
-| ③ service_role key | ✅ received | stored **only** in gitignored `.env`; never committed |
-| ④ Session pooler URL (:5432) | ✅ received | region: **us-west-2** — TCP verified reachable |
-| ⑤ Transaction pooler URL (:6543) | ✅ received | region: **us-west-2** — TCP verified reachable |
-| ⑥ DB password | ⏳ **pending** | the last missing piece — see §1.2-C |
+| ① Project URL | ✅ done | project live, Auth service healthy |
+| ② anon key | ✅ done | verified against REST |
+| ③ service_role key | ✅ done | stored **only** in gitignored `.env`; never committed |
+| ④ Session pooler URL (:5432) | ✅ done | `DIRECT_URL` — migrations |
+| ⑤ Transaction pooler URL (:6543) | ✅ done | `DATABASE_URL` + `?pgbouncer=true&connection_limit=1` |
+| ⑥ DB password | ✅ done | stored **only** in gitignored `.env` |
 
-> Once ⑥ arrives: run `./scripts/migrate-to-supabase.sh "<DB_PASSWORD>"` (repo script — swaps schema, rewrites `.env`, runs `prisma db push`, regenerates client), then seed. Done.
+**Executed migration (all verified):**
+- `scripts/migrate-to-supabase.sh` → schema swapped to `prisma/schema.prisma` (PostgreSQL + directUrl)
+- `prisma db push` → **13 tables created** in Supabase
+- Demo seed + live traffic flowing: users, students, progress, classrooms, assignments all in Supabase
+- **RLS deny-by-default enabled on all 13 tables** — anon/authenticated REST access returns empty; the app's privileged server connection is unaffected
+- Note: the sandbox exports a stale `DATABASE_URL` globally; the dev server must be started with `set -a && . ./.env && set +a` so the Supabase URL wins. In production (Vercel etc.) set the env vars in the dashboard — no such issue.
 
 ### 1.2-A Get the Session pooler URL (DIRECT_URL, port 5432) — ✅ DONE
 `postgresql://postgres.ydrulncrxftkisnlvgyt:[YOUR-PASSWORD]@aws-0-us-west-2.pooler.supabase.com:5432/postgres`
@@ -27,9 +32,8 @@ Project ref: **`ydrulncrxftkisnlvgyt`** → `https://ydrulncrxftkisnlvgyt.supaba
 ### 1.2-B Get the Transaction pooler URL (DATABASE_URL, port 6543) — ✅ DONE
 `postgresql://postgres.ydrulncrxftkisnlvgyt:[YOUR-PASSWORD]@aws-0-us-west-2.pooler.supabase.com:6543/postgres` + `?pgbouncer=true&connection_limit=1` (script appends automatically)
 
-### 1.2-C Database password — ⏳ PENDING
-- On **https://supabase.com/dashboard/project/ydrulncrxftkisnlvgyt/settings/database** click **"Reset database password"** → Generate → **copy it immediately** (shown once).
-- Then either paste the password to the developer, or run the migration script yourself.
+### 1.2-C Database password — ✅ DONE
+Provided; stored only in the gitignored `.env` and consumed by the migration script.
 
 ---
 

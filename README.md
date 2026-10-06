@@ -51,7 +51,7 @@ Teacher assigns a fractions worksheet → student completes it in their dashboar
 | Framework | Next.js 16 (App Router) + TypeScript |
 | Styling | Tailwind CSS 4 + shadcn/ui (New York) + Lucide icons |
 | Animation | framer-motion |
-| Database | Prisma ORM — SQLite locally, PostgreSQL (Supabase) ready — see [SUPABASE_SETUP.md](./SUPABASE_SETUP.md) |
+| Database | Prisma ORM — **PostgreSQL on Supabase** (13 tables, RLS hardened). Local SQLite fallback; see [SUPABASE_SETUP.md](./SUPABASE_SETUP.md) |
 | Auth | Custom session-token auth (scrypt hashing) with role guards: STUDENT / PARENT / TEACHER / ADMIN |
 | State | Zustand stores + typed `api()` fetch helper with Bearer sessions |
 | AI | Server-side LLM SDK for Learning Helper (student) & Teacher Helper |
@@ -60,10 +60,12 @@ Teacher assigns a fractions worksheet → student completes it in their dashboar
 
 ```bash
 bun install                # or npm install
-cp .env.example .env       # defaults to a local SQLite file
-bun run db:push            # create the database schema
+cp .env.example .env       # local SQLite fallback defaults
+bun run db:push            # create the schema (SQLite; for Supabase see SUPABASE_SETUP.md)
 bun run dev                # http://localhost:3000
 ```
+
+> **Running on Supabase (current default config):** put the Supabase `DATABASE_URL` (:6543, with `?pgbouncer=true&connection_limit=1`) and `DIRECT_URL` (:5432) in `.env` — `prisma/schema.prisma` is already the PostgreSQL variant. The local SQLite twin is preserved in git history and `prisma/schema.supabase.prisma` stays as the Postgres reference copy.
 
 ### Demo accounts
 Visit `/` and open the demo panel (or `POST /api/auth/demo-seed`) to seed sample data:

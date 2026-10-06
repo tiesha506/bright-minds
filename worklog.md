@@ -424,3 +424,19 @@ Work Log:
 
 Stage Summary:
 - Everything staged for a one-command migration. Sole blocker: the Supabase DB password (user was shown the exact Reset database password path). Once provided: run script → seed → verify app on Supabase → final push.
+
+---
+Task ID: 14
+Agent: orchestrator (Z.ai Code)
+Task: Execute the Supabase migration with the provided DB password; verify the app end-to-end on Supabase Postgres; harden with RLS.
+
+Work Log:
+- Ran scripts/migrate-to-supabase.sh: schema swapped (prisma/schema.prisma is now PostgreSQL + directUrl), prisma db push created all 13 tables in Supabase (us-west-2, 11.7s), client regenerated.
+- Verified all 13 tables via Supabase REST (service_role); Session/PlatformSetting 400s were probe artifacts (no id column) — confirmed queryable with correct keys.
+- Debugged two infrastructure issues: (1) dev server OOM-killed by kernel (multiple stacked next-server instances at ~1.3GB each; freed memory, single instance stable); (2) sandbox base env exports stale DATABASE_URL=file:... which beat .env (process env wins) → restarted server with set -a && . ./.env && set +a; verified correct URL via /proc/<pid>/environ.
+- Full auth flow verified on Supabase: demo-seed → parent login → /me → /api/parent/children (rich child data); teacher login → created "Grade 5 Mathematics" classroom + 12 students (groups A/B/C, auto login codes) + "Place Value Warm-up" assignment with 12 AssignmentResult rows via the app's own teacher API. User was concurrently active in the preview panel (new signup johnbrown@gmail.com + extra students) — all landing in Supabase.
+- RLS deny-by-default enabled on all 13 tables via prisma db execute; re-verified app works (owner connection bypasses) and anon REST now returns [].
+- Updated SUPABASE_SETUP.md (migration complete) + README (Supabase Postgres as default data layer). Committed and pushed.
+
+Stage Summary:
+- BrightMinds now runs entirely on Supabase Postgres: 13 tables, RLS hardened, connected teacher→student→parent loop live (classrooms, assignments, results, notifications). Remaining known TODOs: deploy to a host near us-west-2 (pooler latency from the distant sandbox is high but functional); rotate the PAT/service_role/password shared in chat.
