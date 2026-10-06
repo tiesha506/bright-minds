@@ -373,3 +373,22 @@ Work Log:
 
 Stage Summary:
 - BrightMinds is now a connected multi-role ecosystem: public site → role-based auth → Student / Parent / Teacher / Admin experiences, all reading and writing the same SQLite source of truth. Teacher assigns → student completes → teacher sees results → parent gets notified: verified live. Avatars, Learning Helper, demo accounts, guest mode, print reports and AI drafts (edit-before-assign) all real. tsc/lint/dev.log clean.
+
+---
+Task ID: 11
+Agent: orchestrator (Z.ai Code)
+Task: Push the full codebase to https://github.com/tiesha506/bright-minds.git and prepare the Supabase serverless migration plan.
+
+Work Log:
+- Verified repo state: 276 tracked files, all prior platform work already committed on main; only runtime db/custom.db differed.
+- Security scan of tracked files for secrets/keys (git grep) — none found; local .env only contains the SQLite path.
+- Repo cleanup: untracked .env, db/custom.db, tool-results/, upload/, download/, tests/ (sandbox artifacts); extended .gitignore (db/, *.db, sandbox dirs, explicit .env rules); kept examples/ websocket demo.
+- Created root README.md (features per role, tech stack, setup, demo accounts, layout, privacy notes).
+- Created .env.example documenting DATABASE_URL (SQLite now; Supavisor :6543 + pgbouncer for runtime) and DIRECT_URL (:5432 for migrations), plus optional Supabase keys.
+- Generated prisma/schema.supabase.prisma — Postgres twin of the schema (provider postgresql + directUrl), validated with `prisma validate` using dummy envs.
+- Wrote SUPABASE_SETUP.md: exact 6 values needed from Supabase (project URL, anon key, service_role key, session-pooler :5432, transaction-pooler :6543, DB password), migration commands, RLS deny-by-default policy set, auth options analysis (recommend keeping custom scrypt auth on Postgres), post-migration checklist.
+- Committed everything as a single clean commit on main; added remote origin = https://github.com/tiesha506/bright-minds.git.
+- Push attempt failed with "could not read Username" — sandbox has no GitHub credentials (no gh CLI, no token env, no ~/.git-credentials, no SSH keys); remote + commit are push-ready for the user.
+
+Stage Summary:
+- Repo sanitized and committed (no secrets, no runtime artifacts, proper README/.env.example). Remote origin set to github.com/tiesha506/bright-minds; push needs the user's GitHub PAT. Supabase migration is pre-packaged: schema.supabase.prisma + SUPABASE_SETUP.md + .env.example — only connection strings are missing.
