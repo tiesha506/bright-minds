@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { ensureAppBuckets, listBucketIds, storageConfigured } from "@/lib/server/storage";
 
 export const dynamic = "force-dynamic";
 
@@ -62,6 +63,11 @@ interface HealthReport {
   admin: {
     exists: boolean | null; // null = could not check
   };
+  storage: {
+    configured: boolean;
+    reachable: boolean | null;
+    buckets: { content: boolean; reports: boolean; avatars: boolean } | null;
+  };
   actions: string[];
 }
 
@@ -115,6 +121,7 @@ export async function GET() {
     database: { configured: false, connected: false, error: null, urlShape: null },
     schema: { synced: null, missingTables: [] },
     admin: { exists: null },
+    storage: { configured: false, reachable: null, buckets: null },
     actions: [],
   };
 
@@ -225,8 +232,53 @@ export async function GET() {
     report.admin.exists = null; // schema problems already reported above
   }
 
+  // ---- 4. File storage (Supabase buckets) ----------------------------------
+  report.storage.configured = storageConfigured();
+  if (!report.storage.configured) {
+    report.actions.push(
+      "File uploads are disabled: NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are not set on the server. In Vercel → Settings → Environment Variables, add NEXT_PUBLIC_SUPABASE_URL = your Supabase project URL (https://<ref>.supabase.co) and SUPABASE_SERVICE_ROLE_KEY = the service_role key (Supabase → Project Settings → API), then redeploy. The needed storage buckets are created automatically afterwards."
+    );
+  } else {
+    try {
+      await ensureAppBuckets(); // self-heal missing buckets on every health check
+      const ids = await listBucketIds();
+      report.storage.reachable = ids !== null;
+      if (ids) {
+        const has = (b: string) => ids.includes(b);
+        report.storage.buckets = {
+          content: has("content"),
+          reports: has("reports"),
+          avatars: has("avatars"),
+        };
+        const missing = Object.entries(report.storage.buckets)
+          .filter(([, ok]) => !ok)
+          .map(([b]) => b);
+        if (missing.length > 0) {
+          report.actions.push(
+            `Storage bucket(s) ${missing.join(", ")} could not be created — check that SUPABASE_SERVICE_ROLE_KEY is the service_role key (not anon) and Storage is enabled on the Supabase project.`
+          );
+        }
+      } else {
+        report.actions.push(
+          "Supabase Storage could not be reached with the service key — check NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY values."
+        );
+      }
+    } catch (err) {
+      report.storage.reachable = false;
+      console.error("[health] storage check failed:", err);
+    }
+  }
+
   report.ok =
-    report.database.connected && report.schema.synced === true && report.admin.exists !== false;
+    report.database.connected &&
+    report.schema.synced === true &&
+    report.admin.exists !== false &&
+    report.storage.configured === true &&
+    report.storage.reachable === true &&
+    !!report.storage.buckets &&
+    report.storage.buckets.content &&
+    report.storage.buckets.reports &&
+    report.storage.buckets.avatars;
 
   if (report.ok) {
     report.actions.push("All checks passed — sign-up and login are fully operational. ✅");

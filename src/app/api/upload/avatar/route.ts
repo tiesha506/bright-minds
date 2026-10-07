@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import { getSessionUser, unauthorized } from "@/lib/server/auth";
+import { ensureBucket } from "@/lib/server/storage";
 
 export const runtime = "nodejs";
 
@@ -91,6 +92,7 @@ export async function POST(req: Request) {
 
   // ------------------------------- upload ----------------------------------
   const bytes = Buffer.from(await file.arrayBuffer());
+  await ensureBucket(BUCKET, true); // self-heal a missing bucket
   const up = await fetch(`${SUPABASE_URL}/storage/v1/object/${BUCKET}/${path}`, {
     method: "POST",
     headers: {

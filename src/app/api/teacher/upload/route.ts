@@ -15,6 +15,7 @@ import {
   sanitizeFileName,
   requireTeacherOrAdmin,
 } from "@/lib/server/extract";
+import { ensureBucket } from "@/lib/server/storage";
 import {
   MAX_MATERIAL_MB,
   MATERIAL_ALLOWLIST,
@@ -35,7 +36,13 @@ export async function POST(req: Request) {
   if (auth instanceof Response) return auth;
 
   if (!contentStorageConfigured()) {
-    return Response.json({ error: "File storage is not configured. Please contact support." }, { status: 500 });
+    return Response.json(
+      {
+        error:
+          "File storage is not configured on this server. The administrator must add NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in Vercel → Settings → Environment Variables (values from Supabase → Project Settings → API), then redeploy.",
+      },
+      { status: 500 }
+    );
   }
 
   let form: FormData;
@@ -79,6 +86,7 @@ export async function POST(req: Request) {
   const fileKey = `materials/${auth.id}/${id}-${safeName}`;
   const bytes = new Uint8Array(await file.arrayBuffer());
   try {
+    await ensureBucket("content", false); // self-heal a missing bucket
     await uploadToContentBucket(fileKey, bytes, file.type || "application/octet-stream");
   } catch (err) {
     console.error("[upload] storage error:", err);

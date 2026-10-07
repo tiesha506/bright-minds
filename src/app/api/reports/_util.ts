@@ -7,6 +7,7 @@
 import { randomBytes } from "node:crypto";
 import { db } from "@/lib/db";
 import { forbidden, getSessionUser, unauthorized, type SessionUser } from "@/lib/server/auth";
+import { ensureBucket } from "@/lib/server/storage";
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
 const SERVICE_ROLE = process.env.SUPABASE_SERVICE_ROLE_KEY ?? "";
@@ -150,6 +151,7 @@ export async function uploadReportObject(
   bytes: Buffer,
   mimeType: string
 ): Promise<void> {
+  await ensureBucket(BUCKET, false); // self-heal a missing bucket
   const res = await fetch(objectUrl(objectPath(fileKey)), {
     method: "POST",
     headers: {

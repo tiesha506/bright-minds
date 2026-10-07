@@ -665,3 +665,18 @@ Work Log:
 - Verified: prebuild syntax, tsc clean for changed files, lint 0 errors, local SQLite path unchanged (health + login respond normally).
 
 Stage Summary: The exact 42P05 failure mode is now self-healed in code (runtime + build); user-side fix is appending ?pgbouncer=true&connection_limit=1 to DATABASE_URL, but the app works even without it after this deploy.
+
+---
+Task ID: 22
+Agent: Z.ai Code (main)
+Task: Live file upload failing with "File storage is not configured" — Supabase Storage env vars missing on Vercel and buckets never created there.
+
+Work Log:
+- Traced the error to contentStorageConfigured() in extract.ts: requires NEXT_PUBLIC_SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY; three buckets are needed app-wide — content (private, materials), reports (private), avatars (public).
+- New src/lib/server/storage.ts: ensureBucket() (GET bucket → create on 404, 409-tolerant, per-instance cache), ensureAppBuckets(), listBucketIds(), storageConfigured().
+- Wired self-heal into all three upload paths: teacher/upload (content), reports/_util uploadReportObject (reports), upload/avatar (avatars public).
+- teacher/upload error message now names the exact env vars and where to get them instead of "contact support".
+- /api/health: new storage section (configured / reachable / per-bucket status); every health visit runs ensureAppBuckets() so buckets self-create once the env vars exist; ok now includes storage health.
+- Verified: tsc clean for changed files, lint 0 errors, health endpoint returns storage section correctly locally.
+
+Stage Summary: Adding the two Supabase env vars in Vercel + redeploy makes uploads work with zero manual bucket setup; /api/health reports storage status alongside database/admin.
