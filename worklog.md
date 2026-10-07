@@ -623,3 +623,19 @@ Work Log:
 - Verified: extraction chain on the real PDF recovers 1,217 chars incl. diagram descriptions (60 kN/100 kN, spans, UDL); AI analysis produced beam-reaction objectives; generated questions grounded (pin/roller supports); recovery button + graceful 422 error path; dark mode + light mode browser-verified.
 
 Stage Summary: Image-only/scanned PDFs now fully usable end-to-end (upload→scan→analyze→generate); dark mode matches the requested Z.ai-style graphite; one command restores Supabase runtime.
+
+---
+Task ID: 19
+Agent: Z.ai Code (main)
+Task: Fix "Could not create the account" / admin login failures on the live Vercel deployment, make deploys self-healing, and surface honest errors.
+
+Work Log:
+- Root cause: Vercel app connects to the Supabase Postgres DB, but that DB still has the original 13-table schema (SUPABASE_SETUP.md) while the code now has 21 models. Signup crashed on `db.platformSetting.findUnique` (P2021) and admin login crashed reading new User columns lastSeenAt/photoUrl (P2022) → both surfaced as the generic 500 "Could not create the account"/"Could not sign in". Also no server-side logging, so the real error was invisible.
+- scripts/vercel-prebuild.mjs: new build step (runs before `next build` on every deploy) — `prisma generate`, then `prisma db push --accept-data-loss` against DIRECT_URL (fallback DATABASE_URL, env var made resolvable for the schema), then optional idempotent admin bootstrap via ADMIN_BOOTSTRAP_PASSWORD (hash-only, scrypt, same format as app). Skips when DATABASE_URL is missing or file: (local SQLite untouched). Any failure prints a precise checklist and exits 0 so the deploy completes and /api/health can diagnose.
+- /api/health (public, no secrets): reports database configured/connected, schema sync status (information_schema table check with SQLite fallback), admin account presence, and plain-language fix actions; 200 when all green, 503 otherwise.
+- src/lib/server/db-errors.ts: shared classifier — logs the real error (Vercel function logs) and maps P1001/P1002 (unreachable), P2021/P2022 (schema drift), uninitialized client, missing DATABASE_URL, P2002 (duplicate email) to truthful, actionable client messages.
+- Auth routes signup/login/student-login/me/logout now use it (me/logout previously had NO try/catch → raw HTML 500s); Vercel-specific nothing else was wrong (sessions in DB, node:crypto scrypt, Node runtime).
+- .env.example (gitignore exception added) documents DATABASE_URL/DIRECT_URL pooler strings, ADMIN_BOOTSTRAP_PASSWORD, Supabase Storage keys.
+- Verified: signup → parent dashboard (browser), wrong password → 401 "Wrong email or password" (curl + dev log), /api/health renders correct diagnostics for the local SQLite fallback, prebuild skip paths + syntax OK, lint clean; prebuild's Postgres path intentionally not executed locally to preserve the sandbox's SQLite-generated client.
+
+Stage Summary: Every deploy now auto-syncs the DB schema (fixes the live failure permanently), /api/health gives instant diagnostics, auth errors are honest on both server logs and client UI. User action: ensure DATABASE_URL + DIRECT_URL are set in Vercel env vars, then redeploy (push already triggers it).

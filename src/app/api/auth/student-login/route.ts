@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { db } from "@/lib/db";
 import { createSession } from "@/lib/server/auth";
+import { dbErrorResponse } from "@/lib/server/db-errors";
 
 /**
  * POST /api/auth/student-login — child login with their class/family code + PIN.
@@ -61,7 +62,7 @@ export async function POST(req: NextRequest) {
         xp: student.xp,
       },
     });
-  } catch {
-    return Response.json({ error: "Could not sign in" }, { status: 500 });
+  } catch (e) {
+    return dbErrorResponse("student-login", e);
   }
 }

@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { db } from "@/lib/db";
 import { createSession, verifyPassword } from "@/lib/server/auth";
+import { dbErrorResponse } from "@/lib/server/db-errors";
 
 /**
  * POST /api/auth/login — PARENT / TEACHER / ADMIN email login.
@@ -27,7 +28,7 @@ export async function POST(req: NextRequest) {
       token,
       user: { id: user.id, email: user.email, name: user.name, role: user.role },
     });
-  } catch {
-    return Response.json({ error: "Could not sign in" }, { status: 500 });
+  } catch (e) {
+    return dbErrorResponse("login", e);
   }
 }
