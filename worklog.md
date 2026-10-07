@@ -652,3 +652,16 @@ Work Log:
 - Verified urlShape logic against 4 realistic malformed/valid cases; tsc clean for changed files; lint 0 errors; endpoint smoke-tested locally.
 
 Stage Summary: Login failures can no longer be opaque — the client shows the exact DB error code, and /api/health pinpoints copy/paste mistakes in DATABASE_URL (quotes, direct host, missing pgbouncer param, missing password).
+
+---
+Task ID: 21
+Agent: Z.ai Code (main)
+Task: Live login failing with P2010 `prepared statement "s0" already exists` (42P05) — DATABASE_URL on port 6543 without ?pgbouncer=true. Fix at both env and code level.
+
+Work Log:
+- /api/health urlShape diagnostics pinpointed it: port 6543, params [] — Prisma's prepared statements conflict with PgBouncer transaction mode.
+- src/lib/db.ts: normalizeDatabaseUrl() repairs the runtime URL automatically — appends pgbouncer=true&connection_limit=1 to :6543 URLs, re-encodes userinfo (fixes raw @ in passwords), passes file: and unparseable URLs through untouched; uses datasources override only when repaired. Log line notes the repair.
+- scripts/vercel-prebuild.mjs: same normalization for the db push URL (direct + fallback) so schema sync also survives the missing param.
+- Verified: prebuild syntax, tsc clean for changed files, lint 0 errors, local SQLite path unchanged (health + login respond normally).
+
+Stage Summary: The exact 42P05 failure mode is now self-healed in code (runtime + build); user-side fix is appending ?pgbouncer=true&connection_limit=1 to DATABASE_URL, but the app works even without it after this deploy.

@@ -91,7 +91,28 @@ try {
 // 3. Push the schema to the database (DIRECT_URL preferred, DATABASE_URL fallback)
 // ---------------------------------------------------------------------------
 banner("Prisma db push (schema sync)");
-const directUrl = process.env.DIRECT_URL || dbUrl;
+
+/**
+ * Same repair as src/lib/db.ts: port 6543 is PgBouncer transaction mode —
+ * Prisma CLI needs ?pgbouncer=true there or prepared statements conflict
+ * (42P05). Also re-encodes userinfo via new URL().
+ */
+function normalizeForPush(raw) {
+  if (!raw || raw.startsWith("file:")) return raw;
+  try {
+    const u = new URL(raw);
+    if (u.port === "6543" || u.searchParams.has("pgbouncer")) {
+      if (!u.searchParams.has("pgbouncer")) u.searchParams.set("pgbouncer", "true");
+      if (!u.searchParams.has("connection_limit")) u.searchParams.set("connection_limit", "1");
+    }
+    return u.toString();
+  } catch {
+    return raw;
+  }
+}
+
+const directUrl = normalizeForPush(process.env.DIRECT_URL || process.env.DATABASE_URL || "");
+const fallbackDbUrl = normalizeForPush(process.env.DATABASE_URL || "");
 const pushArgs = ["db", "push", "--accept-data-loss", "--url", directUrl];
 // The committed schema references env("DIRECT_URL") — make sure it resolves
 // even when the var is unset on the host (the --url flag above still decides
@@ -103,10 +124,10 @@ try {
   schemaSynced = true;
   console.log("✅ Database schema is in sync with the code");
 } catch (err) {
-  if (process.env.DIRECT_URL && process.env.DIRECT_URL !== dbUrl) {
+  if (fallbackDbUrl && fallbackDbUrl !== directUrl) {
     console.warn("→ Push over DIRECT_URL failed; retrying with DATABASE_URL…");
     try {
-      runPrisma(["db", "push", "--accept-data-loss", "--url", dbUrl], pushEnv);
+      runPrisma(["db", "push", "--accept-data-loss", "--url", fallbackDbUrl], pushEnv);
       schemaSynced = true;
       console.log("✅ Database schema is in sync with the code (via DATABASE_URL)");
     } catch (err2) {
