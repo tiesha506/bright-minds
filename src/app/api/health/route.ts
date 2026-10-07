@@ -1,5 +1,10 @@
 import { db } from "@/lib/db";
-import { ensureAppBuckets, listBucketIds, storageConfigured } from "@/lib/server/storage";
+import {
+  ensureAppBuckets,
+  listBucketIds,
+  storageConfigured,
+  storageDiagnostics,
+} from "@/lib/server/storage";
 
 export const dynamic = "force-dynamic";
 
@@ -65,8 +70,20 @@ interface HealthReport {
   };
   storage: {
     configured: boolean;
+    /** Exact env var names not present on the server. */
+    missing: string[];
+    /** Problem detected inside NEXT_PUBLIC_SUPABASE_URL, if any. */
+    urlIssue: string | null;
+    /** Problem detected inside SUPABASE_SERVICE_ROLE_KEY, if any. */
+    keyIssue: string | null;
     reachable: boolean | null;
     buckets: { content: boolean; reports: boolean; avatars: boolean } | null;
+  };
+  deploy: {
+    /** Short commit SHA of the running deployment (Vercel), null elsewhere. */
+    commit: string | null;
+    /** production / preview / development (Vercel), null elsewhere. */
+    environment: string | null;
   };
   actions: string[];
 }
@@ -121,7 +138,18 @@ export async function GET() {
     database: { configured: false, connected: false, error: null, urlShape: null },
     schema: { synced: null, missingTables: [] },
     admin: { exists: null },
-    storage: { configured: false, reachable: null, buckets: null },
+    storage: {
+      configured: false,
+      missing: [],
+      urlIssue: null,
+      keyIssue: null,
+      reachable: null,
+      buckets: null,
+    },
+    deploy: {
+      commit: (process.env.VERCEL_GIT_COMMIT_SHA ?? "").slice(0, 7) || null,
+      environment: process.env.VERCEL_ENV ?? null,
+    },
     actions: [],
   };
 
@@ -233,11 +261,34 @@ export async function GET() {
   }
 
   // ---- 4. File storage (Supabase buckets) ----------------------------------
-  report.storage.configured = storageConfigured();
-  if (!report.storage.configured) {
-    report.actions.push(
-      "File uploads are disabled: NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are not set on the server. In Vercel → Settings → Environment Variables, add NEXT_PUBLIC_SUPABASE_URL = your Supabase project URL (https://<ref>.supabase.co) and SUPABASE_SERVICE_ROLE_KEY = the service_role key (Supabase → Project Settings → API), then redeploy. The needed storage buckets are created automatically afterwards."
-    );
+  const diag = storageDiagnostics();
+  report.storage.configured = storageConfigured() && diag.missing.length === 0;
+  report.storage.missing = diag.missing;
+  report.storage.urlIssue = diag.urlIssue;
+  report.storage.keyIssue = diag.keyIssue;
+
+  if (diag.missing.length > 0) {
+    if (diag.missing.includes("NEXT_PUBLIC_SUPABASE_URL")) {
+      report.actions.push(
+        "NEXT_PUBLIC_SUPABASE_URL is not set on the server. In Vercel → Settings → Environment Variables, add NEXT_PUBLIC_SUPABASE_URL = your Supabase Project URL — the bare domain (https://<ref>.supabase.co), NO /rest/v1 path. Tick all environments, then redeploy (env vars only take effect after a redeploy)."
+      );
+    }
+    if (diag.missing.includes("SUPABASE_SERVICE_ROLE_KEY")) {
+      report.actions.push(
+        "SUPABASE_SERVICE_ROLE_KEY is not set on the server. In Vercel → Settings → Environment Variables, add SUPABASE_SERVICE_ROLE_KEY = the service_role secret key (starts with eyJ… — Supabase → Project Settings → API → service_role). Tick all environments, then redeploy."
+      );
+    }
+  } else if (diag.urlIssue || diag.keyIssue) {
+    if (diag.urlIssue) {
+      report.actions.push(
+        `NEXT_PUBLIC_SUPABASE_URL is set but looks wrong: ${diag.urlIssue}.`
+      );
+    }
+    if (diag.keyIssue) {
+      report.actions.push(
+        `SUPABASE_SERVICE_ROLE_KEY is set but looks wrong: ${diag.keyIssue}.`
+      );
+    }
   } else {
     try {
       await ensureAppBuckets(); // self-heal missing buckets on every health check

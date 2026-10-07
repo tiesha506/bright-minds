@@ -91,3 +91,100 @@ export async function listBucketIds(): Promise<string[] | null> {
     return null;
   }
 }
+
+// ---------------------------------------------------------------------------
+// Diagnostics — pinpoint WHY storage is not configured without exposing any
+// secret value. Mirrors the urlShape diagnostics for DATABASE_URL.
+// ---------------------------------------------------------------------------
+
+export interface StorageDiagnostics {
+  /** Exact env var names that are not set on the server. */
+  missing: string[];
+  /** Human-readable problem with the NEXT_PUBLIC_SUPABASE_URL value, if any. */
+  urlIssue: string | null;
+  /** Human-readable problem with the SUPABASE_SERVICE_ROLE_KEY value, if any. */
+  keyIssue: string | null;
+}
+
+const QUOTED = /^["'].*["']$/;
+
+/**
+ * Decode the `role` claim from a Supabase JWT key WITHOUT verifying the
+ * signature (diagnostics only — we never return the key, just its role label,
+ * so an admin can tell they pasted the anon key instead of service_role).
+ */
+export function decodeSupabaseKeyRole(key: string): string | null {
+  const parts = key.trim().split(".");
+  if (parts.length !== 3 || !parts[1]) return null;
+  try {
+    const b64 = parts[1].replace(/-/g, "+").replace(/_/g, "/");
+    const padded = b64 + "=".repeat((4 - (b64.length % 4)) % 4);
+    const json = JSON.parse(Buffer.from(padded, "base64").toString("utf8")) as {
+      role?: unknown;
+    };
+    return typeof json.role === "string" ? json.role : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Inspect the two Storage env vars for the classic setup mistakes:
+ * variable missing, quotes pasted in, REST path appended to the URL,
+ * or the public anon/publishable key used instead of the service_role key.
+ */
+export function storageDiagnostics(): StorageDiagnostics {
+  const url = (process.env.NEXT_PUBLIC_SUPABASE_URL ?? "").trim();
+  const key = (process.env.SUPABASE_SERVICE_ROLE_KEY ?? "").trim();
+
+  const missing: string[] = [];
+  if (!url) missing.push("NEXT_PUBLIC_SUPABASE_URL");
+  if (!key) missing.push("SUPABASE_SERVICE_ROLE_KEY");
+
+  let urlIssue: string | null = null;
+  if (url) {
+    if (QUOTED.test(url)) {
+      urlIssue = "it is wrapped in quote marks — remove the quotes";
+    } else if (!url.startsWith("https://")) {
+      urlIssue = "it should start with https://";
+    } else if (/\/rest\/v1|\/storage\/v1/.test(url)) {
+      urlIssue =
+        "it includes an API path (/rest/v1 or /storage/v1) — use only the bare project URL, e.g. https://<ref>.supabase.co";
+    } else {
+      try {
+        const host = new URL(url).hostname;
+        if (!host.endsWith(".supabase.co")) {
+          urlIssue = `the host "${host}" does not look like a Supabase project URL (expected https://<ref>.supabase.co)`;
+        }
+      } catch {
+        urlIssue = "it is not a valid URL";
+      }
+    }
+  }
+
+  let keyIssue: string | null = null;
+  if (key) {
+    if (QUOTED.test(key)) {
+      keyIssue = "it is wrapped in quote marks — remove the quotes";
+    } else if (key.startsWith("sb_secret_")) {
+      // New-style Supabase secret key — valid for the Storage API.
+    } else if (key.startsWith("sb_publishable_")) {
+      keyIssue =
+        "this is the public publishable key — the service_role SECRET key is required";
+    } else {
+      const role = decodeSupabaseKeyRole(key);
+      if (role === "service_role") {
+        // Correct key.
+      } else if (role === "anon" || role === "authenticated") {
+        keyIssue = `the key is the public "${role}" key — the service_role SECRET key is required (both start with eyJ; service_role is the other one in the API keys list)`;
+      } else if (role) {
+        keyIssue = `the key decodes as role "${role}" — the service_role key is required`;
+      } else {
+        keyIssue =
+          "it does not look like a Supabase service_role key (expected the long eyJ… token from Supabase → Project Settings → API → service_role)";
+      }
+    }
+  }
+
+  return { missing, urlIssue, keyIssue };
+}
