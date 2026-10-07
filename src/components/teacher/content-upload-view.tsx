@@ -332,6 +332,7 @@ export function ContentUploadView({ user }: { user: AuthUser }) {
   // working material (wizard subject)
   const [material, setMaterial] = useState<WorkingMaterial | null>(null);
   const [busy, setBusy] = useState(false);
+  const [recovering, setRecovering] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // step 1
@@ -504,13 +505,21 @@ export function ContentUploadView({ user }: { user: AuthUser }) {
 
   const rescan = async () => {
     if (!material) return;
+    const needsRecovery = (material.extractedChars ?? 0) === 0;
     setError(null);
+    if (needsRecovery) setRecovering(true);
     setBusy(true);
     try {
-      const res = await api<{ material: MaterialSummary }>("/api/teacher/materials/analyze", {
+      const res = await api<{ material: MaterialSummary; recoveryNote?: string }>("/api/teacher/materials/analyze", {
         method: "POST",
-        body: { materialId: material.id, subjectId: material.subjectId, allowSubjectOverride: false },
+        body: {
+          materialId: material.id,
+          subjectId: material.subjectId,
+          allowSubjectOverride: false,
+          rescan: needsRecovery,
+        },
       });
+      const recovered = (res.material.extractedChars ?? 0) > 0;
       setMaterial((m) =>
         m
           ? {
@@ -520,14 +529,20 @@ export function ContentUploadView({ user }: { user: AuthUser }) {
               analysis: res.material.analysis,
               status: res.material.status,
               extractedChars: res.material.extractedChars,
+              extractionNote: recovered ? res.recoveryNote ?? "" : m.extractionNote,
             }
           : m
       );
-      toast({ title: "Re-scan complete 🔍", description: "The AI analysis was refreshed." });
+      toast(
+        recovered && needsRecovery
+          ? { title: "Text recovered 🎉", description: "The pages were read with AI scanning — you can generate from this material now." }
+          : { title: "Re-scan complete 🔍", description: "The AI analysis was refreshed." }
+      );
     } catch (e) {
       setError(e instanceof Error ? e.message : "Re-scan failed. Please try again.");
     } finally {
       setBusy(false);
+      setRecovering(false);
     }
   };
 
@@ -973,8 +988,16 @@ export function ContentUploadView({ user }: { user: AuthUser }) {
                 subtitle="The AI scan is a first draft — correct anything before generating."
                 actions={
                   <div className="flex gap-2">
-                    <Button type="button" variant="outline" size="sm" className="h-10 border-slate-300" onClick={rescan} disabled={busy || !hasText}>
-                      <RefreshCw className={cn("mr-1.5 h-3.5 w-3.5", busy && "animate-spin")} /> Re-scan
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      className="h-10 border-slate-300"
+                      onClick={rescan}
+                      disabled={busy || (!hasText && !(material.hasFile && material.fileKind === "document"))}
+                    >
+                      <RefreshCw className={cn("mr-1.5 h-3.5 w-3.5", busy && "animate-spin")} />
+                      {hasText ? "Re-scan" : "Try AI page reading"}
                     </Button>
                     <Button type="button" size="sm" className="h-10 bg-emerald-600 text-white hover:bg-emerald-700" onClick={() => saveEdits()} disabled={busy}>
                       <CheckCircle2 className="mr-1.5 h-3.5 w-3.5" /> Save corrections
@@ -1070,7 +1093,23 @@ export function ContentUploadView({ user }: { user: AuthUser }) {
               >
                 {!hasText ? (
                   <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-3 text-sm text-amber-800">
-                    This material has no readable text (video, audio or a link), so AI generation is unavailable. Attach it to an assignment from the Assignments tab, or upload a document to generate from.
+                    {material.hasFile && material.fileKind === "document" ? (
+                      <div className="space-y-2">
+                        <p className="font-medium">
+                          No readable text was found in this document — it may be scanned pages or built from pictures.
+                        </p>
+                        <p>AI page scanning (OCR) can read the pages, including text inside diagrams, and recover the content.</p>
+                        <Button type="button" size="sm" className="h-10 bg-amber-600 text-white hover:bg-amber-700" onClick={rescan} disabled={busy}>
+                          <RefreshCw className={cn("mr-1.5 h-3.5 w-3.5", recovering && "animate-spin")} />
+                          {recovering ? "Reading the pages… (this can take up to a minute)" : "Try AI page reading (OCR)"}
+                        </Button>
+                      </div>
+                    ) : (
+                      <p>
+                        This material has no readable text (video, audio or a link), so AI generation is unavailable. Attach it to an
+                        assignment from the Assignments tab, or upload a document to generate from.
+                      </p>
+                    )}
                   </div>
                 ) : (
                   <>

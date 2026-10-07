@@ -605,3 +605,21 @@ Work Log:
 - /api/progress/route.ts: ensureMilestoneCertificates(studentId) fire-and-forget at the single completion exit (covers lessons AND assignment completions).
 
 Stage Summary: All roles expose the new features; tsc + lint clean; browser-verified: eye-friendly theme, clean login (no demo panel), admin login + real overview/analytics, student dashboard with assignment/notes/reminders, guided tours.
+
+---
+Task ID: 18
+Agent: Z.ai Code (main)
+Task: Fix PDF extraction failures (image-only/scanned PDFs), add OCR text recovery UI, redesign dark mode to neutral graphite, swap Balanced emoji.
+
+Work Log:
+- Diagnosed user errors: pdf-parse throws on some runtimes (DOMMatrix/@napi-rs/canvas) AND the Structural Mechanics PDF has only ~196 chars of text layer (content is diagram images) → "Automatic text extraction failed" + AI generation unavailable.
+- src/lib/server/extract.ts: new PDF chain — pdf-parse → poppler `pdftotext` fallback → `pdftoppm` rasterize (130dpi, first 8 pages, pool of 3) → glm-4.5v page reading (full OCR + bracketed diagram descriptions) → merged text. Failure-tolerant at every step; honest notes. Added downloadContentObject helper.
+- /api/teacher/materials/analyze: `rescan:true` re-downloads the stored file and re-runs extraction when extractedText is empty (422 with guidance if still nothing).
+- content-upload-view.tsx: "Try AI page reading (OCR)" button in step 3 gate for file-backed documents; step-2 Re-scan becomes recovery-aware; recovery toast + note refresh.
+- /api/teacher/upload: no-text note now points to the recovery action.
+- globals.css: dark mode redesigned to neutral graphite (oklch 0.175 bg / 0.215 cards / 0.195 sidebar, hue 260, subtle borders ≈ white 9%, brightened teal primary) + comprehensive dark remap layer (bg-white, bg-slate/zinc/neutral-50..200, text-slate-400..900, border/divide/ring neutrals → tokens; pastel badges → 16-18% translucent tints with light text) so hardcoded light utilities follow dark mode; verified dashboard + wizard fully dark, light mode unchanged.
+- learning-config.ts: Balanced theme emoji 🌈 → 🌿.
+- INCIDENT: sandbox sync glitch had deleted 3 route files (api/teacher/upload, api/reports/upload, api/upload/avatar) and reverted .env to the stale SQLite-only version (Supabase keys + Postgres URL lost). Routes restored from HEAD; .env is NOT recoverable locally — user must re-run scripts/migrate-to-supabase.sh "<DB_PASSWORD>" (swaps schema back + regenerates) and re-add SUPABASE keys. Verified app meanwhile on temporary local SQLite (schema.prisma kept postgres in git; runtime client sqlite).
+- Verified: extraction chain on the real PDF recovers 1,217 chars incl. diagram descriptions (60 kN/100 kN, spans, UDL); AI analysis produced beam-reaction objectives; generated questions grounded (pin/roller supports); recovery button + graceful 422 error path; dark mode + light mode browser-verified.
+
+Stage Summary: Image-only/scanned PDFs now fully usable end-to-end (upload→scan→analyze→generate); dark mode matches the requested Z.ai-style graphite; one command restores Supabase runtime.

@@ -96,7 +96,7 @@ export const THEMES: ThemeInfo[] = [
     id: "neutral",
     label: "Balanced",
     description: "A fresh, nature-inspired mix",
-    emoji: "🌈",
+    emoji: "🌿",
     swatch: ["#2dd4bf", "#34d399", "#a7f3d0"],
   },
 ];

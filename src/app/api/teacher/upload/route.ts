@@ -120,7 +120,7 @@ export async function POST(req: Request) {
         analysisJson = "{}";
       }
     } else {
-      aiNote = "No readable text was found, so AI analysis was skipped.";
+      aiNote = "No readable text was found, so AI analysis was skipped. Open the material and press 'Try AI page reading' to scan the pages with OCR.";
     }
   }
 

@@ -7,7 +7,13 @@
 // ---------------------------------------------------------------------------
 
 import { db } from "@/lib/db";
-import { analyzeMaterialText, requireTeacherOrAdmin, ownedMaterial } from "@/lib/server/extract";
+import {
+  analyzeMaterialText,
+  downloadContentObject,
+  extractText,
+  requireTeacherOrAdmin,
+  ownedMaterial,
+} from "@/lib/server/extract";
 import { parseMaterialAnalysis, materialFileKind } from "@/lib/teacher-materials";
 import { SUBJECT_IDS } from "@/lib/teacher-types";
 import type { SubjectId } from "@/lib/teacher-types";
@@ -27,19 +33,46 @@ export async function POST(req: Request) {
   }
 
   const materialId = typeof body.materialId === "string" ? body.materialId : "";
-  const material = await ownedMaterial(materialId, auth);
+  let material = await ownedMaterial(materialId, auth);
   if (!material) {
     return Response.json({ error: "Material not found" }, { status: 404 });
   }
 
+  const wantRescan = body.rescan === true;
+  let recoveryNote = "";
   if (!material.extractedText.trim()) {
-    return Response.json(
-      {
-        error:
-          "This material has no extracted text to analyse (video/audio and legacy files can't be scanned). Upload a document with readable text or add photos of the pages.",
-      },
-      { status: 400 }
-    );
+    if (wantRescan && material.fileKey && material.fileName) {
+      // Text recovery: re-download the stored file and run the full
+      // extraction chain again (pdf-parse → poppler → AI page scanning).
+      const bytes = await downloadContentObject(material.fileKey);
+      const extracted = bytes
+        ? await extractText(material.fileName, material.mimeType, bytes).catch(() => null)
+        : null;
+      if (extracted && extracted.text.trim()) {
+        await db.teacherMaterial.update({
+          where: { id: material.id },
+          data: { extractedText: extracted.text },
+        });
+        material = { ...material, extractedText: extracted.text };
+        recoveryNote = extracted.note;
+      } else {
+        return Response.json(
+          {
+            error:
+              "Still no readable text could be recovered from this file (it may contain only pictures). Try uploading clearer photos of the pages, or attach it as a downloadable resource.",
+          },
+          { status: 422 }
+        );
+      }
+    } else {
+      return Response.json(
+        {
+          error:
+            "This material has no extracted text to analyse (video/audio and legacy files can't be scanned). Upload a document with readable text or add photos of the pages.",
+        },
+        { status: 400 }
+      );
+    }
   }
 
   // Teacher-selected subject is the fallback + the subject the AI keeps if
@@ -100,5 +133,6 @@ export async function POST(req: Request) {
       updatedAt: updated.updatedAt.toISOString(),
     },
     aiSubjectGuess: ai.subject,
+    recoveryNote,
   });
 }

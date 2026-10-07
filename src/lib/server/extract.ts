@@ -9,6 +9,10 @@
 // 500 an upload — callers receive best-effort text plus a human note.
 // ---------------------------------------------------------------------------
 
+import { execFile } from "child_process";
+import fs from "fs";
+import os from "os";
+import path from "path";
 import { getSessionUser, unauthorized, forbidden, type SessionUser } from "@/lib/server/auth";
 import { db } from "@/lib/db";
 import type { Difficulty, SubjectId } from "@/lib/teacher-types";
@@ -33,16 +37,146 @@ export function fileExt(name: string): string {
   return dot === -1 ? "" : name.slice(dot + 1).toLowerCase();
 }
 
-/** PDF text via pdf-parse v2 (PDFParse class — avoids the v1 debug shim). */
+/**
+ * PDF text via pdf-parse v2 (PDFParse class — avoids the v1 debug shim).
+ * Failure-tolerant: some runtimes cannot load its optional canvas renderer
+ * (DOMMatrix/@napi-rs/canvas), so any error degrades to "" and the caller
+ * falls back to the poppler CLI + OCR chain.
+ */
 export async function extractPdfText(buffer: Buffer): Promise<string> {
-  const { PDFParse } = await import("pdf-parse");
-  const parser = new PDFParse({ data: new Uint8Array(buffer) });
   try {
-    const result = await parser.getText();
-    return (result?.text ?? "").replace(/\u0000/g, "").trim();
-  } finally {
-    await parser.destroy().catch(() => {});
+    const { PDFParse } = await import("pdf-parse");
+    const parser = new PDFParse({ data: new Uint8Array(buffer) });
+    try {
+      const result = await parser.getText();
+      return (result?.text ?? "").replace(/\u0000/g, "").trim();
+    } finally {
+      await parser.destroy().catch(() => {});
+    }
+  } catch (err) {
+    console.warn("[extract] pdf-parse unavailable, falling back to poppler:", err instanceof Error ? err.message : err);
+    return "";
   }
+}
+
+// ---------------------- poppler CLI helpers (PDF) ---------------------------
+
+const PDF_TEXT_FLOOR = 400; // chars — below this a PDF is treated as text-poor
+const PDF_OCR_MAX_PAGES = 8; // never OCR more than the first N pages
+const PDF_OCR_CHAR_CAP = 60_000; // hard cap on merged OCR output
+
+/** Run a CLI tool; resolves with stdout even on non-zero exit (poppler tools
+ * often emit useful output plus a warning). Rejects only when nothing came out. */
+function runCmd(cmd: string, args: string[], timeoutMs = 90_000): Promise<Buffer> {
+  return new Promise((resolve, reject) => {
+    execFile(cmd, args, { timeout: timeoutMs, maxBuffer: 64 * 1024 * 1024, encoding: "buffer" }, (err, stdout) => {
+      const out = Buffer.isBuffer(stdout) ? stdout : Buffer.from(String(stdout ?? ""));
+      if (err && out.length === 0) {
+        reject(err);
+        return;
+      }
+      resolve(out);
+    });
+  });
+}
+
+/** Write the PDF to a fresh temp dir, run `fn`, always clean up. */
+async function withTempPdf<T>(buffer: Buffer, fn: (dir: string, pdfPath: string) => Promise<T>): Promise<T> {
+  const dir = await fs.promises.mkdtemp(path.join(os.tmpdir(), "bm-pdf-"));
+  try {
+    const pdfPath = path.join(dir, "file.pdf");
+    await fs.promises.writeFile(pdfPath, buffer);
+    return await fn(dir, pdfPath);
+  } finally {
+    void fs.promises.rm(dir, { recursive: true, force: true }).catch(() => {});
+  }
+}
+
+/**
+ * Poppler `pdftotext` fallback — an independent PDF text engine that works
+ * even when pdf-parse's native dependencies are unavailable.
+ */
+export async function extractPdfTextPoppler(pdfPath: string): Promise<string> {
+  const out = await runCmd("pdftotext", ["-q", "-enc", "UTF-8", pdfPath, "-"]);
+  return out.toString("utf8").replace(/\u0000/g, "").trim();
+}
+
+/** Rasterize the first N pages to PNG files; returns their paths in order. */
+async function rasterizePdfPages(pdfPath: string, dir: string, maxPages: number): Promise<string[]> {
+  await runCmd("pdftoppm", ["-png", "-r", "130", "-f", "1", "-l", String(maxPages), pdfPath, path.join(dir, "page")]);
+  const names = (await fs.promises.readdir(dir)).filter((n) => /^page-\d+\.png$/.test(n));
+  names.sort((a, b) => Number(a.match(/(\d+)/)?.[1] ?? 0) - Number(b.match(/(\d+)/)?.[1] ?? 0));
+  return names.map((n) => path.join(dir, n));
+}
+
+/** Tiny promise pool so page OCR runs 3-at-a-time (fast, but gentle). */
+async function mapPool<T, R>(items: T[], limit: number, fn: (item: T, index: number) => Promise<R>): Promise<R[]> {
+  const results = new Array<R>(items.length);
+  let next = 0;
+  const workers = Array.from({ length: Math.min(limit, items.length) }, async () => {
+    for (;;) {
+      const i = next++;
+      if (i >= items.length) return;
+      results[i] = await fn(items[i], i);
+    }
+  });
+  await Promise.all(workers);
+  return results;
+}
+
+/**
+ * Read a page image with the vision model — full OCR **plus** short bracketed
+ * descriptions of diagrams/figures, so image-only PDFs (worksheets built from
+ * pictures, scanned exams) become usable teaching material.
+ */
+export async function readDocumentPage(buffer: Buffer): Promise<string> {
+  const ZAI = (await import("z-ai-web-dev-sdk")).default;
+  const zai = await ZAI.create();
+  const dataUrl = `data:image/png;base64,${buffer.toString("base64")}`;
+  const completion = await zai.chat.completions.createVision({
+    model: "glm-4.5v",
+    messages: [
+      {
+        role: "user",
+        content: [
+          {
+            type: "text",
+            text:
+              "This is a page from a teaching document. Output, in reading order:\n" +
+              "1. ALL text exactly as written (headings, instructions, questions, labels, numbers, units).\n" +
+              "2. For every diagram, chart, table or figure, one short bracketed line describing exactly what it shows, e.g. " +
+              "[Diagram: simply supported beam A to D, spans 3m + 3m + 3m, point loads 60 kN at B and 100 kN at C]. " +
+              "Include all values, labels and dimensions you can see.\n" +
+              "Output plain text only — no commentary, no markdown.",
+          },
+          { type: "image_url", image_url: { url: dataUrl } },
+        ],
+      },
+    ],
+    thinking: { type: "disabled" },
+  });
+  return String((completion as { choices?: { message?: { content?: unknown } }[] } | null)?.choices?.[0]?.message?.content ?? "").trim();
+}
+
+/**
+ * Full recovery pass for text-poor PDFs: rasterize pages with poppler and
+ * read each page with the vision model. Returns merged text ("" when nothing).
+ */
+export async function ocrPdfPages(buffer: Buffer, maxPages = PDF_OCR_MAX_PAGES): Promise<{ text: string; pages: number }> {
+  return withTempPdf(buffer, async (dir, pdfPath) => {
+    const files = await rasterizePdfPages(pdfPath, dir, maxPages);
+    if (files.length === 0) return { text: "", pages: 0 };
+    const perPage = await mapPool(files, 3, async (file) => {
+      try {
+        return await readDocumentPage(await fs.promises.readFile(file));
+      } catch (err) {
+        console.warn("[extract] page OCR failed:", err instanceof Error ? err.message : err);
+        return "";
+      }
+    });
+    const text = perPage.filter(Boolean).join("\n\n").slice(0, PDF_OCR_CHAR_CAP).trim();
+    return { text, pages: files.length };
+  });
 }
 
 /** DOCX text via mammoth (raw text, no styles). */
@@ -123,12 +257,32 @@ export async function extractText(fileName: string, mimeType: string, buffer: Bu
   const ext = fileExt(fileName);
   try {
     if (ext === "pdf" || mimeType === "application/pdf") {
-      const text = await extractPdfText(buffer);
-      return {
-        text,
-        note: text ? `Extracted ${text.length.toLocaleString()} characters from the PDF.` : "No text layer found in this PDF (it may be scanned images). You can still attach it and add resources.",
-        method: "pdf",
-      };
+      // Chain: pdf-parse → poppler pdftotext → rasterize + vision OCR.
+      let text = await extractPdfText(buffer);
+      if (text.length < PDF_TEXT_FLOOR) {
+        const poppler = await withTempPdf(buffer, (_dir, pdfPath) => extractPdfTextPoppler(pdfPath)).catch(() => "");
+        if (poppler.length > text.length) text = poppler;
+      }
+      let ocrPages = 0;
+      if (text.length < PDF_TEXT_FLOOR) {
+        const ocr = await ocrPdfPages(buffer).catch(() => ({ text: "", pages: 0 }));
+        if (ocr.text.length > text.length) {
+          text = ocr.text;
+          ocrPages = ocr.pages;
+        }
+      }
+      text = text.trim();
+      let note: string;
+      if (ocrPages > 0) {
+        note = text
+          ? `This PDF has little or no selectable text, so ${ocrPages} page${ocrPages === 1 ? " was" : "s were"} read with AI page scanning (OCR) — ${text.length.toLocaleString()} characters recovered.`
+          : "Even AI page scanning could not read this PDF — it may contain only pictures. You can still attach it as a downloadable resource, or upload clearer photos of the pages.";
+      } else if (text) {
+        note = `Extracted ${text.length.toLocaleString()} characters from the PDF.`;
+      } else {
+        note = "No readable text could be recovered from this PDF. You can still attach it as a downloadable resource.";
+      }
+      return { text, note, method: ocrPages > 0 ? "ocr" : "pdf" };
     }
     if (ext === "docx") {
       const text = await extractDocxText(buffer);
@@ -224,6 +378,21 @@ export async function signedUrlForContent(key: string, expiresIn = 300): Promise
   } catch (err) {
     console.error("[storage] signed URL failed:", err);
     return "";
+  }
+}
+
+/** Download a private object's bytes (null when unavailable). */
+export async function downloadContentObject(key: string): Promise<Buffer | null> {
+  if (!key || !contentStorageConfigured()) return null;
+  try {
+    const res = await fetch(`${SUPABASE_URL}/storage/v1/object/${CONTENT_BUCKET}/${key}`, {
+      headers: { Authorization: `Bearer ${SERVICE_ROLE}` },
+    });
+    if (!res.ok) return null;
+    return Buffer.from(await res.arrayBuffer());
+  } catch (err) {
+    console.error("[storage] download failed:", err);
+    return null;
   }
 }
 
