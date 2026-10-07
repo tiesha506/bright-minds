@@ -18,6 +18,11 @@ export function logDbError(scope: string, e: unknown) {
   if (e instanceof Error && e.stack) console.error(e.stack);
 }
 
+/** Strip anything resembling credentials from an error message. */
+function scrub(message: string): string {
+  return message.replace(/:\/\/[^@\s]*@/g, "://***@").slice(0, 160);
+}
+
 export function dbErrorResponse(scope: string, e: unknown): Response {
   logDbError(scope, e);
 
@@ -76,6 +81,43 @@ export function dbErrorResponse(scope: string, e: unknown): Response {
     );
   }
 
+  // Malformed connection string (quotes pasted in, unencoded password, missing parts)
+  if (
+    code === "P1012" ||
+    /must start with the protocol|Invalid URL|malformed|failed to parse/i.test(message)
+  ) {
+    return Response.json(
+      {
+        error:
+          "The DATABASE_URL on the server is not a valid connection string. Common causes: it was pasted with surrounding quote marks, the password contains special characters that are not URL-encoded (@ → %40, # → %23, : → %3A, / → %2F), or part of the URL is missing. See .env.example in the repo for the exact format, fix it in Vercel → Settings → Environment Variables, then redeploy. /api/health shows exactly what is wrong with the value.",
+      },
+      { status: 503 }
+    );
+  }
+
+  // Raw query failed (classic pgbouncer transaction-mode conflict when the
+  // ?pgbouncer=true parameter is missing from the port-6543 URL)
+  if (code === "P2010" || /prepared statement|raw query failed/i.test(message)) {
+    return Response.json(
+      {
+        error:
+          "The database rejected a query at the connection level. If DATABASE_URL uses port 6543 (transaction pooler), make sure it ends with ?pgbouncer=true&connection_limit=1. Check /api/health for the connection details.",
+      },
+      { status: 503 }
+    );
+  }
+
+  // Server closed the connection mid-request
+  if (code === "P1017" || /server closed the connection/i.test(message)) {
+    return Response.json(
+      {
+        error:
+          "The database closed the connection unexpectedly. This is usually transient — try again in a minute. If it persists, check /api/health and the Supabase project status.",
+      },
+      { status: 503 }
+    );
+  }
+
   // Duplicate email that raced past the pre-check (P2002) — honest message
   if (code === "P2002") {
     return Response.json(
@@ -84,8 +126,12 @@ export function dbErrorResponse(scope: string, e: unknown): Response {
     );
   }
 
+  // Unknown error — never hide it again: surface the code + scrubbed message
+  const detail = code ? `${code}: ${scrub(message)}` : scrub(message);
   return Response.json(
-    { error: "Something went wrong on the server. Please try again in a moment." },
+    {
+      error: `Something went wrong on the server (${detail}). If this keeps happening, open /api/health for a full diagnosis or check the server logs for the [db-error] entry.`,
+    },
     { status: 500 }
   );
 }

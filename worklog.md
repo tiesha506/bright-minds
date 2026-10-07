@@ -639,3 +639,16 @@ Work Log:
 - Verified: signup → parent dashboard (browser), wrong password → 401 "Wrong email or password" (curl + dev log), /api/health renders correct diagnostics for the local SQLite fallback, prebuild skip paths + syntax OK, lint clean; prebuild's Postgres path intentionally not executed locally to preserve the sandbox's SQLite-generated client.
 
 Stage Summary: Every deploy now auto-syncs the DB schema (fixes the live failure permanently), /api/health gives instant diagnostics, auth errors are honest on both server logs and client UI. User action: ensure DATABASE_URL + DIRECT_URL are set in Vercel env vars, then redeploy (push already triggers it).
+
+---
+Task ID: 20
+Agent: Z.ai Code (main)
+Task: User reported login now failing with generic 500 after adding env vars — make DB errors fully transparent and diagnose malformed DATABASE_URL.
+
+Work Log:
+- Interpretation: the user's screenshot shows the new honest error, meaning DATABASE_URL IS now set on Vercel but the connection fails with an error the classifier didn't know (prime suspect: malformed string — quotes pasted in, unencoded password, direct db.<ref>.supabase.co host which is IPv6-only and unreachable from Vercel, or placeholder left in).
+- db-errors.ts: added P1012 (malformed DSN), P2010 (raw query / pgbouncer param missing), P1017 (server closed connection) classifications; unknown errors now surface the Prisma code + scrubbed message (credentials stripped via ://***@) instead of a bare "Something went wrong".
+- /api/health: new urlShape diagnostics (quoted? protocol? pooler vs direct host? has password? params? port?) with targeted fix actions; credentials never returned; error field scrubbed too.
+- Verified urlShape logic against 4 realistic malformed/valid cases; tsc clean for changed files; lint 0 errors; endpoint smoke-tested locally.
+
+Stage Summary: Login failures can no longer be opaque — the client shows the exact DB error code, and /api/health pinpoints copy/paste mistakes in DATABASE_URL (quotes, direct host, missing pgbouncer param, missing password).

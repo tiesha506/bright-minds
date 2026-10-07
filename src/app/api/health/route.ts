@@ -34,6 +34,18 @@ const EXPECTED_TABLES = [
   "ActivityLog",
 ];
 
+interface UrlShape {
+  quoted: boolean; // value was pasted with surrounding quote marks
+  protocol: string | null; // postgresql / postgres / file / null (unparseable)
+  host: string | null;
+  isPooler: boolean; // *.pooler.supabase.com (works from serverless)
+  isDirect: boolean; // db.<ref>.supabase.co (IPv6 — unreachable from Vercel!)
+  hasCredentials: boolean;
+  hasPassword: boolean;
+  params: string[]; // e.g. ["pgbouncer", "connection_limit"]
+  port: string | null;
+}
+
 interface HealthReport {
   ok: boolean;
   time: string;
@@ -41,6 +53,7 @@ interface HealthReport {
     configured: boolean;
     connected: boolean;
     error: string | null;
+    urlShape: UrlShape | null;
   };
   schema: {
     synced: boolean | null; // null = could not determine (non-SQL database?)
@@ -52,11 +65,54 @@ interface HealthReport {
   actions: string[];
 }
 
+/**
+ * Inspect the DATABASE_URL value and describe its shape WITHOUT ever
+ * returning the credentials themselves. This pinpoints the classic
+ * copy/paste mistakes (quotes left in, direct instead of pooler host,
+ * missing pgbouncer param, no password).
+ */
+function describeUrl(raw: string): UrlShape {
+  const trimmed = raw.trim();
+  const quoted = /^".*"$|^'.*'$/.test(trimmed);
+  const cleaned = quoted ? trimmed.slice(1, -1) : trimmed;
+
+  let protocol: string | null = null;
+  let host: string | null = null;
+  let port: string | null = null;
+  let hasCredentials = false;
+  let hasPassword = false;
+  let params: string[] = [];
+
+  try {
+    const u = new URL(cleaned);
+    protocol = u.protocol.replace(":", "");
+    host = u.hostname;
+    port = u.port || null;
+    hasCredentials = !!u.username;
+    hasPassword = !!u.password;
+    params = [...u.searchParams.keys()];
+  } catch {
+    protocol = null;
+  }
+
+  return {
+    quoted,
+    protocol,
+    host,
+    isPooler: !!host && host.endsWith("pooler.supabase.com"),
+    isDirect: !!host && /^db\.[a-z0-9]+\.supabase\.co$/.test(host),
+    hasCredentials,
+    hasPassword,
+    params,
+    port,
+  };
+}
+
 export async function GET() {
   const report: HealthReport = {
     ok: false,
     time: new Date().toISOString(),
-    database: { configured: false, connected: false, error: null },
+    database: { configured: false, connected: false, error: null, urlShape: null },
     schema: { synced: null, missingTables: [] },
     admin: { exists: null },
     actions: [],
@@ -64,6 +120,35 @@ export async function GET() {
 
   const dbUrl = process.env.DATABASE_URL ?? "";
   report.database.configured = dbUrl.length > 0 && !dbUrl.startsWith("file:");
+  if (report.database.configured) {
+    const shape = describeUrl(dbUrl);
+    report.database.urlShape = shape;
+    if (shape.quoted) {
+      report.actions.push(
+        'DATABASE_URL starts and ends with quote marks — remove the quotes in Vercel → Environment Variables (quotes belong only in .env files, not in dashboard fields).'
+      );
+    }
+    if (shape.protocol !== "postgresql" && shape.protocol !== "postgres") {
+      report.actions.push(
+        `DATABASE_URL does not parse as a postgres connection string (detected protocol: ${shape.protocol ?? "unparseable"}). It should start with postgresql:// — copy the Transaction pooler string from Supabase → Settings → Database → Connection string.`
+      );
+    }
+    if (shape.isDirect) {
+      report.actions.push(
+        "DATABASE_URL points at the direct database host (db.<ref>.supabase.co). Vercel serverless functions cannot reach it (IPv6 only). Use the POOLER host instead: aws-0-us-west-2.pooler.supabase.com (Transaction pooler, port 6543, with ?pgbouncer=true&connection_limit=1)."
+      );
+    }
+    if (shape.hasCredentials && !shape.hasPassword) {
+      report.actions.push(
+        "DATABASE_URL has a username but no password — the password placeholder was not replaced. Re-copy the string and insert your real database password."
+      );
+    }
+    if (shape.port === "6543" && !shape.params.includes("pgbouncer")) {
+      report.actions.push(
+        "DATABASE_URL uses port 6543 (transaction pooler) but is missing the ?pgbouncer=true&connection_limit=1 parameters — queries may fail unpredictably. Append them to the URL."
+      );
+    }
+  }
 
   if (!report.database.configured) {
     report.actions.push(
@@ -80,15 +165,20 @@ export async function GET() {
     const code = (e as { code?: string })?.code ?? "";
     const message = e instanceof Error ? e.message : String(e);
     console.error(`[health] connectivity: ${code} ${message}`);
-    report.database.error = code ? `${code}: ${message.slice(0, 300)}` : message.slice(0, 300);
+    const scrubbed = message.replace(/:\/\/[^@\s]*@/g, "://***@").slice(0, 300);
+    report.database.error = code ? `${code}: ${scrubbed}` : scrubbed;
 
     if (/did not initialize yet|prisma generate/i.test(message)) {
       report.actions.push(
         "The Prisma client was not generated during the build. Redeploy — the build now runs `prisma generate` automatically."
       );
+    } else if (report.database.urlShape && (report.database.urlShape.quoted || !report.database.urlShape.isPooler || (report.database.urlShape.hasCredentials && !report.database.urlShape.hasPassword))) {
+      report.actions.push(
+        "The connection failed and the DATABASE_URL shape above shows problems — fix those first, then redeploy."
+      );
     } else {
       report.actions.push(
-        "The server cannot reach the database. Check that: the Supabase project is not paused; the password in the connection string is URL-encoded (@ → %40); DATABASE_URL uses the Transaction pooler (:6543) and DIRECT_URL the Session pooler (:5432)."
+        "The server cannot reach the database. Check that: the Supabase project is not paused; the password in the connection string is URL-encoded (@ → %40, # → %23, : → %3A); DATABASE_URL uses the Transaction pooler (:6543) and DIRECT_URL the Session pooler (:5432)."
       );
     }
     return Response.json(report, { status: 503 });
